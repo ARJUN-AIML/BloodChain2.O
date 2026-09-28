@@ -25,7 +25,7 @@ class BloodRequestSerializer(serializers.ModelSerializer):
         model = BloodRequest
         fields = [
             'id', 'request_id', 'requesting_facility_id', 'requesting_facility_name',
-            'requesting_facility_type', 'blood_group', 'requested_quantity',
+            'requesting_facility_type', 'blood_group', 'blood_component', 'requested_quantity',
             'fulfilled_quantity', 'remaining_quantity', 'required_date',
             'priority', 'reason', 'notes', 'status', 'allocations', 'created_at'
         ]
@@ -33,7 +33,7 @@ class BloodRequestSerializer(serializers.ModelSerializer):
 class CreateBloodRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = BloodRequest
-        fields = ['blood_group', 'requested_quantity', 'required_date', 'priority', 'reason', 'notes']
+        fields = ['blood_group', 'blood_component', 'requested_quantity', 'required_date', 'priority', 'reason', 'notes']
 
     def validate(self, attrs):
         request = self.context.get('request')

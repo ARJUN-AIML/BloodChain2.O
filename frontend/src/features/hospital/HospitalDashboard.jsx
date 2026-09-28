@@ -39,6 +39,7 @@ export const HospitalDashboard = () => {
 
   // Create Request Form State
   const [reqBloodGroup, setReqBloodGroup] = useState('O+');
+  const [reqBloodComponent, setReqBloodComponent] = useState('RBC');
   const [reqQuantity, setReqQuantity] = useState(10);
   const [reqPriority, setReqPriority] = useState('HIGH');
   const [reqDate, setReqDate] = useState(new Date().toISOString().split('T')[0]);
@@ -90,6 +91,7 @@ export const HospitalDashboard = () => {
     try {
       await api.post('/requests/', {
         blood_group: reqBloodGroup,
+        blood_component: reqBloodComponent,
         requested_quantity: parseInt(reqQuantity),
         required_date: reqDate,
         priority: reqPriority,
@@ -301,7 +303,12 @@ export const HospitalDashboard = () => {
               {inventory.map((inv) => (
                 <div key={inv.id} className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 hover:border-slate-700 transition-all">
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xl font-extrabold text-white">{inv.blood_group}</span>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-xl font-extrabold text-white">{inv.blood_group}</span>
+                      <span className="px-1.5 py-0.5 text-[10px] font-semibold rounded bg-slate-800 text-teal-300 border border-slate-700">
+                        {inv.blood_component || 'RBC'}
+                      </span>
+                    </div>
                     <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${inv.available_units < 5 ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
                       {inv.available_units < 5 ? 'Low Stock' : 'Optimal'}
                     </span>
@@ -379,7 +386,12 @@ export const HospitalDashboard = () => {
                     sentRequests.map((req) => (
                       <tr key={req.id} className="hover:bg-slate-800/40">
                         <td className="p-3 font-mono text-slate-100">{req.request_id}</td>
-                        <td className="p-3 font-bold text-rose-400">{req.blood_group}</td>
+                        <td className="p-3 font-mono text-sm">
+                          <span className="font-bold text-rose-400">{req.blood_group}</span>
+                          <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
+                            {req.blood_component || 'RBC'}
+                          </span>
+                        </td>
                         <td className="p-3">{req.requested_quantity} units</td>
                         <td className="p-3 text-emerald-400 font-bold">{req.fulfilled_quantity} / {req.requested_quantity}</td>
                         <td className="p-3">{req.required_date}</td>
@@ -428,7 +440,12 @@ export const HospitalDashboard = () => {
                       <tr key={req.id} className="hover:bg-slate-800/40">
                         <td className="p-3 font-mono text-slate-100">{req.request_id}</td>
                         <td className="p-3 font-medium text-slate-200">{req.requesting_facility_name}</td>
-                        <td className="p-3 font-bold text-rose-400">{req.blood_group}</td>
+                        <td className="p-3 font-mono text-sm">
+                          <span className="font-bold text-rose-400">{req.blood_group}</span>
+                          <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
+                            {req.blood_component || 'RBC'}
+                          </span>
+                        </td>
                         <td className="p-3 font-bold text-amber-400">{req.remaining_quantity} units</td>
                         <td className="p-3">
                           <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300">
@@ -488,7 +505,12 @@ export const HospitalDashboard = () => {
                       <tr key={tr.id} className="hover:bg-slate-800/40">
                         <td className="p-3 font-mono text-slate-100">{tr.transfer_id}</td>
                         <td className="p-3 text-slate-200">{tr.sender_facility_name}</td>
-                        <td className="p-3 font-bold text-rose-400">{tr.blood_group}</td>
+                        <td className="p-3 font-mono text-sm">
+                          <span className="font-bold text-rose-400">{tr.blood_group}</span>
+                          <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
+                            {tr.blood_component || 'RBC'}
+                          </span>
+                        </td>
                         <td className="p-3">{tr.quantity} units</td>
                         <td className="p-3">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${tr.status === 'COMPLETED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-indigo-500/20 text-indigo-300'}`}>
@@ -545,7 +567,12 @@ export const HospitalDashboard = () => {
                       <tr key={tr.id} className="hover:bg-slate-800/40">
                         <td className="p-3 font-mono text-slate-100">{tr.transfer_id}</td>
                         <td className="p-3 text-slate-200">{tr.receiver_facility_name}</td>
-                        <td className="p-3 font-bold text-rose-400">{tr.blood_group}</td>
+                        <td className="p-3 font-mono text-sm">
+                          <span className="font-bold text-rose-400">{tr.blood_group}</span>
+                          <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
+                            {tr.blood_component || 'RBC'}
+                          </span>
+                        </td>
                         <td className="p-3">{tr.quantity} units</td>
                         <td className="p-3">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${tr.status === 'COMPLETED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}`}>
@@ -715,6 +742,22 @@ export const HospitalDashboard = () => {
               </div>
 
               <div>
+                <label className="block text-slate-300 font-semibold mb-1">Blood Component</label>
+                <select
+                  value={reqBloodComponent}
+                  onChange={(e) => setReqBloodComponent(e.target.value)}
+                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl p-2.5"
+                >
+                  <option value="RBC">RBC (Red Blood Cells / PRBC)</option>
+                  <option value="WBC">WBC (White Blood Cells)</option>
+                  <option value="Plasma">Plasma (Fresh Frozen Plasma - FFP)</option>
+                  <option value="Platelets">Platelets (Platelet Concentrate)</option>
+                  <option value="Cryoprecipitate">Cryoprecipitate</option>
+                  <option value="Whole Blood">Whole Blood</option>
+                </select>
+              </div>
+
+              <div>
                 <label className="block text-slate-300 font-semibold mb-1">Requested Quantity (Units)</label>
                 <input
                   type="number"
@@ -784,7 +827,7 @@ export const HospitalDashboard = () => {
 
             <div className="p-3 bg-slate-950 rounded-xl space-y-1 text-xs text-slate-300">
               <div>Requesting Facility: <strong className="text-white">{selectedRequest.requesting_facility_name}</strong></div>
-              <div>Blood Group: <strong className="text-rose-400">{selectedRequest.blood_group}</strong></div>
+              <div>Blood Group & Component: <strong className="text-rose-400">{selectedRequest.blood_group} ({selectedRequest.blood_component || 'RBC'})</strong></div>
               <div>Remaining Needed: <strong className="text-amber-400">{selectedRequest.remaining_quantity} units</strong></div>
             </div>
 
@@ -853,7 +896,7 @@ export const HospitalDashboard = () => {
             <div className="p-3 bg-slate-950 rounded-xl space-y-1 text-xs text-slate-300">
               <div>Transfer ID: <strong className="font-mono text-white">{selectedTransferForOtp.transfer_id}</strong></div>
               <div>Receiver: <strong className="text-white">{selectedTransferForOtp.receiver_facility_name}</strong></div>
-              <div>Quantity: <strong className="text-rose-400">{selectedTransferForOtp.quantity} {selectedTransferForOtp.blood_group}</strong></div>
+              <div>Quantity: <strong className="text-rose-400">{selectedTransferForOtp.quantity} units {selectedTransferForOtp.blood_group} ({selectedTransferForOtp.blood_component || 'RBC'})</strong></div>
             </div>
 
             <form onSubmit={handleVerifyOTP} className="space-y-4 text-xs">

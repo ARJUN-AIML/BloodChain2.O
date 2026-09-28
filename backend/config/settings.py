@@ -88,8 +88,21 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
+            'OPTIONS': {
+                'timeout': 30,
+            }
         }
     }
+
+# Enable SQLite Write-Ahead Logging (WAL) for concurrency
+from django.db.backends.signals import connection_created
+def configure_sqlite_wal(sender, connection, **kwargs):
+    if connection.vendor == 'sqlite':
+        with connection.cursor() as cursor:
+            cursor.execute('PRAGMA journal_mode=WAL;')
+            cursor.execute('PRAGMA busy_timeout=30000;')
+
+connection_created.connect(configure_sqlite_wal)
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

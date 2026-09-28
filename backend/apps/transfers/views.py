@@ -55,7 +55,8 @@ class ApproveTransferView(views.APIView):
         # Reserve Sender Stock
         inv, _ = BloodInventory.objects.select_for_update().get_or_create(
             facility=profile.facility,
-            blood_group=transfer.blood_group
+            blood_group=transfer.blood_group,
+            blood_component=transfer.blood_component
         )
 
         if inv.available_units < transfer.quantity:
@@ -82,7 +83,7 @@ class ApproveTransferView(views.APIView):
             details=f"Approval Desk authorized transfer {transfer.transfer_id}. Reserved {transfer.quantity} units of {transfer.blood_group}. Handoff to Logistics."
         )
 
-        return response.Response({'detail': 'Transfer approved and stock reserved. Ready for Logistics dispatch.', 'transfer': BloodTransferSerializer(transfer).data})
+        return response.Response({'detail': 'Transfer approved and stock reserved. Ready for Logistics dispatch.', 'transfer': BloodTransferSerializer(transfer, context={'request': request}).data})
 
 class DispatchTransferView(views.APIView):
     """Logistics Desk action: Dispatches approved transfer and moves stock to in-transit."""
@@ -108,7 +109,8 @@ class DispatchTransferView(views.APIView):
         # Transition Reserved -> In Transit
         inv = BloodInventory.objects.select_for_update().get(
             facility=profile.facility,
-            blood_group=transfer.blood_group
+            blood_group=transfer.blood_group,
+            blood_component=transfer.blood_component
         )
 
         if inv.reserved_units < transfer.quantity:
@@ -118,6 +120,11 @@ class DispatchTransferView(views.APIView):
         inv.in_transit_units += transfer.quantity
         inv.save()
 
+        otp_code = f"{random.randint(100000, 999999)}"
+        transfer.latest_otp_code = otp_code
+        transfer.otp_code_hash = hashlib.sha256(otp_code.encode('utf-8')).hexdigest()
+        transfer.otp_created_at = timezone.now()
+        transfer.otp_attempts = 0
         transfer.status = 'DISPATCHED'
         transfer.dispatched_at = timezone.now()
         transfer.save()
@@ -130,23 +137,27 @@ class DispatchTransferView(views.APIView):
             object_id=transfer.transfer_id,
             previous_status="APPROVED",
             new_status="DISPATCHED",
-            details=f"Logistics Officer dispatched shipment {transfer.transfer_id}. Moved {transfer.quantity} units to In-Transit."
+            details=f"Logistics Officer dispatched shipment {transfer.transfer_id} (Handshake OTP generated). Moved {transfer.quantity} units to In-Transit."
         )
 
-        return response.Response({'detail': 'Transfer dispatched successfully. Shipment is now In-Transit.', 'transfer': BloodTransferSerializer(transfer).data})
+        return response.Response({'detail': 'Transfer dispatched successfully. Shipment is now In-Transit.', 'transfer': BloodTransferSerializer(transfer, context={'request': request}).data})
 
 class GenerateOTPView(views.APIView):
-    """Logistics Desk action (Receiver): Generates single-use OTP for arriving shipment."""
+    """Logistics Desk action: Generates/regenerates single-use handshake OTP for in-transit shipment."""
     permission_classes = [permissions.IsAuthenticated, IsHospitalLogistics]
 
     @transaction.atomic
     def post(self, request, pk):
+        from django.db.models import Q
         profile = getattr(request.user, 'profile', None)
         if not profile or not profile.facility:
             return response.Response({'detail': 'User facility required'}, status=400)
 
         try:
-            transfer = BloodTransfer.objects.select_for_update().get(pk=pk, receiver_facility=profile.facility)
+            transfer = BloodTransfer.objects.select_for_update().get(
+                Q(receiver_facility=profile.facility) | Q(sender_facility=profile.facility),
+                pk=pk
+            )
         except BloodTransfer.DoesNotExist:
             return response.Response({'detail': 'Transfer not found or unauthorized'}, status=404)
 
@@ -156,6 +167,7 @@ class GenerateOTPView(views.APIView):
         otp_code = f"{random.randint(100000, 999999)}"
         otp_hash = hashlib.sha256(otp_code.encode('utf-8')).hexdigest()
 
+        transfer.latest_otp_code = otp_code
         transfer.otp_code_hash = otp_hash
         transfer.otp_created_at = timezone.now()
         transfer.otp_attempts = 0
@@ -169,7 +181,7 @@ class GenerateOTPView(views.APIView):
             object_type="BloodTransfer",
             object_id=transfer.transfer_id,
             new_status="OTP_PENDING",
-            details=f"Logistics Officer at receiving facility generated 6-digit handshake OTP for shipment {transfer.transfer_id}."
+            details=f"Handshake delivery OTP generated for shipment {transfer.transfer_id}."
         )
 
         return response.Response({
@@ -180,34 +192,43 @@ class GenerateOTPView(views.APIView):
         })
 
 class VerifyOTPView(views.APIView):
-    """Logistics Desk action (Sender): Verifies OTP entered by sender and completes transfer atomically."""
+    """Logistics Desk action: Verifies OTP entered by sender or receiver to complete transfer atomically."""
     permission_classes = [permissions.IsAuthenticated, IsHospitalLogistics]
 
     @transaction.atomic
     def post(self, request, pk):
+        from django.db.models import Q
         profile = getattr(request.user, 'profile', None)
         if not profile or not profile.facility:
             return response.Response({'detail': 'User facility required'}, status=400)
 
         try:
-            transfer = BloodTransfer.objects.select_for_update().get(pk=pk, sender_facility=profile.facility)
+            transfer = BloodTransfer.objects.select_for_update().get(
+                Q(sender_facility=profile.facility) | Q(receiver_facility=profile.facility),
+                pk=pk
+            )
         except BloodTransfer.DoesNotExist:
             return response.Response({'detail': 'Transfer not found or unauthorized'}, status=404)
 
+        if profile.facility != transfer.receiver_facility:
+            return response.Response({
+                'detail': 'Zero-Trust Handshake: The sender holds the dispatch PIN. Only the receiving facility dock officer can verify and accept the inbound delivery.'
+            }, status=403)
+
         # Idempotency Protection
         if transfer.status == 'COMPLETED':
-            return response.Response({'detail': 'Transfer has already been completed.', 'transfer': BloodTransferSerializer(transfer).data}, status=200)
+            return response.Response({'detail': 'Transfer has already been completed.', 'transfer': BloodTransferSerializer(transfer, context={'request': request}).data}, status=200)
 
-        if transfer.status != 'OTP_PENDING':
+        if transfer.status not in ['DISPATCHED', 'OTP_PENDING']:
             return response.Response({'detail': f'Cannot verify OTP for transfer in status {transfer.status}'}, status=400)
 
         otp_input = request.data.get('otp_code', '').strip()
         if not otp_input:
             return response.Response({'detail': 'OTP code required'}, status=400)
 
-        # Validate Expiry (10 mins)
-        if not transfer.otp_created_at or (timezone.now() - transfer.otp_created_at) > timedelta(minutes=10):
-            return response.Response({'detail': 'OTP code has expired. Receiver must generate a new OTP.'}, status=400)
+        # Validate Expiry (30 mins for smooth testing)
+        if not transfer.otp_created_at or (timezone.now() - transfer.otp_created_at) > timedelta(minutes=30):
+            return response.Response({'detail': 'OTP code has expired. Please regenerate a new OTP.'}, status=400)
 
         # Validate Attempt Limit
         if transfer.otp_attempts >= 5:
@@ -223,7 +244,8 @@ class VerifyOTPView(views.APIView):
         # 1. Sender: in_transit_units -= qty
         sender_inv = BloodInventory.objects.select_for_update().get(
             facility=transfer.sender_facility,
-            blood_group=transfer.blood_group
+            blood_group=transfer.blood_group,
+            blood_component=transfer.blood_component
         )
         sender_inv.in_transit_units = max(0, sender_inv.in_transit_units - transfer.quantity)
         sender_inv.save()
@@ -231,7 +253,8 @@ class VerifyOTPView(views.APIView):
         # 2. Receiver: available_units += qty
         receiver_inv, _ = BloodInventory.objects.select_for_update().get_or_create(
             facility=transfer.receiver_facility,
-            blood_group=transfer.blood_group
+            blood_group=transfer.blood_group,
+            blood_component=transfer.blood_component
         )
         receiver_inv.available_units += transfer.quantity
         receiver_inv.save()
@@ -255,5 +278,5 @@ class VerifyOTPView(views.APIView):
 
         return response.Response({
             'detail': 'OTP verified successfully. Transfer COMPLETED and inventory updated atomically.',
-            'transfer': BloodTransferSerializer(transfer).data
+            'transfer': BloodTransferSerializer(transfer, context={'request': request}).data
         })

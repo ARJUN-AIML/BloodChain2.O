@@ -1,7 +1,7 @@
 from django.db import models
 from apps.facilities.models import Facility
 from apps.requests.models import BloodRequest, RequestAllocation
-from apps.inventory.models import BLOOD_GROUPS
+from apps.inventory.models import BLOOD_GROUPS, BLOOD_COMPONENTS
 
 class BloodTransfer(models.Model):
     STATUS_CHOICES = [
@@ -21,9 +21,11 @@ class BloodTransfer(models.Model):
     sender_facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name='transfers_sent')
     receiver_facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name='transfers_received')
     blood_group = models.CharField(max_length=5, choices=BLOOD_GROUPS)
+    blood_component = models.CharField(max_length=30, choices=BLOOD_COMPONENTS, default='RBC')
     quantity = models.PositiveIntegerField()
     status = models.CharField(max_length=30, choices=STATUS_CHOICES, default='CREATED')
     
+    latest_otp_code = models.CharField(max_length=10, blank=True, default='')
     otp_code_hash = models.CharField(max_length=128, blank=True, default='')
     otp_created_at = models.DateTimeField(null=True, blank=True)
     otp_attempts = models.IntegerField(default=0)

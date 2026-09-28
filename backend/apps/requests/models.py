@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from apps.facilities.models import Facility
-from apps.inventory.models import BLOOD_GROUPS
+from apps.inventory.models import BLOOD_GROUPS, BLOOD_COMPONENTS
 
 class BloodRequest(models.Model):
     PRIORITY_CHOICES = [
@@ -23,6 +23,7 @@ class BloodRequest(models.Model):
     request_id = models.CharField(max_length=50, unique=True, db_index=True)
     requesting_facility = models.ForeignKey(Facility, on_delete=models.CASCADE, related_name='requests_created')
     blood_group = models.CharField(max_length=5, choices=BLOOD_GROUPS)
+    blood_component = models.CharField(max_length=30, choices=BLOOD_COMPONENTS, default='RBC')
     requested_quantity = models.PositiveIntegerField()
     fulfilled_quantity = models.PositiveIntegerField(default=0)
     required_date = models.DateField()

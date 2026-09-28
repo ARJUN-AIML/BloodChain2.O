@@ -4,7 +4,8 @@ import { useAuth } from '../../context/AuthContext';
 import { StatCard } from '../../components/StatCard';
 import {
   Building2, CheckSquare, Clock, ArrowUpRight, CheckCircle2, XCircle,
-  PlusCircle, RefreshCw, AlertCircle, History, FileText, Send, Droplet
+  PlusCircle, RefreshCw, AlertCircle, History, FileText, Send, Droplet,
+  ShieldCheck, X
 } from 'lucide-react';
 
 export const HospitalApprovalDesk = () => {
@@ -26,6 +27,7 @@ export const HospitalApprovalDesk = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [createData, setCreateData] = useState({
     blood_group: 'O+',
+    blood_component: 'RBC',
     requested_quantity: 5,
     priority: 'HIGH',
     reason: '',
@@ -41,18 +43,18 @@ export const HospitalApprovalDesk = () => {
     setActionError('');
     try {
       const [invRes, sentRes, recvRes, outRes, audRes] = await Promise.all([
-        api.get('/inventory/'),
-        api.get('/requests/sent/'),
-        api.get('/requests/received/'),
-        api.get('/transfers/outgoing/'),
-        api.get('/audit/')
+        api.get('/inventory/').catch(() => ({ data: [] })),
+        api.get('/requests/sent/').catch(() => ({ data: [] })),
+        api.get('/requests/received/').catch(() => ({ data: [] })),
+        api.get('/transfers/outgoing/').catch(() => ({ data: [] })),
+        api.get('/audit/').catch(() => ({ data: [] }))
       ]);
 
-      setInventory(invRes.data);
-      setSentRequests(sentRes.data);
-      setReceivedRequests(recvRes.data);
-      setOutgoingTransfers(outRes.data);
-      setAuditLogs(audRes.data);
+      setInventory(invRes.data || []);
+      setSentRequests(sentRes.data || []);
+      setReceivedRequests(recvRes.data || []);
+      setOutgoingTransfers(outRes.data || []);
+      setAuditLogs(audRes.data || []);
     } catch (err) {
       console.error('Error fetching approval desk data:', err);
       setActionError(err.response?.data?.detail || 'Failed to load approval desk data.');
@@ -71,7 +73,7 @@ export const HospitalApprovalDesk = () => {
     setActionSuccess('');
     try {
       await api.post('/requests/', createData);
-      setActionSuccess(`Blood Request for ${createData.requested_quantity} units of ${createData.blood_group} issued successfully!`);
+      setActionSuccess(`Blood Request for ${createData.requested_quantity} units of ${createData.blood_group} (${createData.blood_component}) issued successfully.`);
       setShowCreateModal(false);
       fetchData();
     } catch (err) {
@@ -88,7 +90,7 @@ export const HospitalApprovalDesk = () => {
       const res = await api.post(`/requests/${selectedRequest.id}/respond/`, {
         offered_quantity: parseInt(offerQuantity)
       });
-      setActionSuccess(`Accepted ${res.data.allocation.accepted_quantity} units for request ${selectedRequest.requesting_facility_name}. Transfer created for approval.`);
+      setActionSuccess(`Allocated ${res.data.allocation.accepted_quantity} units for request from ${selectedRequest.requesting_facility_name}. Transfer created for medical approval.`);
       setShowRespondModal(false);
       setSelectedRequest(null);
       fetchData();
@@ -102,7 +104,7 @@ export const HospitalApprovalDesk = () => {
     setActionSuccess('');
     try {
       await api.post(`/transfers/${transferId}/approve/`);
-      setActionSuccess('Transfer authorized! Stock reserved. Handoff to Logistics for physical dispatch.');
+      setActionSuccess('Transfer authorized! Units reserved in inventory. Handed off to Logistics for physical dispatch.');
       fetchData();
     } catch (err) {
       setActionError(err.response?.data?.detail || 'Failed to authorize transfer.');
@@ -116,96 +118,103 @@ export const HospitalApprovalDesk = () => {
   const approvedTransfers = outgoingTransfers.filter(t => t.status !== 'CREATED').length;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="space-y-6">
       
       {/* Header Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 p-6 rounded-3xl border border-indigo-500/20 glass-panel">
+      <div className="clinical-card p-6 border-slate-800 bg-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2 text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-1">
+          <div className="flex items-center gap-2 text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-1">
             <CheckSquare className="w-4 h-4" />
-            <span>Hospital Clinical Decision Hub</span>
+            <span>Clinical Medical Approval Desk &bull; Section 4</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Hospital Approval Desk
+          <h1 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+            Hospital Clinical Decision Hub
           </h1>
           <p className="text-xs text-slate-400 mt-1">
-            Review requests, authorize blood allocation, and approve transfers for <strong className="text-slate-200">{facility?.name}</strong>.
+            Emergency requisition issuance, partner allocation, and transfer authorization for <strong className="text-slate-200">{facility?.name}</strong>.
           </p>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-2.5">
           <button
+            type="button"
             onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-xs shadow-lg shadow-rose-900/30 flex items-center space-x-2 transition-all"
+            className="px-3.5 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-white font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Create Blood Request</span>
           </button>
+          
           <button
+            type="button"
             onClick={fetchData}
-            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all"
-            title="Refresh Data"
+            title="Refresh clinical data"
+            className="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-colors cursor-pointer"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin text-slate-200' : ''}`} />
           </button>
         </div>
       </div>
 
       {/* Notifications */}
       {actionError && (
-        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <AlertCircle className="w-5 h-5 text-rose-400 flex-shrink-0" />
+        <div className="p-3.5 rounded-lg bg-red-950/40 border border-red-800 text-red-300 text-xs flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
             <span>{actionError}</span>
           </div>
-          <button onClick={() => setActionError('')} className="text-xs text-rose-400 font-bold">Dismiss</button>
+          <button onClick={() => setActionError('')} className="text-xs font-semibold text-red-400 hover:text-red-200 cursor-pointer">Dismiss</button>
         </div>
       )}
 
       {actionSuccess && (
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+        <div className="p-3.5 rounded-lg bg-emerald-950/40 border border-emerald-800 text-emerald-300 text-xs flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
             <span>{actionSuccess}</span>
           </div>
-          <button onClick={() => setActionSuccess('')} className="text-xs text-emerald-400 font-bold">Dismiss</button>
+          <button onClick={() => setActionSuccess('')} className="text-xs font-semibold text-emerald-400 hover:text-emerald-200 cursor-pointer">Dismiss</button>
         </div>
       )}
 
-      {/* Overview Workload Metrics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      {/* Overview Metrics Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3.5">
         <StatCard
           title="Pending Requests Sent"
           value={pendingSent}
           subtext="Awaiting partner fulfillment"
           icon={Clock}
           color="indigo"
+          badge="OUTBOUND"
         />
         <StatCard
-          title="Requests Awaiting Response"
+          title="Requests In Queue"
           value={awaitingReceived}
-          subtext="Received supply requests"
+          subtext="Partner requests awaiting decision"
           icon={FileText}
           color="amber"
+          badge="INBOUND"
         />
         <StatCard
-          title="Pending Transfer Approvals"
+          title="Transfers Awaiting Auth"
           value={pendingTransfers}
-          subtext="Transfers awaiting authorization"
+          subtext="Reserved units pending sign-off"
           icon={CheckSquare}
-          color="rose"
+          color="red"
+          badge="CRITICAL"
         />
         <StatCard
-          title="Approved Transfers"
+          title="Authorized Transfers"
           value={approvedTransfers}
-          subtext="Authorized for logistics"
+          subtext="Handed over to logistics"
           icon={CheckCircle2}
           color="emerald"
+          badge="ACTIVE"
         />
       </div>
 
-      {/* Navigation Tabs */}
-      <div className="flex items-center space-x-2 border-b border-slate-800 pb-2 overflow-x-auto">
+      {/* Segmented Tab Navigation */}
+      <div className="flex items-center p-1 rounded-lg bg-slate-950 border border-slate-800 overflow-x-auto" role="tablist">
         {[
           { id: 'queue', label: `Approval Queue (${awaitingReceived + pendingTransfers})` },
           { id: 'requests_sent', label: `Requests Issued (${sentRequests.length})` },
@@ -215,11 +224,14 @@ export const HospitalApprovalDesk = () => {
         ].map((tab) => (
           <button
             key={tab.id}
+            type="button"
+            role="tab"
+            aria-selected={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2 text-xs font-semibold rounded-xl whitespace-nowrap transition-all ${
+            className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === tab.id
-                ? 'bg-indigo-600 text-white shadow-md'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             {tab.label}
@@ -229,106 +241,138 @@ export const HospitalApprovalDesk = () => {
 
       {/* TAB 1: APPROVAL QUEUE */}
       {activeTab === 'queue' && (
-        <div className="space-y-6">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                <FileText className="w-5 h-5 text-amber-400" />
-                <span>Received Requests Awaiting Supply Decision</span>
-              </h3>
-              <span className="text-xs text-slate-400">Review requests from partner facilities</span>
-            </div>
+        <div className="clinical-card border-slate-800 bg-slate-900 overflow-hidden">
+          <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+            <h2 className="text-sm font-bold text-white flex items-center gap-2">
+              <FileText className="w-4 h-4 text-amber-400" />
+              <span>Received Requests Awaiting Supply Decision</span>
+            </h2>
+            <span className="text-xs text-slate-400 font-mono">Total Pending: {receivedRequests.length}</span>
+          </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
-                <thead className="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-slate-300">
+              <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
+                <tr>
+                  <th className="py-3 px-4">Request ID</th>
+                  <th className="py-3 px-4">Requesting Hospital</th>
+                  <th className="py-3 px-4">Blood Group</th>
+                  <th className="py-3 px-4">Remaining Needed</th>
+                  <th className="py-3 px-4">Priority</th>
+                  <th className="py-3 px-4 text-right">Supply Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800">
+                {receivedRequests.length === 0 ? (
                   <tr>
-                    <th className="p-3">Request ID</th>
-                    <th className="p-3">Requesting Hospital</th>
-                    <th className="p-3">Blood Group</th>
-                    <th className="p-3">Remaining Needed</th>
-                    <th className="p-3">Priority</th>
-                    <th className="p-3">Supply Decision</th>
+                    <td colSpan="6" className="py-8 text-center text-slate-500">
+                      No inbound supply requests pending clinical decision.
+                    </td>
                   </tr>
-                </thead>
-                <tbody className="divide-y divide-slate-800">
-                  {receivedRequests.length === 0 ? (
-                    <tr><td colSpan="6" className="p-4 text-center text-slate-500">No pending supply requests awaiting response.</td></tr>
-                  ) : (
-                    receivedRequests.map((req) => (
-                      <tr key={req.id} className="hover:bg-slate-800/40">
-                        <td className="p-3 font-mono text-slate-100">{req.request_id}</td>
-                        <td className="p-3 font-medium text-slate-200">{req.requesting_facility_name}</td>
-                        <td className="p-3 font-bold text-rose-400">{req.blood_group}</td>
-                        <td className="p-3 font-bold text-amber-400">{req.remaining_quantity} units</td>
-                        <td className="p-3">
-                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300">
-                            {req.priority}
-                          </span>
-                        </td>
-                        <td className="p-3">
-                          <button
-                            onClick={() => {
-                              setSelectedRequest(req);
-                              setOfferQuantity(Math.min(5, req.remaining_quantity));
-                              setShowRespondModal(true);
-                            }}
-                            className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-lg text-xs"
-                          >
-                            Review & Allocate
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
+                ) : (
+                  receivedRequests.map((req) => (
+                    <tr key={req.id} className="clinical-table-row">
+                      <td className="py-3 px-4 font-mono font-semibold text-slate-200">{req.request_id}</td>
+                      <td className="py-3 px-4 font-medium text-slate-100">{req.requesting_facility_name}</td>
+                      <td className="py-3 px-4 font-mono text-sm">
+                        <span className="font-bold text-red-400">{req.blood_group}</span>
+                        <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
+                          {req.blood_component || 'RBC'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 font-semibold text-amber-400 font-mono">{req.remaining_quantity} units</td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
+                          req.priority === 'CRITICAL' 
+                            ? 'bg-red-950/60 text-red-300 border-red-800' 
+                            : req.priority === 'HIGH'
+                            ? 'bg-amber-950/60 text-amber-300 border-amber-800'
+                            : 'bg-slate-800 text-slate-300 border-slate-700'
+                        }`}>
+                          {req.priority}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-right">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedRequest(req);
+                            setOfferQuantity(Math.min(5, req.remaining_quantity));
+                            setShowRespondModal(true);
+                          }}
+                          className="px-3 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-100 font-semibold rounded-md text-xs transition-colors cursor-pointer"
+                        >
+                          Review & Allocate
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
 
       {/* TAB 2: REQUESTS ISSUED */}
       {activeTab === 'requests_sent' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-              <Send className="w-5 h-5 text-indigo-400" />
+        <div className="clinical-card border-slate-800 bg-slate-900 overflow-hidden">
+          <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+            <h2 className="text-sm font-bold text-white flex items-center gap-2">
+              <Send className="w-4 h-4 text-indigo-400" />
               <span>Blood Requests Issued by {facility?.name}</span>
-            </h3>
+            </h2>
+            <span className="text-xs text-slate-400 font-mono">Issued Total: {sentRequests.length}</span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
+              <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
-                  <th className="p-3">Request ID</th>
-                  <th className="p-3">Blood Group</th>
-                  <th className="p-3">Requested</th>
-                  <th className="p-3">Fulfilled</th>
-                  <th className="p-3">Remaining</th>
-                  <th className="p-3">Priority</th>
-                  <th className="p-3">Status</th>
+                  <th className="py-3 px-4">Request ID</th>
+                  <th className="py-3 px-4">Blood Group</th>
+                  <th className="py-3 px-4">Requested</th>
+                  <th className="py-3 px-4">Fulfilled</th>
+                  <th className="py-3 px-4">Remaining</th>
+                  <th className="py-3 px-4">Priority</th>
+                  <th className="py-3 px-4">Status</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800">
                 {sentRequests.length === 0 ? (
-                  <tr><td colSpan="7" className="p-4 text-center text-slate-500">No requests issued yet.</td></tr>
+                  <tr>
+                    <td colSpan="7" className="py-8 text-center text-slate-500">
+                      No blood supply requests issued yet. Click "Create Blood Request" above to initiate a requisition.
+                    </td>
+                  </tr>
                 ) : (
                   sentRequests.map((req) => (
-                    <tr key={req.id} className="hover:bg-slate-800/40">
-                      <td className="p-3 font-mono text-slate-100">{req.request_id}</td>
-                      <td className="p-3 font-bold text-rose-400">{req.blood_group}</td>
-                      <td className="p-3">{req.requested_quantity} units</td>
-                      <td className="p-3 font-bold text-emerald-400">{req.fulfilled_quantity} units</td>
-                      <td className="p-3 font-bold text-amber-400">{req.remaining_quantity} units</td>
-                      <td className="p-3">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-slate-300">
+                    <tr key={req.id} className="clinical-table-row">
+                      <td className="py-3 px-4 font-mono font-semibold text-slate-200">{req.request_id}</td>
+                      <td className="py-3 px-4 font-mono text-sm">
+                        <span className="font-bold text-red-400">{req.blood_group}</span>
+                        <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
+                          {req.blood_component || 'RBC'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 font-mono">{req.requested_quantity} units</td>
+                      <td className="py-3 px-4 font-bold text-emerald-400 font-mono">{req.fulfilled_quantity} units</td>
+                      <td className="py-3 px-4 font-bold text-amber-400 font-mono">{req.remaining_quantity} units</td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
+                          req.priority === 'CRITICAL'
+                            ? 'bg-red-950/60 text-red-300 border-red-800'
+                            : 'bg-slate-800 text-slate-300 border-slate-700'
+                        }`}>
                           {req.priority}
                         </span>
                       </td>
-                      <td className="p-3">
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${req.status === 'FULFILLED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}`}>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase border ${
+                          req.status === 'FULFILLED'
+                            ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800'
+                            : 'bg-amber-950/60 text-amber-300 border-amber-800'
+                        }`}>
                           {req.status}
                         </span>
                       </td>
@@ -343,46 +387,59 @@ export const HospitalApprovalDesk = () => {
 
       {/* TAB 3: TRANSFER APPROVALS */}
       {activeTab === 'transfer_approvals' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-              <CheckSquare className="w-5 h-5 text-rose-400" />
-              <span>Transfers Awaiting Clinical Authorization</span>
-            </h3>
-            <span className="text-xs text-slate-400">Authorizing reserves stock and hands off to Logistics</span>
+        <div className="clinical-card border-slate-800 bg-slate-900 overflow-hidden">
+          <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-bold text-white flex items-center gap-2">
+                <CheckSquare className="w-4 h-4 text-emerald-400" />
+                <span>Transfers Awaiting Medical Authorization</span>
+              </h2>
+              <p className="text-xs text-slate-400 mt-0.5">Authorizing commits inventory reservation and moves custody to Logistics.</p>
+            </div>
+            <span className="text-xs text-slate-400 font-mono">Pending Auth: {outgoingTransfers.filter(t => t.status === 'CREATED').length}</span>
           </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
+              <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
-                  <th className="p-3">Transfer ID</th>
-                  <th className="p-3">Receiver Hospital</th>
-                  <th className="p-3">Blood Group</th>
-                  <th className="p-3">Quantity</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Clinical Action</th>
+                  <th className="py-3 px-4">Transfer ID</th>
+                  <th className="py-3 px-4">Receiver Hospital</th>
+                  <th className="py-3 px-4">Blood Group</th>
+                  <th className="py-3 px-4">Quantity</th>
+                  <th className="py-3 px-4">Status</th>
+                  <th className="py-3 px-4 text-right">Medical Sign-off</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800">
                 {outgoingTransfers.filter(t => t.status === 'CREATED').length === 0 ? (
-                  <tr><td colSpan="6" className="p-4 text-center text-slate-500">No transfers currently awaiting authorization.</td></tr>
+                  <tr>
+                    <td colSpan="6" className="py-8 text-center text-slate-500">
+                      No transfers currently awaiting medical authorization.
+                    </td>
+                  </tr>
                 ) : (
                   outgoingTransfers.filter(t => t.status === 'CREATED').map((tr) => (
-                    <tr key={tr.id} className="hover:bg-slate-800/40">
-                      <td className="p-3 font-mono text-slate-100">{tr.transfer_id}</td>
-                      <td className="p-3 text-slate-200">{tr.receiver_facility_name}</td>
-                      <td className="p-3 font-bold text-rose-400">{tr.blood_group}</td>
-                      <td className="p-3">{tr.quantity} units</td>
-                      <td className="p-3">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300">
+                    <tr key={tr.id} className="clinical-table-row">
+                      <td className="py-3 px-4 font-mono font-semibold text-slate-200">{tr.transfer_id}</td>
+                      <td className="py-3 px-4 font-medium text-slate-100">{tr.receiver_facility_name}</td>
+                      <td className="py-3 px-4 font-mono text-sm">
+                        <span className="font-bold text-red-400">{tr.blood_group}</span>
+                        <span className="ml-1.5 px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
+                          {tr.blood_component || 'RBC'}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 font-mono font-semibold">{tr.quantity} units</td>
+                      <td className="py-3 px-4">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-950/60 text-amber-300 border border-amber-800">
                           {tr.status}
                         </span>
                       </td>
-                      <td className="p-3">
+                      <td className="py-3 px-4 text-right">
                         <button
+                          type="button"
                           onClick={() => handleApproveTransfer(tr.id)}
-                          className="px-3 py-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-lg text-xs"
+                          className="px-3 py-1 bg-emerald-700 hover:bg-emerald-600 text-white font-semibold rounded-md text-xs transition-colors cursor-pointer"
                         >
                           Authorize Transfer
                         </button>
@@ -398,18 +455,39 @@ export const HospitalApprovalDesk = () => {
 
       {/* TAB 4: STOCK SUMMARY */}
       {activeTab === 'stock_summary' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-          <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-            <Droplet className="w-5 h-5 text-rose-400" />
-            <span>Available Stock Summary</span>
-          </h3>
+        <div className="clinical-card p-6 border-slate-800 bg-slate-900 space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <h2 className="text-sm font-bold text-white flex items-center gap-2">
+              <Droplet className="w-4 h-4 text-red-500" />
+              <span>Active Facility Inventory Balance</span>
+            </h2>
+            <span className="text-xs text-slate-400 font-mono">{facility?.name}</span>
+          </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {inventory.map((inv) => (
-              <div key={inv.id} className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800">
-                <div className="text-lg font-extrabold text-white">{inv.blood_group}</div>
-                <div className="text-xs text-slate-400 mt-1">Available: <strong className="text-emerald-400">{inv.available_units} units</strong></div>
-                <div className="text-xs text-slate-400">Reserved: <span className="text-amber-400">{inv.reserved_units} units</span></div>
+              <div key={inv.id} className="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-lg font-bold text-white font-mono">{inv.blood_group}</span>
+                    <span className="px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
+                      {inv.blood_component || 'RBC'}
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-mono font-semibold px-1.5 py-0.2 rounded bg-slate-900 text-slate-400 border border-slate-800">
+                    WHO-ISBT
+                  </span>
+                </div>
+                <div className="space-y-1 text-xs">
+                  <div className="flex justify-between text-slate-400">
+                    <span>Available:</span>
+                    <strong className="text-emerald-400 font-mono">{inv.available_units} units</strong>
+                  </div>
+                  <div className="flex justify-between text-slate-400">
+                    <span>Reserved:</span>
+                    <span className="text-amber-400 font-mono">{inv.reserved_units} units</span>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
@@ -418,34 +496,41 @@ export const HospitalApprovalDesk = () => {
 
       {/* TAB 5: AUDIT */}
       {activeTab === 'audit' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-          <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-            <History className="w-5 h-5 text-slate-400" />
-            <span>Hospital Approval Desk Audit History</span>
-          </h3>
+        <div className="clinical-card border-slate-800 bg-slate-900 overflow-hidden">
+          <div className="p-4 border-b border-slate-800 flex items-center justify-between">
+            <h2 className="text-sm font-bold text-white flex items-center gap-2">
+              <History className="w-4 h-4 text-slate-400" />
+              <span>Hospital Approval Desk Audit History</span>
+            </h2>
+            <span className="text-xs text-slate-400 font-mono">Immutable Log Entries: {auditLogs.length}</span>
+          </div>
 
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs text-slate-300">
-              <thead className="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
+              <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
-                  <th className="p-3">Timestamp</th>
-                  <th className="p-3">User</th>
-                  <th className="p-3">Action</th>
-                  <th className="p-3">Object</th>
-                  <th className="p-3">Details</th>
+                  <th className="py-3 px-4">Timestamp</th>
+                  <th className="py-3 px-4">Officer</th>
+                  <th className="py-3 px-4">Action</th>
+                  <th className="py-3 px-4">Entity</th>
+                  <th className="py-3 px-4">Details</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800 font-mono">
                 {auditLogs.length === 0 ? (
-                  <tr><td colSpan="5" className="p-4 text-center text-slate-500">No approval audit logs found.</td></tr>
+                  <tr>
+                    <td colSpan="5" className="py-8 text-center text-slate-500">
+                      No approval audit entries recorded yet.
+                    </td>
+                  </tr>
                 ) : (
                   auditLogs.map((log) => (
-                    <tr key={log.id} className="hover:bg-slate-800/40">
-                      <td className="p-3 text-slate-400">{new Date(log.timestamp).toLocaleString()}</td>
-                      <td className="p-3 text-indigo-400">{log.user_name}</td>
-                      <td className="p-3 font-bold text-slate-100">{log.action}</td>
-                      <td className="p-3 text-amber-400">{log.object_type} ({log.object_id})</td>
-                      <td className="p-3 text-slate-300">{log.details}</td>
+                    <tr key={log.id} className="clinical-table-row">
+                      <td className="py-3 px-4 text-slate-400">{new Date(log.timestamp).toLocaleString()}</td>
+                      <td className="py-3 px-4 text-indigo-400">{log.user_name}</td>
+                      <td className="py-3 px-4 font-semibold text-slate-100">{log.action}</td>
+                      <td className="py-3 px-4 text-amber-400">{log.object_type} #{log.object_id}</td>
+                      <td className="py-3 px-4 text-slate-300">{log.details}</td>
                     </tr>
                   ))
                 )}
@@ -457,20 +542,28 @@ export const HospitalApprovalDesk = () => {
 
       {/* MODAL 1: CREATE REQUEST */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+          <div className="clinical-card-elevated max-w-md w-full p-6 bg-slate-900 border-slate-700 space-y-4">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-lg text-white">Create Blood Supply Request</h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-white">✕</button>
+              <h3 className="font-bold text-base text-white">Create Blood Supply Requisition</h3>
+              <button 
+                type="button"
+                onClick={() => setShowCreateModal(false)} 
+                className="p-1 rounded-md text-slate-400 hover:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
 
-            <form onSubmit={handleCreateRequest} className="space-y-4 text-xs">
+            <form onSubmit={handleCreateRequest} className="space-y-3.5 text-xs">
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Blood Group</label>
+                <label className="block text-slate-300 font-medium mb-1">
+                  Required Blood Group <span className="text-red-400">*</span>
+                </label>
                 <select
                   value={createData.blood_group}
                   onChange={(e) => setCreateData({ ...createData, blood_group: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl p-2.5 focus:border-rose-500"
+                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-lg p-2 focus:ring-2 focus:ring-slate-600 focus:outline-none"
                 >
                   {['A+', 'A-', 'B+', 'B-', 'O+', 'O-', 'AB+', 'AB-'].map(bg => (
                     <option key={bg} value={bg}>{bg}</option>
@@ -479,49 +572,80 @@ export const HospitalApprovalDesk = () => {
               </div>
 
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Requested Quantity (Units)</label>
+                <label className="block text-slate-300 font-medium mb-1">
+                  Blood Component <span className="text-red-400">*</span>
+                </label>
+                <select
+                  value={createData.blood_component}
+                  onChange={(e) => setCreateData({ ...createData, blood_component: e.target.value })}
+                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-lg p-2 focus:ring-2 focus:ring-slate-600 focus:outline-none"
+                >
+                  <option value="RBC">RBC (Red Blood Cells / PRBC)</option>
+                  <option value="WBC">WBC (White Blood Cells)</option>
+                  <option value="Plasma">Plasma (Fresh Frozen Plasma - FFP)</option>
+                  <option value="Platelets">Platelets (Platelet Concentrate)</option>
+                  <option value="Cryoprecipitate">Cryoprecipitate</option>
+                  <option value="Whole Blood">Whole Blood</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-slate-300 font-medium mb-1">
+                  Quantity Required (Units) <span className="text-red-400">*</span>
+                </label>
                 <input
                   type="number"
                   min="1"
                   max="100"
                   value={createData.requested_quantity}
-                  onChange={(e) => setCreateData({ ...createData, requested_quantity: parseInt(e.target.value) })}
-                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl p-2.5"
+                  onChange={(e) => setCreateData({ ...createData, requested_quantity: parseInt(e.target.value) || 1 })}
+                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-lg p-2 font-mono focus:ring-2 focus:ring-slate-600 focus:outline-none"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Priority</label>
+                <label className="block text-slate-300 font-medium mb-1">
+                  Clinical Priority <span className="text-red-400">*</span>
+                </label>
                 <select
                   value={createData.priority}
                   onChange={(e) => setCreateData({ ...createData, priority: e.target.value })}
-                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl p-2.5"
+                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-lg p-2 focus:ring-2 focus:ring-slate-600 focus:outline-none"
                 >
-                  <option value="CRITICAL">CRITICAL (Immediate Trauma/Emergency)</option>
-                  <option value="HIGH">HIGH (Urgent Surgery)</option>
-                  <option value="MEDIUM">MEDIUM (Scheduled Procedure)</option>
-                  <option value="LOW">LOW (Stock Replenishment)</option>
+                  <option value="CRITICAL">CRITICAL (Immediate Trauma / Emergency STAT)</option>
+                  <option value="HIGH">HIGH (Scheduled Major Surgery)</option>
+                  <option value="MEDIUM">MEDIUM (Elective Procedure)</option>
+                  <option value="LOW">LOW (Inventory Buffer Restock)</option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Reason / Clinical Notes</label>
+                <label className="block text-slate-300 font-medium mb-1">Clinical Indication / Notes</label>
                 <textarea
                   rows="2"
                   value={createData.reason}
                   onChange={(e) => setCreateData({ ...createData, reason: e.target.value })}
-                  placeholder="Emergency surgery demand..."
-                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl p-2.5"
+                  placeholder="e.g. Emergency polytrauma case in ICU OT-3..."
+                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-lg p-2 focus:ring-2 focus:ring-slate-600 focus:outline-none"
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 font-bold text-white rounded-xl text-sm shadow-lg shadow-rose-900/30"
-              >
-                Submit Clinical Request
-              </button>
+              <div className="pt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="flex-1 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2 rounded-lg bg-red-700 hover:bg-red-600 font-semibold text-white text-xs cursor-pointer shadow-sm"
+                >
+                  Submit Requisition
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -529,39 +653,70 @@ export const HospitalApprovalDesk = () => {
 
       {/* MODAL 2: RESPOND TO REQUEST */}
       {showRespondModal && selectedRequest && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
+          <div className="clinical-card-elevated max-w-md w-full p-6 bg-slate-900 border-slate-700 space-y-4">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-lg text-white">Review & Allocate Supply</h3>
-              <button onClick={() => setShowRespondModal(false)} className="text-slate-400 hover:text-white">✕</button>
+              <h3 className="font-bold text-base text-white">Review & Allocate Blood Units</h3>
+              <button 
+                type="button"
+                onClick={() => setShowRespondModal(false)} 
+                className="p-1 rounded-md text-slate-400 hover:text-white cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
 
-            <div className="p-3 bg-slate-950 rounded-xl space-y-1 text-xs text-slate-300">
-              <div>Requesting Hospital: <strong className="text-white">{selectedRequest.requesting_facility_name}</strong></div>
-              <div>Blood Group: <strong className="text-rose-400">{selectedRequest.blood_group}</strong></div>
-              <div>Remaining Needed: <strong className="text-amber-400">{selectedRequest.remaining_quantity} units</strong></div>
+            <div className="p-3 bg-slate-950 rounded-lg space-y-1.5 text-xs text-slate-300 border border-slate-800">
+              <div className="flex justify-between">
+                <span className="text-slate-400">Requesting Facility:</span>
+                <strong className="text-white">{selectedRequest.requesting_facility_name}</strong>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Target Blood Group & Component:</span>
+                <div className="flex items-center gap-1.5">
+                  <strong className="text-red-400 font-mono">{selectedRequest.blood_group}</strong>
+                  <span className="px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
+                    {selectedRequest.blood_component || 'RBC'}
+                  </span>
+                </div>
+              </div>
+              <div className="flex justify-between">
+                <span className="text-slate-400">Unfulfilled Requirement:</span>
+                <strong className="text-amber-400 font-mono">{selectedRequest.remaining_quantity} units</strong>
+              </div>
             </div>
 
             <form onSubmit={handleRespondRequest} className="space-y-4 text-xs">
               <div>
-                <label className="block text-slate-300 font-semibold mb-1">Offered Quantity to Allocate</label>
+                <label className="block text-slate-300 font-medium mb-1">
+                  Quantity to Allocate (Units) <span className="text-red-400">*</span>
+                </label>
                 <input
                   type="number"
                   min="1"
                   max={selectedRequest.remaining_quantity}
                   value={offerQuantity}
                   onChange={(e) => setOfferQuantity(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl p-2.5"
+                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-lg p-2 font-mono focus:ring-2 focus:ring-slate-600 focus:outline-none"
                   required
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-indigo-600 hover:bg-indigo-500 font-bold text-white rounded-xl text-sm"
-              >
-                Accept Allocation & Create Transfer
-              </button>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowRespondModal(false)}
+                  className="flex-1 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-xs cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-2 bg-emerald-700 hover:bg-emerald-600 font-semibold text-white rounded-lg text-xs cursor-pointer"
+                >
+                  Confirm Allocation
+                </button>
+              </div>
             </form>
           </div>
         </div>

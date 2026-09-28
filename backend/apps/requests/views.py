@@ -133,6 +133,7 @@ class RespondToRequestView(views.APIView):
             sender_facility=profile.facility,
             receiver_facility=blood_request.requesting_facility,
             blood_group=blood_request.blood_group,
+            blood_component=blood_request.blood_component,
             quantity=accepted_qty,
             status='CREATED'
         )

@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../services/api';
+import { auth, signOut } from '../services/firebase';
 
 const AuthContext = createContext(null);
 
@@ -37,7 +38,12 @@ export const AuthProvider = ({ children }) => {
     await fetchProfile();
   };
 
-  const logout = () => {
+  const logout = async () => {
+    try {
+      await signOut(auth);
+    } catch (e) {
+      console.debug('Firebase signOut note:', e);
+    }
     localStorage.removeItem('bloodchain_token');
     setProfile(null);
     setError(null);

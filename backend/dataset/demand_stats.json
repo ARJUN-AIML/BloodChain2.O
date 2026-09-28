@@ -1,0 +1,2902 @@
+{
+  "ch_h_01": {
+    "A+": {
+      "avg_daily_demand": 7.055,
+      "total_requested_history": 5150,
+      "total_issued_history": 5105,
+      "max_single_day_request": 22,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.696,
+      "total_requested_history": 508,
+      "total_issued_history": 478,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 11.766,
+      "total_requested_history": 8589,
+      "total_issued_history": 8523,
+      "max_single_day_request": 34,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 1.023,
+      "total_requested_history": 747,
+      "total_issued_history": 711,
+      "max_single_day_request": 9,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.942,
+      "total_requested_history": 1418,
+      "total_issued_history": 1380,
+      "max_single_day_request": 10,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.262,
+      "total_requested_history": 191,
+      "total_issued_history": 184,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 12.5,
+      "total_requested_history": 9125,
+      "total_issued_history": 9059,
+      "max_single_day_request": 35,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 2.097,
+      "total_requested_history": 1531,
+      "total_issued_history": 1495,
+      "max_single_day_request": 11,
+      "days_recorded": 730
+    }
+  },
+  "ch_h_02": {
+    "A+": {
+      "avg_daily_demand": 5.252,
+      "total_requested_history": 3834,
+      "total_issued_history": 3789,
+      "max_single_day_request": 18,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 1.048,
+      "total_requested_history": 765,
+      "total_issued_history": 745,
+      "max_single_day_request": 7,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 12.266,
+      "total_requested_history": 8954,
+      "total_issued_history": 8899,
+      "max_single_day_request": 39,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 1.481,
+      "total_requested_history": 1081,
+      "total_issued_history": 1034,
+      "max_single_day_request": 8,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 3.752,
+      "total_requested_history": 2739,
+      "total_issued_history": 2702,
+      "max_single_day_request": 15,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.542,
+      "total_requested_history": 396,
+      "total_issued_history": 377,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 17.995,
+      "total_requested_history": 13136,
+      "total_issued_history": 13089,
+      "max_single_day_request": 54,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 1.822,
+      "total_requested_history": 1330,
+      "total_issued_history": 1295,
+      "max_single_day_request": 10,
+      "days_recorded": 730
+    }
+  },
+  "ch_h_03": {
+    "A+": {
+      "avg_daily_demand": 13.636,
+      "total_requested_history": 9954,
+      "total_issued_history": 9888,
+      "max_single_day_request": 39,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 1.042,
+      "total_requested_history": 761,
+      "total_issued_history": 731,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 7.562,
+      "total_requested_history": 5520,
+      "total_issued_history": 5461,
+      "max_single_day_request": 26,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.649,
+      "total_requested_history": 474,
+      "total_issued_history": 453,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 2.107,
+      "total_requested_history": 1538,
+      "total_issued_history": 1484,
+      "max_single_day_request": 9,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.578,
+      "total_requested_history": 422,
+      "total_issued_history": 408,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 17.659,
+      "total_requested_history": 12891,
+      "total_issued_history": 12833,
+      "max_single_day_request": 54,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.777,
+      "total_requested_history": 567,
+      "total_issued_history": 538,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    }
+  },
+  "ch_h_04": {
+    "A+": {
+      "avg_daily_demand": 11.437,
+      "total_requested_history": 8349,
+      "total_issued_history": 8292,
+      "max_single_day_request": 32,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.649,
+      "total_requested_history": 474,
+      "total_issued_history": 455,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 8.896,
+      "total_requested_history": 6494,
+      "total_issued_history": 6437,
+      "max_single_day_request": 26,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.562,
+      "total_requested_history": 410,
+      "total_issued_history": 386,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 2.667,
+      "total_requested_history": 1947,
+      "total_issued_history": 1908,
+      "max_single_day_request": 11,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 1.337,
+      "total_requested_history": 976,
+      "total_issued_history": 942,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 12.151,
+      "total_requested_history": 8870,
+      "total_issued_history": 8826,
+      "max_single_day_request": 32,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 1.304,
+      "total_requested_history": 952,
+      "total_issued_history": 925,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "ch_h_05": {
+    "A+": {
+      "avg_daily_demand": 6.232,
+      "total_requested_history": 4549,
+      "total_issued_history": 4497,
+      "max_single_day_request": 24,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.475,
+      "total_requested_history": 347,
+      "total_issued_history": 326,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 12.608,
+      "total_requested_history": 9204,
+      "total_issued_history": 9145,
+      "max_single_day_request": 49,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.456,
+      "total_requested_history": 333,
+      "total_issued_history": 315,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 2.162,
+      "total_requested_history": 1578,
+      "total_issued_history": 1537,
+      "max_single_day_request": 9,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.304,
+      "total_requested_history": 222,
+      "total_issued_history": 214,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 10.471,
+      "total_requested_history": 7644,
+      "total_issued_history": 7589,
+      "max_single_day_request": 41,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.627,
+      "total_requested_history": 458,
+      "total_issued_history": 427,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    }
+  },
+  "ch_h_06": {
+    "A+": {
+      "avg_daily_demand": 3.074,
+      "total_requested_history": 2244,
+      "total_issued_history": 2194,
+      "max_single_day_request": 12,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.247,
+      "total_requested_history": 180,
+      "total_issued_history": 172,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 2.977,
+      "total_requested_history": 2173,
+      "total_issued_history": 2127,
+      "max_single_day_request": 14,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.301,
+      "total_requested_history": 220,
+      "total_issued_history": 205,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.111,
+      "total_requested_history": 811,
+      "total_issued_history": 775,
+      "max_single_day_request": 7,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.199,
+      "total_requested_history": 145,
+      "total_issued_history": 141,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 5.829,
+      "total_requested_history": 4255,
+      "total_issued_history": 4208,
+      "max_single_day_request": 18,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.807,
+      "total_requested_history": 589,
+      "total_issued_history": 569,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "ce_h_01": {
+    "A+": {
+      "avg_daily_demand": 4.422,
+      "total_requested_history": 3228,
+      "total_issued_history": 3188,
+      "max_single_day_request": 22,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.186,
+      "total_requested_history": 136,
+      "total_issued_history": 127,
+      "max_single_day_request": 1,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 2.958,
+      "total_requested_history": 2159,
+      "total_issued_history": 2098,
+      "max_single_day_request": 11,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.218,
+      "total_requested_history": 159,
+      "total_issued_history": 152,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.273,
+      "total_requested_history": 929,
+      "total_issued_history": 895,
+      "max_single_day_request": 8,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.189,
+      "total_requested_history": 138,
+      "total_issued_history": 134,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 5.592,
+      "total_requested_history": 4082,
+      "total_issued_history": 4015,
+      "max_single_day_request": 20,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.503,
+      "total_requested_history": 367,
+      "total_issued_history": 355,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    }
+  },
+  "co_h_01": {
+    "A+": {
+      "avg_daily_demand": 6.945,
+      "total_requested_history": 5070,
+      "total_issued_history": 5026,
+      "max_single_day_request": 20,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 1.295,
+      "total_requested_history": 945,
+      "total_issued_history": 914,
+      "max_single_day_request": 8,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 10.752,
+      "total_requested_history": 7849,
+      "total_issued_history": 7790,
+      "max_single_day_request": 34,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.952,
+      "total_requested_history": 695,
+      "total_issued_history": 661,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 2.166,
+      "total_requested_history": 1581,
+      "total_issued_history": 1546,
+      "max_single_day_request": 9,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.711,
+      "total_requested_history": 519,
+      "total_issued_history": 497,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 22.542,
+      "total_requested_history": 16456,
+      "total_issued_history": 16402,
+      "max_single_day_request": 58,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 1.167,
+      "total_requested_history": 852,
+      "total_issued_history": 814,
+      "max_single_day_request": 7,
+      "days_recorded": 730
+    }
+  },
+  "co_h_02": {
+    "A+": {
+      "avg_daily_demand": 2.845,
+      "total_requested_history": 2077,
+      "total_issued_history": 2037,
+      "max_single_day_request": 13,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.21,
+      "total_requested_history": 153,
+      "total_issued_history": 143,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 2.311,
+      "total_requested_history": 1687,
+      "total_issued_history": 1625,
+      "max_single_day_request": 9,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.303,
+      "total_requested_history": 221,
+      "total_issued_history": 213,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.521,
+      "total_requested_history": 380,
+      "total_issued_history": 361,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.215,
+      "total_requested_history": 157,
+      "total_issued_history": 154,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 4.026,
+      "total_requested_history": 2939,
+      "total_issued_history": 2888,
+      "max_single_day_request": 15,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.529,
+      "total_requested_history": 386,
+      "total_issued_history": 377,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "ma_h_01": {
+    "A+": {
+      "avg_daily_demand": 12.541,
+      "total_requested_history": 9155,
+      "total_issued_history": 9097,
+      "max_single_day_request": 44,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.473,
+      "total_requested_history": 345,
+      "total_issued_history": 317,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 9.215,
+      "total_requested_history": 6727,
+      "total_issued_history": 6671,
+      "max_single_day_request": 29,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.442,
+      "total_requested_history": 323,
+      "total_issued_history": 309,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.922,
+      "total_requested_history": 1403,
+      "total_issued_history": 1362,
+      "max_single_day_request": 8,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.63,
+      "total_requested_history": 460,
+      "total_issued_history": 441,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 11.915,
+      "total_requested_history": 8698,
+      "total_issued_history": 8620,
+      "max_single_day_request": 38,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 1.989,
+      "total_requested_history": 1452,
+      "total_issued_history": 1408,
+      "max_single_day_request": 8,
+      "days_recorded": 730
+    }
+  },
+  "sa_h_01": {
+    "A+": {
+      "avg_daily_demand": 8.026,
+      "total_requested_history": 5859,
+      "total_issued_history": 5803,
+      "max_single_day_request": 29,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.492,
+      "total_requested_history": 359,
+      "total_issued_history": 338,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 12.058,
+      "total_requested_history": 8802,
+      "total_issued_history": 8737,
+      "max_single_day_request": 42,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.337,
+      "total_requested_history": 246,
+      "total_issued_history": 234,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.625,
+      "total_requested_history": 1186,
+      "total_issued_history": 1159,
+      "max_single_day_request": 10,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.423,
+      "total_requested_history": 309,
+      "total_issued_history": 294,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 14.64,
+      "total_requested_history": 10687,
+      "total_issued_history": 10633,
+      "max_single_day_request": 50,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 1.338,
+      "total_requested_history": 977,
+      "total_issued_history": 943,
+      "max_single_day_request": 11,
+      "days_recorded": 730
+    }
+  },
+  "tr_h_01": {
+    "A+": {
+      "avg_daily_demand": 11.097,
+      "total_requested_history": 8101,
+      "total_issued_history": 8050,
+      "max_single_day_request": 48,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.556,
+      "total_requested_history": 406,
+      "total_issued_history": 389,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 6.122,
+      "total_requested_history": 4469,
+      "total_issued_history": 4420,
+      "max_single_day_request": 27,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.707,
+      "total_requested_history": 516,
+      "total_issued_history": 494,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.438,
+      "total_requested_history": 1050,
+      "total_issued_history": 1024,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.497,
+      "total_requested_history": 363,
+      "total_issued_history": 347,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 11.967,
+      "total_requested_history": 8736,
+      "total_issued_history": 8678,
+      "max_single_day_request": 42,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.858,
+      "total_requested_history": 626,
+      "total_issued_history": 601,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    }
+  },
+  "tr_h_02": {
+    "A+": {
+      "avg_daily_demand": 5.759,
+      "total_requested_history": 4204,
+      "total_issued_history": 4138,
+      "max_single_day_request": 21,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.582,
+      "total_requested_history": 425,
+      "total_issued_history": 401,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 4.626,
+      "total_requested_history": 3377,
+      "total_issued_history": 3319,
+      "max_single_day_request": 13,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.596,
+      "total_requested_history": 435,
+      "total_issued_history": 412,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.238,
+      "total_requested_history": 904,
+      "total_issued_history": 875,
+      "max_single_day_request": 7,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.192,
+      "total_requested_history": 140,
+      "total_issued_history": 130,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 6.989,
+      "total_requested_history": 5102,
+      "total_issued_history": 5051,
+      "max_single_day_request": 23,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.908,
+      "total_requested_history": 663,
+      "total_issued_history": 639,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "th_h_01": {
+    "A+": {
+      "avg_daily_demand": 7.518,
+      "total_requested_history": 5488,
+      "total_issued_history": 5424,
+      "max_single_day_request": 23,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.733,
+      "total_requested_history": 535,
+      "total_issued_history": 511,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 7.46,
+      "total_requested_history": 5446,
+      "total_issued_history": 5405,
+      "max_single_day_request": 27,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 1.158,
+      "total_requested_history": 845,
+      "total_issued_history": 818,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 2.268,
+      "total_requested_history": 1656,
+      "total_issued_history": 1611,
+      "max_single_day_request": 11,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.219,
+      "total_requested_history": 160,
+      "total_issued_history": 155,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 14.849,
+      "total_requested_history": 10840,
+      "total_issued_history": 10795,
+      "max_single_day_request": 45,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 1.153,
+      "total_requested_history": 842,
+      "total_issued_history": 815,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    }
+  },
+  "ti_h_01": {
+    "A+": {
+      "avg_daily_demand": 8.367,
+      "total_requested_history": 6108,
+      "total_issued_history": 6069,
+      "max_single_day_request": 25,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.737,
+      "total_requested_history": 538,
+      "total_issued_history": 520,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 7.629,
+      "total_requested_history": 5569,
+      "total_issued_history": 5523,
+      "max_single_day_request": 27,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.638,
+      "total_requested_history": 466,
+      "total_issued_history": 447,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 2.96,
+      "total_requested_history": 2161,
+      "total_issued_history": 2114,
+      "max_single_day_request": 16,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.356,
+      "total_requested_history": 260,
+      "total_issued_history": 241,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 16.814,
+      "total_requested_history": 12274,
+      "total_issued_history": 12216,
+      "max_single_day_request": 56,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.556,
+      "total_requested_history": 406,
+      "total_issued_history": 389,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    }
+  },
+  "ve_h_01": {
+    "A+": {
+      "avg_daily_demand": 3.448,
+      "total_requested_history": 2517,
+      "total_issued_history": 2476,
+      "max_single_day_request": 20,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.173,
+      "total_requested_history": 126,
+      "total_issued_history": 115,
+      "max_single_day_request": 1,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 4.593,
+      "total_requested_history": 3353,
+      "total_issued_history": 3306,
+      "max_single_day_request": 15,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.721,
+      "total_requested_history": 526,
+      "total_issued_history": 508,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.773,
+      "total_requested_history": 564,
+      "total_issued_history": 535,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.332,
+      "total_requested_history": 242,
+      "total_issued_history": 225,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 7.126,
+      "total_requested_history": 5202,
+      "total_issued_history": 5161,
+      "max_single_day_request": 23,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.538,
+      "total_requested_history": 393,
+      "total_issued_history": 379,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    }
+  },
+  "to_h_01": {
+    "A+": {
+      "avg_daily_demand": 4.442,
+      "total_requested_history": 3243,
+      "total_issued_history": 3188,
+      "max_single_day_request": 19,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.445,
+      "total_requested_history": 325,
+      "total_issued_history": 307,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 5.374,
+      "total_requested_history": 3923,
+      "total_issued_history": 3877,
+      "max_single_day_request": 19,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.359,
+      "total_requested_history": 262,
+      "total_issued_history": 251,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.279,
+      "total_requested_history": 934,
+      "total_issued_history": 894,
+      "max_single_day_request": 7,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.212,
+      "total_requested_history": 155,
+      "total_issued_history": 150,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 7.323,
+      "total_requested_history": 5346,
+      "total_issued_history": 5302,
+      "max_single_day_request": 30,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.834,
+      "total_requested_history": 609,
+      "total_issued_history": 580,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "ky_h_01": {
+    "A+": {
+      "avg_daily_demand": 2.51,
+      "total_requested_history": 1832,
+      "total_issued_history": 1776,
+      "max_single_day_request": 12,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.396,
+      "total_requested_history": 289,
+      "total_issued_history": 273,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 2.647,
+      "total_requested_history": 1932,
+      "total_issued_history": 1883,
+      "max_single_day_request": 12,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.303,
+      "total_requested_history": 221,
+      "total_issued_history": 213,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.585,
+      "total_requested_history": 427,
+      "total_issued_history": 417,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.212,
+      "total_requested_history": 155,
+      "total_issued_history": 148,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 3.767,
+      "total_requested_history": 2750,
+      "total_issued_history": 2697,
+      "max_single_day_request": 14,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.499,
+      "total_requested_history": 364,
+      "total_issued_history": 347,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    }
+  },
+  "tn_h_01": {
+    "A+": {
+      "avg_daily_demand": 3.168,
+      "total_requested_history": 2313,
+      "total_issued_history": 2260,
+      "max_single_day_request": 12,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.466,
+      "total_requested_history": 340,
+      "total_issued_history": 323,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 3.393,
+      "total_requested_history": 2477,
+      "total_issued_history": 2429,
+      "max_single_day_request": 12,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.321,
+      "total_requested_history": 234,
+      "total_issued_history": 220,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.17,
+      "total_requested_history": 854,
+      "total_issued_history": 824,
+      "max_single_day_request": 7,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.233,
+      "total_requested_history": 170,
+      "total_issued_history": 157,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 5.692,
+      "total_requested_history": 4155,
+      "total_issued_history": 4113,
+      "max_single_day_request": 19,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.881,
+      "total_requested_history": 643,
+      "total_issued_history": 613,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "dh_h_01": {
+    "A+": {
+      "avg_daily_demand": 3.362,
+      "total_requested_history": 2454,
+      "total_issued_history": 2413,
+      "max_single_day_request": 13,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.223,
+      "total_requested_history": 163,
+      "total_issued_history": 154,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 3.903,
+      "total_requested_history": 2849,
+      "total_issued_history": 2789,
+      "max_single_day_request": 16,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.44,
+      "total_requested_history": 321,
+      "total_issued_history": 305,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.73,
+      "total_requested_history": 533,
+      "total_issued_history": 509,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.201,
+      "total_requested_history": 147,
+      "total_issued_history": 140,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 5.568,
+      "total_requested_history": 4065,
+      "total_issued_history": 4002,
+      "max_single_day_request": 19,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.99,
+      "total_requested_history": 723,
+      "total_issued_history": 699,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    }
+  },
+  "kg_h_01": {
+    "A+": {
+      "avg_daily_demand": 3.651,
+      "total_requested_history": 2665,
+      "total_issued_history": 2626,
+      "max_single_day_request": 14,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.355,
+      "total_requested_history": 259,
+      "total_issued_history": 247,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 3.353,
+      "total_requested_history": 2448,
+      "total_issued_history": 2414,
+      "max_single_day_request": 14,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.397,
+      "total_requested_history": 290,
+      "total_issued_history": 283,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.221,
+      "total_requested_history": 891,
+      "total_issued_history": 845,
+      "max_single_day_request": 7,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.258,
+      "total_requested_history": 188,
+      "total_issued_history": 182,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 4.022,
+      "total_requested_history": 2936,
+      "total_issued_history": 2904,
+      "max_single_day_request": 17,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.766,
+      "total_requested_history": 559,
+      "total_issued_history": 535,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    }
+  },
+  "di_h_01": {
+    "A+": {
+      "avg_daily_demand": 3.045,
+      "total_requested_history": 2223,
+      "total_issued_history": 2174,
+      "max_single_day_request": 14,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.262,
+      "total_requested_history": 191,
+      "total_issued_history": 186,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 5.268,
+      "total_requested_history": 3846,
+      "total_issued_history": 3789,
+      "max_single_day_request": 19,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.486,
+      "total_requested_history": 355,
+      "total_issued_history": 336,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.907,
+      "total_requested_history": 662,
+      "total_issued_history": 629,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.222,
+      "total_requested_history": 162,
+      "total_issued_history": 156,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 4.119,
+      "total_requested_history": 3007,
+      "total_issued_history": 2973,
+      "max_single_day_request": 16,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.716,
+      "total_requested_history": 523,
+      "total_issued_history": 496,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "tu_h_01": {
+    "A+": {
+      "avg_daily_demand": 3.871,
+      "total_requested_history": 2826,
+      "total_issued_history": 2773,
+      "max_single_day_request": 23,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.222,
+      "total_requested_history": 162,
+      "total_issued_history": 152,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 4.985,
+      "total_requested_history": 3639,
+      "total_issued_history": 3599,
+      "max_single_day_request": 26,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.275,
+      "total_requested_history": 201,
+      "total_issued_history": 187,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.771,
+      "total_requested_history": 563,
+      "total_issued_history": 532,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.358,
+      "total_requested_history": 261,
+      "total_issued_history": 254,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 4.637,
+      "total_requested_history": 3385,
+      "total_issued_history": 3327,
+      "max_single_day_request": 19,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.626,
+      "total_requested_history": 457,
+      "total_issued_history": 440,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "pu_h_01": {
+    "A+": {
+      "avg_daily_demand": 5.934,
+      "total_requested_history": 4332,
+      "total_issued_history": 4262,
+      "max_single_day_request": 22,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.449,
+      "total_requested_history": 328,
+      "total_issued_history": 304,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 5.505,
+      "total_requested_history": 4019,
+      "total_issued_history": 3970,
+      "max_single_day_request": 22,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.286,
+      "total_requested_history": 209,
+      "total_issued_history": 201,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.203,
+      "total_requested_history": 878,
+      "total_issued_history": 852,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.216,
+      "total_requested_history": 158,
+      "total_issued_history": 153,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 7.171,
+      "total_requested_history": 5235,
+      "total_issued_history": 5169,
+      "max_single_day_request": 22,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 1.207,
+      "total_requested_history": 881,
+      "total_issued_history": 852,
+      "max_single_day_request": 11,
+      "days_recorded": 730
+    }
+  },
+  "ra_h_01": {
+    "A+": {
+      "avg_daily_demand": 4.875,
+      "total_requested_history": 3559,
+      "total_issued_history": 3493,
+      "max_single_day_request": 19,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.612,
+      "total_requested_history": 447,
+      "total_issued_history": 427,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 3.549,
+      "total_requested_history": 2591,
+      "total_issued_history": 2532,
+      "max_single_day_request": 12,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.438,
+      "total_requested_history": 320,
+      "total_issued_history": 296,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.895,
+      "total_requested_history": 653,
+      "total_issued_history": 623,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.356,
+      "total_requested_history": 260,
+      "total_issued_history": 253,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 6.481,
+      "total_requested_history": 4731,
+      "total_issued_history": 4683,
+      "max_single_day_request": 24,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.547,
+      "total_requested_history": 399,
+      "total_issued_history": 373,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    }
+  },
+  "na_h_01": {
+    "A+": {
+      "avg_daily_demand": 3.315,
+      "total_requested_history": 2420,
+      "total_issued_history": 2367,
+      "max_single_day_request": 11,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.363,
+      "total_requested_history": 265,
+      "total_issued_history": 247,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 3.399,
+      "total_requested_history": 2481,
+      "total_issued_history": 2443,
+      "max_single_day_request": 13,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.334,
+      "total_requested_history": 244,
+      "total_issued_history": 234,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.053,
+      "total_requested_history": 769,
+      "total_issued_history": 737,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.197,
+      "total_requested_history": 144,
+      "total_issued_history": 138,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 4.386,
+      "total_requested_history": 3202,
+      "total_issued_history": 3152,
+      "max_single_day_request": 17,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.704,
+      "total_requested_history": 514,
+      "total_issued_history": 489,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "si_h_01": {
+    "A+": {
+      "avg_daily_demand": 4.005,
+      "total_requested_history": 2924,
+      "total_issued_history": 2864,
+      "max_single_day_request": 14,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.525,
+      "total_requested_history": 383,
+      "total_issued_history": 371,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 6.036,
+      "total_requested_history": 4406,
+      "total_issued_history": 4350,
+      "max_single_day_request": 30,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.304,
+      "total_requested_history": 222,
+      "total_issued_history": 207,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 1.614,
+      "total_requested_history": 1178,
+      "total_issued_history": 1143,
+      "max_single_day_request": 8,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.292,
+      "total_requested_history": 213,
+      "total_issued_history": 202,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 9.54,
+      "total_requested_history": 6964,
+      "total_issued_history": 6915,
+      "max_single_day_request": 32,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 1.049,
+      "total_requested_history": 766,
+      "total_issued_history": 739,
+      "max_single_day_request": 7,
+      "days_recorded": 730
+    }
+  },
+  "tv_h_01": {
+    "A+": {
+      "avg_daily_demand": 3.455,
+      "total_requested_history": 2522,
+      "total_issued_history": 2479,
+      "max_single_day_request": 15,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.375,
+      "total_requested_history": 274,
+      "total_issued_history": 251,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 2.805,
+      "total_requested_history": 2048,
+      "total_issued_history": 2013,
+      "max_single_day_request": 10,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.448,
+      "total_requested_history": 327,
+      "total_issued_history": 303,
+      "max_single_day_request": 3,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.803,
+      "total_requested_history": 586,
+      "total_issued_history": 566,
+      "max_single_day_request": 6,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.332,
+      "total_requested_history": 242,
+      "total_issued_history": 233,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 6.233,
+      "total_requested_history": 4550,
+      "total_issued_history": 4504,
+      "max_single_day_request": 22,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.723,
+      "total_requested_history": 528,
+      "total_issued_history": 497,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    }
+  },
+  "ka_h_01": {
+    "A+": {
+      "avg_daily_demand": 2.463,
+      "total_requested_history": 1798,
+      "total_issued_history": 1780,
+      "max_single_day_request": 10,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.329,
+      "total_requested_history": 240,
+      "total_issued_history": 224,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 3.252,
+      "total_requested_history": 2374,
+      "total_issued_history": 2322,
+      "max_single_day_request": 14,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.31,
+      "total_requested_history": 226,
+      "total_issued_history": 214,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.619,
+      "total_requested_history": 452,
+      "total_issued_history": 427,
+      "max_single_day_request": 5,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.296,
+      "total_requested_history": 216,
+      "total_issued_history": 205,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 3.685,
+      "total_requested_history": 2690,
+      "total_issued_history": 2646,
+      "max_single_day_request": 13,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.549,
+      "total_requested_history": 401,
+      "total_issued_history": 382,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    }
+  },
+  "ar_h_01": {
+    "A+": {
+      "avg_daily_demand": 3.5,
+      "total_requested_history": 2555,
+      "total_issued_history": 2502,
+      "max_single_day_request": 13,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.282,
+      "total_requested_history": 206,
+      "total_issued_history": 201,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 2.481,
+      "total_requested_history": 1811,
+      "total_issued_history": 1764,
+      "max_single_day_request": 11,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.26,
+      "total_requested_history": 190,
+      "total_issued_history": 181,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.582,
+      "total_requested_history": 425,
+      "total_issued_history": 408,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.336,
+      "total_requested_history": 245,
+      "total_issued_history": 238,
+      "max_single_day_request": 2,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 5.318,
+      "total_requested_history": 3882,
+      "total_issued_history": 3828,
+      "max_single_day_request": 20,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.605,
+      "total_requested_history": 442,
+      "total_issued_history": 415,
+      "max_single_day_request": 4,
+      "days_recorded": 730
+    }
+  },
+  "ch_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 3148,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 274,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 3030,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 287,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 688,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 120,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 6737,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 877,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "ch_b_02": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2115,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 390,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2212,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 206,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1056,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 146,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 5240,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 518,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "ch_b_03": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2123,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 261,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1531,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 310,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 579,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 165,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2447,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 447,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "ch_b_04": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1776,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 317,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2655,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 212,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 557,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 141,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 3308,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 579,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "ch_b_05": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 4174,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 446,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2650,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 370,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 978,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 138,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 4133,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 346,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "ch_b_06": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2312,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 267,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2500,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 151,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 480,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 123,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 3104,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 488,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "ma_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2517,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 409,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2481,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 635,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 832,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 154,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 4155,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 473,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "di_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2436,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 462,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1692,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 202,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 406,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 196,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2480,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 641,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "er_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2150,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 179,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1593,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 177,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 462,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 198,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2069,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 305,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "sa_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1779,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 156,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1250,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 150,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 321,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 210,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1657,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 243,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "sa_b_02": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1458,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 182,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1665,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 230,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 468,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 128,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2995,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 353,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "sa_b_03": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2691,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 252,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2298,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 182,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 602,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 189,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 3706,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 273,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "th_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1293,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 148,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1638,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 205,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 362,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 152,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2422,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 354,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "tr_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1578,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 212,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1171,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 202,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 361,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 151,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1934,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 269,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "ma_b_02": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 3223,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 290,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 4030,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 215,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 993,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 232,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 4356,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 870,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "co_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1754,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 332,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2978,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 386,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 927,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 130,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 5043,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 578,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "sa_b_04": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2754,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 250,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 3837,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 514,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1275,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 261,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 6683,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 810,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "th_b_02": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 3471,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 334,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 3851,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 205,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 604,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 199,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 7569,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 844,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "ti_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1732,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 222,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2341,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 392,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 533,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 154,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2822,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 478,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  },
+  "ve_b_01": {
+    "A+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 1923,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "A-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 112,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2020,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "B-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 247,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 822,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "AB-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 148,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O+": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 2973,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    },
+    "O-": {
+      "avg_daily_demand": 0.0,
+      "total_requested_history": 0,
+      "total_issued_history": 307,
+      "max_single_day_request": 0,
+      "days_recorded": 730
+    }
+  }
+}
