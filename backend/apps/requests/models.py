@@ -9,6 +9,7 @@ class BloodRequest(models.Model):
         ('MEDIUM', 'Medium'),
         ('HIGH', 'High'),
         ('EMERGENCY', 'Emergency'),
+        ('CRITICAL', 'Critical / STAT'),
     ]
 
     STATUS_CHOICES = [
