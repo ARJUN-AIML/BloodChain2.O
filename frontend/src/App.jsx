@@ -17,19 +17,17 @@ const AppShell = () => {
   const search = window.location.search;
   const params = new URLSearchParams(search);
 
-  const isDonorVerify = 
-    path.startsWith('/verify/donor') || 
-    path === '/verify-donor' || 
-    params.has('verify_donor') || 
-    (params.has('id') && (params.get('id').startsWith('BC-D-') || params.has('camp')));
-
   const isCertVerify = 
     path.startsWith('/verify/certificate') || 
     params.has('verify_cert');
 
-  if (isDonorVerify) {
-    return <PublicDonorPassVerification onBackToApp={() => { window.location.href = '/'; }} />;
-  }
+  const isDonorVerify = 
+    !isCertVerify && (
+      path.startsWith('/verify') || 
+      params.has('verify_donor') || 
+      params.has('token') ||
+      (params.has('id') && (params.get('id').startsWith('BC-D-') || params.has('camp')))
+    );
 
   if (isCertVerify) {
     const certToken = params.get('verify_cert') || path.split('/').pop();
@@ -41,6 +39,10 @@ const AppShell = () => {
         />
       </div>
     );
+  }
+
+  if (isDonorVerify) {
+    return <PublicDonorPassVerification onBackToApp={() => { window.location.href = '/'; }} />;
   }
 
   return (

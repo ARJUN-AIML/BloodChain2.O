@@ -429,3 +429,133 @@ class CertificatePublicVerifyView(views.APIView):
         except DonationCertificate.DoesNotExist:
             return response.Response({'detail': 'Certificate not found.'}, status=404)
         return response.Response(CertificatePublicVerifySerializer(cert).data)
+
+
+class UnifiedQRVerifyView(views.APIView):
+    """
+    Unified public QR verification endpoint.
+    When a QR code is scanned, validates the secure token and returns BOTH:
+    1. DONOR DETAILS: Name, Donor ID, Registration Status (from real DB)
+    2. CAMP DETAILS: Camp Name, Organised By, Venue, Date, Time, Camp Status
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, token):
+        import uuid as uuid_lib
+        from django.db.models import Q
+
+        token_str = str(token).strip()
+        reg = None
+        donor = None
+        camp = None
+
+        # 1. Try finding by CampRegistration.qr_token
+        try:
+            token_uuid = uuid_lib.UUID(token_str)
+            reg = CampRegistration.objects.filter(qr_token=token_uuid).select_related(
+                'donor', 'camp', 'camp__organizer'
+            ).first()
+        except (ValueError, AttributeError):
+            pass
+
+        if reg:
+            donor = reg.donor
+            camp = reg.camp
+        else:
+            # 2. Try finding by DonorProfile qr_token or donor_id
+            donor_query = Q()
+            try:
+                token_uuid = uuid_lib.UUID(token_str)
+                donor_query |= Q(qr_token=token_uuid)
+            except (ValueError, AttributeError):
+                pass
+            donor_query |= Q(donor_id__iexact=token_str)
+
+            donor = DonorProfile.objects.filter(donor_query, is_active=True).first()
+            if donor:
+                camp_id = request.query_params.get('camp') or request.query_params.get('camp_id')
+                if camp_id:
+                    reg = donor.camp_registrations.filter(camp__camp_id=camp_id).select_related('camp', 'camp__organizer').first()
+                if not reg:
+                    reg = donor.camp_registrations.filter(
+                        status__in=['REGISTERED', 'CHECKED_IN']
+                    ).select_related('camp', 'camp__organizer').first()
+                if not reg:
+                    reg = donor.camp_registrations.select_related('camp', 'camp__organizer').order_by('-registered_at').first()
+
+                if reg:
+                    camp = reg.camp
+
+        if not donor and not reg:
+            return response.Response(
+                {
+                    'status': 'error',
+                    'detail': 'This BloodChain QR code is invalid or is no longer active. Please contact BloodChain support/facility staff.'
+                },
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        # Determine Donor Registration Status from real DB record
+        if reg:
+            if reg.status == 'REGISTERED':
+                registration_status = '✅ Registered'
+            elif reg.status == 'CHECKED_IN':
+                registration_status = '✅ Checked In at Camp'
+            elif reg.status == 'COMPLETED':
+                registration_status = '✅ Donation Completed'
+            elif reg.status == 'CANCELLED':
+                registration_status = '❌ Registration cancelled'
+            elif reg.status == 'NO_SHOW':
+                registration_status = '⚠️ No Show'
+            else:
+                registration_status = f'ℹ️ {reg.status}'
+        else:
+            registration_status = '⚠️ Not registered for this camp'
+
+        # Format Camp Details if camp is linked
+        camp_data = None
+        if camp:
+            date_str = camp.start_datetime.strftime('%d %B %Y') if camp.start_datetime else 'Upcoming'
+            start_time = camp.start_datetime.strftime('%I:%M %p').lstrip('0') if camp.start_datetime else '9:00 AM'
+            end_time = camp.end_datetime.strftime('%I:%M %p').lstrip('0') if camp.end_datetime else '6:00 PM'
+            time_str = f"{start_time} – {end_time}"
+
+            if camp.urgency == 'CRITICAL' or camp.camp_type == 'EMERGENCY':
+                camp_status = '🔴 Emergency'
+            elif camp.urgency == 'HIGH':
+                camp_status = '🟠 High Need'
+            elif camp.urgency == 'NORMAL':
+                camp_status = '🟢 Active'
+            elif camp.status == 'COMPLETED':
+                camp_status = '⚪ Completed'
+            else:
+                camp_status = '🟢 Scheduled'
+
+            camp_data = {
+                'camp_name': camp.camp_name,
+                'organized_by': camp.organizer.name if camp.organizer else 'BloodChain Medical Network',
+                'organizer_type': camp.organizer.facility_type if camp.organizer else 'HOSPITAL',
+                'venue_name': camp.venue_name,
+                'venue_address': camp.venue_address,
+                'date': date_str,
+                'time': time_str,
+                'camp_status': camp_status,
+                'urgency': camp.urgency,
+                'preferred_timeslot': getattr(reg, 'preferred_timeslot', '') if reg else ''
+            }
+
+        return response.Response({
+            'status': 'verified',
+            'donor': {
+                'name': donor.name,
+                'donor_id': donor.donor_id,
+                'registration_status': registration_status,
+                'status_code': reg.status if reg else 'UNREGISTERED',
+                'blood_group': donor.blood_group,
+            },
+            'camp': camp_data,
+            'verified': True,
+            'verification_message': '✓ Information verified by BloodChain',
+            'verified_at': timezone.now().isoformat()
+        })
+

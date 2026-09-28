@@ -95,6 +95,7 @@ class CampRegistration(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='REGISTERED')
     preferred_timeslot = models.CharField(max_length=100, blank=True, default='09:00 AM - 10:00 AM')
     notes = models.TextField(blank=True, default='')
+    qr_token = models.UUIDField(default=uuid.uuid4, editable=False, db_index=True)
     registered_at = models.DateTimeField(auto_now_add=True)
     checked_in_at = models.DateTimeField(null=True, blank=True)
     checked_in_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='checkins_performed')
@@ -106,6 +107,11 @@ class CampRegistration(models.Model):
 
     def __str__(self):
         return f"{self.donor.donor_id} @ {self.camp.camp_id} - {self.status}"
+
+    def save(self, *args, **kwargs):
+        if not self.qr_token:
+            self.qr_token = uuid.uuid4()
+        super().save(*args, **kwargs)
 
 
 class VerifiedDonation(models.Model):

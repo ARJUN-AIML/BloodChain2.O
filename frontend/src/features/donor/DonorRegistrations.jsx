@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { QRCodeSVG, QRCodeCanvas } from 'qrcode.react';
 import api from '../../services/api';
 import { downloadDonorPassCard } from './cardDownloadUtil';
+import { getVerificationQrUrl, getLocalVerificationUrl } from './qrUrlUtil';
 import { 
   Calendar, 
   Clock, 
@@ -294,18 +295,28 @@ export const DonorRegistrations = ({ donor, onNavigateToCertificates }) => {
                 </div>
 
                 {/* Scannable QR Code */}
-                <div className="flex flex-col items-center justify-center bg-white p-3 rounded-2xl shadow-inner border border-stone-200">
-                  <QRCodeCanvas
-                    value={`${window.location.origin}/verify-donor?id=${donor?.donor_id}&camp=${activePassReg.camp_id || activePassReg.camp?.camp_id}`}
-                    size={110}
-                    level="H"
-                    includeMargin={false}
-                    data-qr={donor?.donor_id}
-                  />
-                  <span className="text-[8px] font-mono font-bold text-stone-700 mt-1.5 uppercase tracking-wider text-center">
-                    SCAN FOR DETAILS
-                  </span>
-                </div>
+                {(() => {
+                  const regToken = activePassReg.qr_token || donor?.qr_token;
+                  const regQrUrl = getVerificationQrUrl(regToken);
+                  const regLocalUrl = getLocalVerificationUrl(regToken);
+
+                  return (
+                    <>
+                      <div className="flex flex-col items-center justify-center bg-white p-3 rounded-2xl shadow-inner border border-stone-200">
+                        <QRCodeCanvas
+                          value={regQrUrl}
+                          size={110}
+                          level="H"
+                          includeMargin={false}
+                          data-qr={donor?.donor_id}
+                        />
+                        <span className="text-[8px] font-mono font-bold text-stone-700 mt-1.5 uppercase tracking-wider text-center">
+                          SCAN FOR DETAILS
+                        </span>
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
 
               {/* Bottom Footer */}
@@ -321,6 +332,7 @@ export const DonorRegistrations = ({ donor, onNavigateToCertificates }) => {
                 onClick={async () => {
                   try {
                     setDownloading(true);
+                    const regToken = activePassReg.qr_token || donor?.qr_token;
                     await downloadDonorPassCard({
                       donor,
                       camp: activePassReg.camp || {
@@ -328,7 +340,7 @@ export const DonorRegistrations = ({ donor, onNavigateToCertificates }) => {
                         venue_name: activePassReg.venue_name || activePassReg.camp_venue,
                       },
                       timeslot: activePassReg.preferred_timeslot,
-                      qrValue: `${window.location.origin}/verify-donor?id=${donor?.donor_id}&camp=${activePassReg.camp_id || activePassReg.camp?.camp_id}`
+                      qrValue: getVerificationQrUrl(regToken)
                     });
                   } catch (e) {
                     console.error(e);
@@ -352,13 +364,13 @@ export const DonorRegistrations = ({ donor, onNavigateToCertificates }) => {
               </button>
 
               <a
-                href={`/verify-donor?id=${donor?.donor_id}&camp=${activePassReg.camp_id || activePassReg.camp?.camp_id}`}
+                href={getLocalVerificationUrl(activePassReg.qr_token || donor?.qr_token)}
                 target="_blank"
                 rel="noreferrer"
                 className="py-2.5 px-3 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold text-xs transition flex items-center justify-center gap-1.5 border border-stone-300"
               >
                 <ExternalLink className="w-3.5 h-3.5 text-stone-600" />
-                Preview QR Details
+                Preview Verification Page
               </a>
             </div>
           </div>

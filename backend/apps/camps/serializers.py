@@ -55,7 +55,7 @@ class CampRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = CampRegistration
         fields = [
-            'id', 'camp_id', 'camp_name', 'camp_start', 'camp_end',
+            'id', 'qr_token', 'camp_id', 'camp_name', 'camp_start', 'camp_end',
             'camp_venue', 'camp_status', 'camp_type',
             'organizer_name', 'organizer_type',
             'donor_id', 'donor_name', 'donor_blood_group',

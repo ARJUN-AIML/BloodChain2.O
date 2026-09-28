@@ -3,7 +3,8 @@ from .views import (
     CampListView, CampCreateView, CampDetailView,
     FacilityCampsView, CampRegisterView,
     CampRegistrationsListView, CampCheckInView,
-    DonationVerifyView, CertificatePublicVerifyView
+    DonationVerifyView, CertificatePublicVerifyView,
+    UnifiedQRVerifyView
 )
 
 urlpatterns = [
@@ -16,4 +17,5 @@ urlpatterns = [
     path('<str:camp_id>/check-in/', CampCheckInView.as_view(), name='camp-checkin'),
     path('donations/verify/', DonationVerifyView.as_view(), name='donation-verify'),
     path('certificates/verify/<uuid:qr_token>/', CertificatePublicVerifyView.as_view(), name='cert-verify'),
+    path('verify/<str:token>/', UnifiedQRVerifyView.as_view(), name='unified-qr-verify-camp'),
 ]

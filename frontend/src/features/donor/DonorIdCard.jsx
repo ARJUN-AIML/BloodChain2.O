@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { QRCodeSVG, QRCodeCanvas } from 'qrcode.react';
 import { downloadDonorPassCard } from './cardDownloadUtil';
+import { getVerificationQrUrl, getLocalVerificationUrl } from './qrUrlUtil';
 import { 
   ShieldCheck, 
   Droplet, 
@@ -30,7 +31,8 @@ export const DonorIdCard = ({ donor }) => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const verifyUrl = `${window.location.origin}/verify-donor?id=${donor.donor_id}`;
+  const verifyUrl = getVerificationQrUrl(donor.qr_token || donor.donor_id);
+  const localPreviewUrl = getLocalVerificationUrl(donor.qr_token || donor.donor_id);
 
   const handleCopyVerifyUrl = () => {
     navigator.clipboard.writeText(verifyUrl);
@@ -235,12 +237,12 @@ export const DonorIdCard = ({ donor }) => {
               </button>
 
               <a
-                href={verifyUrl}
+                href={localPreviewUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="text-xs font-semibold text-stone-600 hover:text-stone-900 flex items-center gap-1"
               >
-                <ExternalLink className="w-3 h-3" /> Test Public Page
+                <ExternalLink className="w-3 h-3" /> Preview Verification Page
               </a>
             </div>
           </div>

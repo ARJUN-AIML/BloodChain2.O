@@ -1,8 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
+from apps.camps.views import UnifiedQRVerifyView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/verify/<str:token>/', UnifiedQRVerifyView.as_view(), name='unified-verify'),
     path('api/accounts/', include('apps.accounts.urls')),
     path('api/facilities/', include('apps.facilities.urls')),
     path('api/inventory/', include('apps.inventory.urls')),

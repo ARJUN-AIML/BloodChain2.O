@@ -3,6 +3,7 @@ import api from '../../services/api';
 import confetti from 'canvas-confetti';
 import { QRCodeCanvas } from 'qrcode.react';
 import { downloadDonorPassCard } from './cardDownloadUtil';
+import { getVerificationQrUrl, getLocalVerificationUrl } from './qrUrlUtil';
 import { 
   X, 
   Calendar, 
@@ -42,8 +43,10 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
     '03:00 PM - 04:00 PM',
   ];
 
-  // URL encoded in the QR code: public verification endpoint that shows donor details
-  const qrVerificationUrl = `${window.location.origin}/verify-donor?id=${donor?.donor_id}&camp=${camp?.camp_id}`;
+  // Secure token for public QR verification (No localhost, production HTTPS ready)
+  const secureToken = successData?.qr_token || donor?.qr_token;
+  const qrVerificationUrl = getVerificationQrUrl(secureToken);
+  const localPreviewUrl = getLocalVerificationUrl(secureToken);
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -261,13 +264,13 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
               </button>
 
               <a
-                href={`/verify-donor?id=${donor?.donor_id}&camp=${camp?.camp_id}`}
+                href={localPreviewUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold text-xs transition flex items-center justify-center gap-1.5 border border-stone-300"
               >
                 <ExternalLink className="w-3.5 h-3.5 text-stone-600" />
-                Preview QR Scan Link
+                Preview Verification Page
               </a>
             </div>
 
