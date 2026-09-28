@@ -226,12 +226,12 @@ export const HospitalDashboard = () => {
       )}
 
       {actionSuccess && (
-        <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300 text-sm flex items-center justify-between">
+        <div className="p-4 rounded-2xl bg-[#ede5d5] border border-[#c4b59f] text-[#2d1b14] text-sm flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0" />
+            <CheckCircle2 className="w-5 h-5 text-[#2d1b14] flex-shrink-0" />
             <span>{actionSuccess}</span>
           </div>
-          <button onClick={() => setActionSuccess('')} className="text-xs text-emerald-400 font-bold">Dismiss</button>
+          <button onClick={() => setActionSuccess('')} className="text-xs text-[#2d1b14] font-bold">Dismiss</button>
         </div>
       )}
 
@@ -309,14 +309,14 @@ export const HospitalDashboard = () => {
                         {inv.blood_component || 'RBC'}
                       </span>
                     </div>
-                    <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${inv.available_units < 5 ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                    <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${inv.available_units < 5 ? 'bg-rose-500/20 text-rose-400' : 'bg-[#ede5d5] text-[#2d1b14]'}`}>
                       {inv.available_units < 5 ? 'Low Stock' : 'Optimal'}
                     </span>
                   </div>
                   <div className="space-y-1 text-xs text-slate-400">
                     <div className="flex justify-between"><span>Available:</span> <strong className="text-slate-100">{inv.available_units} units</strong></div>
-                    <div className="flex justify-between"><span>Reserved:</span> <span className="text-amber-400">{inv.reserved_units} units</span></div>
-                    <div className="flex justify-between"><span>In Transit:</span> <span className="text-indigo-400">{inv.in_transit_units} units</span></div>
+                    <div className="flex justify-between"><span>Reserved:</span> <span className="text-[#3c2415]">{inv.reserved_units} units</span></div>
+                    <div className="flex justify-between"><span>In Transit:</span> <strong className="text-[#2d1b14]">{inv.in_transit_units} units</strong></div>
                   </div>
                 </div>
               ))}
@@ -327,13 +327,13 @@ export const HospitalDashboard = () => {
           {expiryAlerts && (
             <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
               <h3 className="text-base font-bold text-white flex items-center space-x-2">
-                <AlertTriangle className="w-5 h-5 text-amber-500" />
+                <AlertTriangle className="w-5 h-5 text-[#3c2415]" />
                 <span>Expiry Management Alerts</span>
               </h3>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20">
-                  <div className="text-xs text-amber-300 font-semibold mb-1">Expiring Soon (Within 7 Days)</div>
+                <div className="p-4 rounded-2xl bg-[#f8efe3] border border-[#d2bea6]">
+                  <div className="text-xs text-[#3c2415] font-semibold mb-1">Expiring Soon (Within 7 Days)</div>
                   <div className="text-2xl font-bold text-white">{expiryAlerts.expiring_soon_count} Batches</div>
                 </div>
                 <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/20">
@@ -393,15 +393,15 @@ export const HospitalDashboard = () => {
                           </span>
                         </td>
                         <td className="p-3">{req.requested_quantity} units</td>
-                        <td className="p-3 text-emerald-400 font-bold">{req.fulfilled_quantity} / {req.requested_quantity}</td>
+                        <td className="p-3 text-[#2d1b14] font-bold">{req.fulfilled_quantity} / {req.requested_quantity}</td>
                         <td className="p-3">{req.required_date}</td>
                         <td className="p-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${req.priority === 'EMERGENCY' ? 'bg-rose-500/20 text-rose-300' : 'bg-amber-500/20 text-amber-300'}`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${req.priority === 'EMERGENCY' ? 'bg-rose-500/20 text-rose-300' : 'bg-[#f7ede0] text-[#3d2212]'}`}>
                             {req.priority}
                           </span>
                         </td>
                         <td className="p-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${req.status === 'FULFILLED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-slate-800 text-slate-300'}`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${req.status === 'FULFILLED' ? 'bg-[#ede5d5] text-[#2d1b14]' : 'bg-slate-800 text-slate-300'}`}>
                             {req.status}
                           </span>
                         </td>
@@ -416,7 +416,7 @@ export const HospitalDashboard = () => {
           {/* Received Requests from Other Facilities */}
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
             <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-              <Inbox className="w-5 h-5 text-emerald-400" />
+              <Inbox className="w-5 h-5 text-[#2d1b14]" />
               <span>Requests Received from Eligible Regional Facilities</span>
             </h3>
 
@@ -446,9 +446,9 @@ export const HospitalDashboard = () => {
                             {req.blood_component || 'RBC'}
                           </span>
                         </td>
-                        <td className="p-3 font-bold text-amber-400">{req.remaining_quantity} units</td>
+                        <td className="p-3 font-bold text-[#3c2415]">{req.remaining_quantity} units</td>
                         <td className="p-3">
-                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-300">
+                          <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-[#f7ede0] text-[#3d2212]">
                             {req.priority}
                           </span>
                         </td>
@@ -481,7 +481,7 @@ export const HospitalDashboard = () => {
           {/* Incoming Transfers (Hospital is Receiver) */}
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
             <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-              <ArrowDownLeft className="w-5 h-5 text-emerald-400" />
+              <ArrowDownLeft className="w-5 h-5 text-[#2d1b14]" />
               <span>Incoming Blood Transfers (Receiving)</span>
             </h3>
 
@@ -513,7 +513,7 @@ export const HospitalDashboard = () => {
                         </td>
                         <td className="p-3">{tr.quantity} units</td>
                         <td className="p-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${tr.status === 'COMPLETED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-indigo-500/20 text-indigo-300'}`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${tr.status === 'COMPLETED' ? 'bg-[#ede5d5] text-[#2d1b14]' : 'bg-indigo-500/20 text-indigo-300'}`}>
                             {tr.status}
                           </span>
                         </td>
@@ -543,7 +543,7 @@ export const HospitalDashboard = () => {
           {/* Outgoing Transfers (Hospital is Sender) */}
           <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
             <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-              <ArrowUpRight className="w-5 h-5 text-amber-400" />
+              <ArrowUpRight className="w-5 h-5 text-[#3c2415]" />
               <span>Outgoing Blood Transfers (Sending)</span>
             </h3>
 
@@ -575,7 +575,7 @@ export const HospitalDashboard = () => {
                         </td>
                         <td className="p-3">{tr.quantity} units</td>
                         <td className="p-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${tr.status === 'COMPLETED' ? 'bg-emerald-500/20 text-emerald-400' : 'bg-amber-500/20 text-amber-300'}`}>
+                          <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${tr.status === 'COMPLETED' ? 'bg-[#ede5d5] text-[#2d1b14]' : 'bg-[#f7ede0] text-[#3d2212]'}`}>
                             {tr.status}
                           </span>
                         </td>
@@ -609,7 +609,7 @@ export const HospitalDashboard = () => {
                             </button>
                           )}
                           {tr.status === 'COMPLETED' && (
-                            <span className="text-emerald-400 font-semibold text-xs">Completed</span>
+                            <span className="text-[#2d1b14] font-semibold text-xs">Completed</span>
                           )}
                         </td>
                       </tr>
@@ -630,7 +630,7 @@ export const HospitalDashboard = () => {
               <div className="flex items-center space-x-2">
                 <TrendingUp className="w-5 h-5 text-indigo-400" />
                 <h3 className="text-lg font-bold text-white">Future Blood Demand Forecast</h3>
-                <span className="px-2 py-0.5 text-[10px] font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded">
+                <span className="px-2 py-0.5 text-[10px] font-bold bg-[#f7ede0] text-[#3d2212] border border-[#d8c2aa] rounded">
                   Simulation Interface
                 </span>
               </div>
@@ -658,7 +658,7 @@ export const HospitalDashboard = () => {
               <div key={p.blood_group} className="p-4 rounded-2xl bg-slate-950/60 border border-slate-800 space-y-2">
                 <div className="flex items-center justify-between">
                   <span className="text-xl font-extrabold text-white">{p.blood_group}</span>
-                  <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${p.possible_shortage > 0 ? 'bg-rose-500/20 text-rose-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
+                  <span className={`px-2 py-0.5 text-[10px] font-bold rounded ${p.possible_shortage > 0 ? 'bg-rose-500/20 text-rose-400' : 'bg-[#ede5d5] text-[#2d1b14]'}`}>
                     {p.status_note}
                   </span>
                 </div>
@@ -669,7 +669,7 @@ export const HospitalDashboard = () => {
                   <div className="flex justify-between border-t border-slate-800 pt-1 text-rose-400 font-bold">
                     <span>Possible Shortage:</span> <span>{p.possible_shortage} units</span>
                   </div>
-                  <div className="flex justify-between text-emerald-400 font-bold">
+                  <div className="flex justify-between text-[#2d1b14] font-bold">
                     <span>Safe Amount to Share:</span> <span>{p.safe_amount_to_share} units</span>
                   </div>
                 </div>
@@ -707,7 +707,7 @@ export const HospitalDashboard = () => {
                       <td className="p-3 text-slate-400">{new Date(log.timestamp).toLocaleString()}</td>
                       <td className="p-3 text-indigo-400">{log.user_name}</td>
                       <td className="p-3 font-bold text-slate-100">{log.action}</td>
-                      <td className="p-3 text-amber-400">{log.object_type} ({log.object_id})</td>
+                      <td className="p-3 text-[#3c2415]">{log.object_type} ({log.object_id})</td>
                       <td className="p-3 text-slate-300">{log.details}</td>
                     </tr>
                   ))
@@ -828,7 +828,7 @@ export const HospitalDashboard = () => {
             <div className="p-3 bg-slate-950 rounded-xl space-y-1 text-xs text-slate-300">
               <div>Requesting Facility: <strong className="text-white">{selectedRequest.requesting_facility_name}</strong></div>
               <div>Blood Group & Component: <strong className="text-rose-400">{selectedRequest.blood_group} ({selectedRequest.blood_component || 'RBC'})</strong></div>
-              <div>Remaining Needed: <strong className="text-amber-400">{selectedRequest.remaining_quantity} units</strong></div>
+              <div>Remaining Needed: <strong className="text-[#3c2415]">{selectedRequest.remaining_quantity} units</strong></div>
             </div>
 
             <form onSubmit={handleRespondRequest} className="space-y-4 text-xs">
@@ -872,7 +872,7 @@ export const HospitalDashboard = () => {
               {otpModalData.otp_code}
             </div>
 
-            <p className="text-[11px] text-amber-400">Valid for 10 minutes (single-use).</p>
+            <p className="text-[11px] text-[#3c2415]">Valid for 10 minutes (single-use).</p>
 
             <button
               onClick={() => setOtpModalData(null)}

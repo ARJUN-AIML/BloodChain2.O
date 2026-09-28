@@ -17,18 +17,18 @@ export const HospitalPortalHub = () => {
     <div className="space-y-6 pb-12">
       
       {/* Workspace Control Subheader */}
-      <div className="bg-slate-900/95 border-b border-slate-800 px-4 sm:px-8 py-3 sticky top-14 z-30">
+      <div className="bg-[#dbcfb9]/95 backdrop-blur-md border-b border-[#cbbba1] px-4 sm:px-8 py-3 sticky top-14 z-30 shadow-2xs">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           
-          <div className="flex items-center gap-2 text-xs text-slate-400">
-            <Building2 className="w-4 h-4 text-red-500 flex-shrink-0" />
-            <span className="font-semibold text-slate-100">{facility?.name}</span>
-            <span className="font-mono text-slate-500 text-[11px]">({facility?.facility_id})</span>
-            <span className="text-slate-600">&bull;</span>
-            <span className="text-slate-300 font-medium">District {facility?.district || 'Madurai'}</span>
+          <div className="flex items-center gap-2 text-xs text-stone-600">
+            <Building2 className="w-4 h-4 text-rose-600 flex-shrink-0" />
+            <span className="font-bold text-stone-900">{facility?.name}</span>
+            <span className="font-mono text-stone-500 text-[11px]">({facility?.facility_id})</span>
+            <span className="text-stone-400">&bull;</span>
+            <span className="text-stone-700 font-medium">District {facility?.district || 'Madurai'}</span>
           </div>
 
-          <div className="flex items-center p-1 rounded-lg bg-slate-950 border border-slate-800" role="tablist">
+          <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300" role="tablist">
             <button
               type="button"
               role="tab"
@@ -36,11 +36,11 @@ export const HospitalPortalHub = () => {
               onClick={() => setActiveWorkspace('approval')}
               className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 transition-colors cursor-pointer ${
                 activeWorkspace === 'approval'
-                  ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              <CheckSquare className="w-3.5 h-3.5 text-indigo-400" />
+              <CheckSquare className="w-3.5 h-3.5 text-indigo-600" />
               <span>Clinical Approval Desk</span>
             </button>
 
@@ -51,11 +51,11 @@ export const HospitalPortalHub = () => {
               onClick={() => setActiveWorkspace('logistics')}
               className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 transition-colors cursor-pointer ${
                 activeWorkspace === 'logistics'
-                  ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              <Truck className="w-3.5 h-3.5 text-teal-400" />
+              <Truck className="w-3.5 h-3.5 text-teal-600" />
               <span>Logistics & Cold-Chain Desk</span>
             </button>
           </div>

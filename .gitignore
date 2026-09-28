@@ -33,3 +33,7 @@ frontend/dist/
 *.swo
 .DS_Store
 Thumbs.db
+
+# Scratch and test snapshots
+/mysnap*.png
+/screenshot*.png

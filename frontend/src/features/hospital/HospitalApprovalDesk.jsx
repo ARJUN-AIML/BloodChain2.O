@@ -168,12 +168,12 @@ export const HospitalApprovalDesk = () => {
       )}
 
       {actionSuccess && (
-        <div className="p-3.5 rounded-lg bg-emerald-950/40 border border-emerald-800 text-emerald-300 text-xs flex items-center justify-between">
+        <div className="p-3.5 rounded-lg bg-[#ede5d5] border border-[#c4b59f] text-[#2d1b14] text-xs flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-[#2d1b14] flex-shrink-0" />
             <span>{actionSuccess}</span>
           </div>
-          <button onClick={() => setActionSuccess('')} className="text-xs font-semibold text-emerald-400 hover:text-emerald-200 cursor-pointer">Dismiss</button>
+          <button onClick={() => setActionSuccess('')} className="text-xs font-semibold text-[#2d1b14] hover:text-[#5a3825] cursor-pointer">Dismiss</button>
         </div>
       )}
 
@@ -214,7 +214,7 @@ export const HospitalApprovalDesk = () => {
       </div>
 
       {/* Segmented Tab Navigation */}
-      <div className="flex items-center p-1 rounded-lg bg-slate-950 border border-slate-800 overflow-x-auto" role="tablist">
+      <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto" role="tablist">
         {[
           { id: 'queue', label: `Approval Queue (${awaitingReceived + pendingTransfers})` },
           { id: 'requests_sent', label: `Requests Issued (${sentRequests.length})` },
@@ -230,8 +230,8 @@ export const HospitalApprovalDesk = () => {
             onClick={() => setActiveTab(tab.id)}
             className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === tab.id
-                ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
+                : 'text-stone-600 hover:text-stone-900'
             }`}
           >
             {tab.label}
@@ -244,7 +244,7 @@ export const HospitalApprovalDesk = () => {
         <div className="clinical-card border-slate-800 bg-slate-900 overflow-hidden">
           <div className="p-4 border-b border-slate-800 flex items-center justify-between">
             <h2 className="text-sm font-bold text-white flex items-center gap-2">
-              <FileText className="w-4 h-4 text-amber-400" />
+              <FileText className="w-4 h-4 text-[#3c2415]" />
               <span>Received Requests Awaiting Supply Decision</span>
             </h2>
             <span className="text-xs text-slate-400 font-mono">Total Pending: {receivedRequests.length}</span>
@@ -280,13 +280,13 @@ export const HospitalApprovalDesk = () => {
                           {req.blood_component || 'RBC'}
                         </span>
                       </td>
-                      <td className="py-3 px-4 font-semibold text-amber-400 font-mono">{req.remaining_quantity} units</td>
+                      <td className="py-3 px-4 font-semibold text-[#3c2415] font-mono">{req.remaining_quantity} units</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
                           req.priority === 'CRITICAL' 
                             ? 'bg-red-950/60 text-red-300 border-red-800' 
                             : req.priority === 'HIGH'
-                            ? 'bg-amber-950/60 text-amber-300 border-amber-800'
+                            ? 'bg-[#f7ede0] text-[#3d2212] border-[#d8c2aa]'
                             : 'bg-slate-800 text-slate-300 border-slate-700'
                         }`}>
                           {req.priority}
@@ -356,8 +356,8 @@ export const HospitalApprovalDesk = () => {
                         </span>
                       </td>
                       <td className="py-3 px-4 font-mono">{req.requested_quantity} units</td>
-                      <td className="py-3 px-4 font-bold text-emerald-400 font-mono">{req.fulfilled_quantity} units</td>
-                      <td className="py-3 px-4 font-bold text-amber-400 font-mono">{req.remaining_quantity} units</td>
+                      <td className="py-3 px-4 font-bold text-[#2d1b14] font-mono">{req.fulfilled_quantity} units</td>
+                      <td className="py-3 px-4 font-bold text-[#3c2415] font-mono">{req.remaining_quantity} units</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
                           req.priority === 'CRITICAL'
@@ -370,8 +370,8 @@ export const HospitalApprovalDesk = () => {
                       <td className="py-3 px-4">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase border ${
                           req.status === 'FULFILLED'
-                            ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800'
-                            : 'bg-amber-950/60 text-amber-300 border-amber-800'
+                            ? 'bg-[#ede5d5] text-[#2d1b14] border-[#c4b59f]'
+                            : 'bg-[#f7ede0] text-[#3d2212] border-[#d8c2aa]'
                         }`}>
                           {req.status}
                         </span>
@@ -391,7 +391,7 @@ export const HospitalApprovalDesk = () => {
           <div className="p-4 border-b border-slate-800 flex items-center justify-between">
             <div>
               <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <CheckSquare className="w-4 h-4 text-emerald-400" />
+                <CheckSquare className="w-4 h-4 text-[#2d1b14]" />
                 <span>Transfers Awaiting Medical Authorization</span>
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">Authorizing commits inventory reservation and moves custody to Logistics.</p>
@@ -431,7 +431,7 @@ export const HospitalApprovalDesk = () => {
                       </td>
                       <td className="py-3 px-4 font-mono font-semibold">{tr.quantity} units</td>
                       <td className="py-3 px-4">
-                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-950/60 text-amber-300 border border-amber-800">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#f7ede0] text-[#3d2212] border border-[#d8c2aa]">
                           {tr.status}
                         </span>
                       </td>
@@ -481,11 +481,11 @@ export const HospitalApprovalDesk = () => {
                 <div className="space-y-1 text-xs">
                   <div className="flex justify-between text-slate-400">
                     <span>Available:</span>
-                    <strong className="text-emerald-400 font-mono">{inv.available_units} units</strong>
+                    <strong className="text-[#2d1b14] font-mono">{inv.available_units} units</strong>
                   </div>
                   <div className="flex justify-between text-slate-400">
                     <span>Reserved:</span>
-                    <span className="text-amber-400 font-mono">{inv.reserved_units} units</span>
+                    <span className="text-[#3c2415] font-mono">{inv.reserved_units} units</span>
                   </div>
                 </div>
               </div>
@@ -529,7 +529,7 @@ export const HospitalApprovalDesk = () => {
                       <td className="py-3 px-4 text-slate-400">{new Date(log.timestamp).toLocaleString()}</td>
                       <td className="py-3 px-4 text-indigo-400">{log.user_name}</td>
                       <td className="py-3 px-4 font-semibold text-slate-100">{log.action}</td>
-                      <td className="py-3 px-4 text-amber-400">{log.object_type} #{log.object_id}</td>
+                      <td className="py-3 px-4 text-[#3c2415]">{log.object_type} #{log.object_id}</td>
                       <td className="py-3 px-4 text-slate-300">{log.details}</td>
                     </tr>
                   ))
@@ -682,7 +682,7 @@ export const HospitalApprovalDesk = () => {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Unfulfilled Requirement:</span>
-                <strong className="text-amber-400 font-mono">{selectedRequest.remaining_quantity} units</strong>
+                <strong className="text-[#3c2415] font-mono">{selectedRequest.remaining_quantity} units</strong>
               </div>
             </div>
 

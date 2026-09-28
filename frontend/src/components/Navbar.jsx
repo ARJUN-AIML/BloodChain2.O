@@ -13,7 +13,8 @@ import {
   Radio,
   Search,
   MapPin,
-  ChevronRight
+  ChevronRight,
+  ArrowRight
 } from 'lucide-react';
 
 export const Navbar = () => {
@@ -128,28 +129,33 @@ export const Navbar = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 bg-slate-900 border-b border-slate-800">
+      <header className="sticky top-0 z-40 bg-[#dbcfb9]/95 backdrop-blur-md border-b border-[#cbbba1] shadow-2xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
           
           {/* Logo & Identity */}
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-red-700 flex items-center justify-center text-white shadow-sm">
-              <Droplet className="w-4 h-4 fill-white" />
-            </div>
+          <div 
+            className="flex items-center gap-3 select-none"
+            title="BloodChain AI Regional Network"
+          >
+            <img 
+              src="/assets/logo.png" 
+              alt="BloodChain AI Logo" 
+              className="w-8 h-8 rounded-lg shadow-sm object-cover ring-1 ring-stone-900/10" 
+            />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-bold text-sm text-white tracking-tight">
-                  BloodChain
+                <span className="font-bold text-sm text-stone-900 tracking-tight">
+                  BloodChain AI
                 </span>
-                <span className="px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-slate-800 text-slate-300 border border-slate-700 rounded">
+                <span className="px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-white/80 text-stone-700 border border-stone-300 rounded">
                   Dataset v2.0
                 </span>
-                <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-medium text-emerald-400 bg-emerald-950/40 border border-emerald-800/80 px-2 py-0.5 rounded">
-                  <Radio className="w-2.5 h-2.5 text-emerald-400 animate-pulse" />
+                <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-medium text-[#2d1b14] bg-[#ede5d5] border border-[#c4b59f] px-2 py-0.5 rounded">
+                  <Radio className="w-2.5 h-2.5 text-[#2d1b14] animate-pulse" />
                   50 State Nodes
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 hidden sm:block">Tamil Nadu Regional Blood Supply System</p>
+              <p className="text-[11px] text-stone-600 hidden sm:block">Tamil Nadu Regional Blood Supply System</p>
             </div>
           </div>
 
@@ -158,22 +164,22 @@ export const Navbar = () => {
             <div className="flex items-center gap-2.5">
               
               {/* Role Indicator Pill */}
-              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md bg-slate-800/90 border border-slate-700 text-slate-200">
+              <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-white/80 border border-stone-300 text-stone-800 shadow-2xs">
                 {role === 'HOSPITAL_LOGISTICS' ? (
-                  <Truck className="w-3.5 h-3.5 text-teal-400" />
+                  <Truck className="w-3.5 h-3.5 text-teal-600" />
                 ) : role === 'BLOOD_BANK' ? (
-                  <Droplet className="w-3.5 h-3.5 text-red-400" />
+                  <Droplet className="w-3.5 h-3.5 text-rose-600" />
                 ) : (
-                  <CheckSquare className="w-3.5 h-3.5 text-indigo-400" />
+                  <CheckSquare className="w-3.5 h-3.5 text-indigo-600" />
                 )}
                 <span>{getRoleBadgeLabel(role)}</span>
               </div>
 
               {/* Facility Identity Pill */}
-              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-slate-800/60 border border-slate-700/80 text-xs text-slate-300">
-                <Building2 className="w-3.5 h-3.5 text-slate-400" />
-                <span className="font-medium text-slate-100 max-w-[220px] truncate">{facility?.name}</span>
-                <span className="text-[10px] font-mono text-slate-400">({facility?.facility_id})</span>
+              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/60 border border-stone-300 text-xs text-stone-700 shadow-2xs">
+                <Building2 className="w-3.5 h-3.5 text-stone-500" />
+                <span className="font-semibold text-stone-900 max-w-[220px] truncate">{facility?.name}</span>
+                <span className="text-[10px] font-mono text-stone-500">({facility?.facility_id})</span>
               </div>
 
               {/* Persona Switcher Button */}
@@ -181,9 +187,9 @@ export const Navbar = () => {
                 type="button"
                 onClick={() => setShowSwitchModal(true)}
                 title="Switch Active Facility from Dataset"
-                className="px-2.5 py-1 rounded-md bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 hover:text-white transition-colors flex items-center gap-1.5 text-xs font-medium cursor-pointer"
+                className="px-2.5 py-1 rounded-lg bg-white/80 hover:bg-white border border-stone-300 text-stone-800 hover:text-stone-950 transition-colors flex items-center gap-1.5 text-xs font-semibold shadow-2xs cursor-pointer"
               >
-                <RefreshCw className="w-3 h-3 text-slate-400" />
+                <RefreshCw className="w-3 h-3 text-stone-500" />
                 <span className="hidden sm:inline">Switch Facility ({allFacilities.length || 50})</span>
               </button>
 
@@ -192,7 +198,7 @@ export const Navbar = () => {
                 type="button"
                 onClick={logout}
                 title="Sign out of facility session"
-                className="px-2.5 py-1 rounded-md bg-slate-800/50 hover:bg-red-950/60 border border-slate-700 hover:border-red-800 text-slate-400 hover:text-red-300 transition-colors flex items-center gap-1.5 text-xs cursor-pointer"
+                className="px-2.5 py-1 rounded-lg bg-white/60 hover:bg-rose-50 border border-stone-300 hover:border-rose-300 text-stone-700 hover:text-rose-700 transition-colors flex items-center gap-1.5 text-xs font-semibold shadow-2xs cursor-pointer"
               >
                 <LogOut className="w-3.5 h-3.5" />
                 <span className="hidden sm:inline">Sign Out</span>

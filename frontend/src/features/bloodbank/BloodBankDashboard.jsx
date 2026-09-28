@@ -168,8 +168,8 @@ export const BloodBankDashboard = () => {
 
         <div className="flex items-center gap-2.5">
           <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Central Stock: <strong className="text-emerald-400 font-mono">{totalAvailableStock}</strong> Units</span>
+            <ShieldCheck className="w-3.5 h-3.5 text-[#2d1b14]" />
+            <span>Central Stock: <strong className="text-[#2d1b14] font-mono">{totalAvailableStock}</strong> Units</span>
           </div>
 
           <button
@@ -195,12 +195,12 @@ export const BloodBankDashboard = () => {
       )}
 
       {actionSuccess && (
-        <div className="p-3.5 rounded-lg bg-emerald-950/40 border border-emerald-800 text-emerald-300 text-xs flex items-center justify-between">
+        <div className="p-3.5 rounded-lg bg-[#ede5d5] border border-[#c4b59f] text-[#2d1b14] text-xs flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-[#2d1b14] flex-shrink-0" />
             <span>{actionSuccess}</span>
           </div>
-          <button onClick={() => setActionSuccess('')} className="text-xs font-semibold text-emerald-400 hover:text-emerald-200 cursor-pointer">Dismiss</button>
+          <button onClick={() => setActionSuccess('')} className="text-xs font-semibold text-[#2d1b14] hover:text-[#5a3825] cursor-pointer">Dismiss</button>
         </div>
       )}
 
@@ -241,7 +241,7 @@ export const BloodBankDashboard = () => {
       </div>
 
       {/* Segmented Tab Navigation */}
-      <div className="flex items-center p-1 rounded-lg bg-slate-950 border border-slate-800 overflow-x-auto" role="tablist">
+      <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto" role="tablist">
         {[
           { id: 'overview', label: 'Central Inventory & Testing' },
           { id: 'requests', label: `Hospital Requests Received (${receivedRequests.length})` },
@@ -257,8 +257,8 @@ export const BloodBankDashboard = () => {
             onClick={() => setActiveTab(tab.id)}
             className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === tab.id
-                ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
+                : 'text-stone-600 hover:text-stone-900'
             }`}
           >
             {tab.label}
@@ -272,7 +272,7 @@ export const BloodBankDashboard = () => {
           <div className="clinical-card p-6 border-slate-800 bg-slate-900 space-y-4">
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
               <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <Droplet className="w-4 h-4 text-emerald-400" />
+                <Droplet className="w-4 h-4 text-[#2d1b14]" />
                 <span>Central Blood Component Inventory Breakdown</span>
               </h2>
               <span className="text-xs text-slate-400 font-mono">ISBT-128 Compliance Standards</span>
@@ -284,14 +284,14 @@ export const BloodBankDashboard = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-1.5">
                       <span className="text-xl font-bold text-white font-mono">{inv.blood_group}</span>
-                      <span className="px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-teal-300 rounded border border-slate-700">
+                      <span className="px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-stone-800 rounded border border-slate-700">
                         {inv.blood_component || 'RBC'}
                       </span>
                     </div>
                     <span className={`px-2 py-0.5 text-[10px] font-semibold rounded border ${
                       inv.available_units < 10 
-                        ? 'bg-amber-950/60 text-amber-300 border-amber-800' 
-                        : 'bg-emerald-950/60 text-emerald-300 border-emerald-800'
+                        ? 'bg-[#f7ede0] text-[#3d2212] border-[#d8c2aa]' 
+                        : 'bg-[#ede5d5] text-[#2d1b14] border-[#c4b59f]'
                     }`}>
                       {inv.available_units < 10 ? 'Buffer Warning' : 'Optimal Reserve'}
                     </span>
@@ -299,15 +299,15 @@ export const BloodBankDashboard = () => {
                   <div className="space-y-1 text-xs text-slate-400">
                     <div className="flex justify-between">
                       <span>Available:</span> 
-                      <strong className="text-emerald-400 font-mono">{inv.available_units} units</strong>
+                      <strong className="text-[#2d1b14] font-mono">{inv.available_units} units</strong>
                     </div>
                     <div className="flex justify-between">
                       <span>Reserved:</span> 
-                      <span className="text-amber-400 font-mono">{inv.reserved_units} units</span>
+                      <span className="text-[#3c2415] font-mono">{inv.reserved_units} units</span>
                     </div>
                     <div className="flex justify-between">
                       <span>In Transit:</span> 
-                      <span className="text-teal-400 font-mono">{inv.in_transit_units} units</span>
+                      <strong className="text-[#2d1b14] font-mono">{inv.in_transit_units} units</strong>
                     </div>
                   </div>
                 </div>
@@ -320,19 +320,19 @@ export const BloodBankDashboard = () => {
             <div className="clinical-card p-6 border-slate-800 bg-slate-900 space-y-3">
               <div className="flex items-center justify-between border-b border-slate-800 pb-3">
                 <h3 className="text-sm font-bold text-white flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-400" />
+                  <AlertTriangle className="w-4 h-4 text-[#3c2415]" />
                   <span>Cold Storage Expiry Risk Management</span>
                 </h3>
                 <span className="text-xs text-slate-400 font-mono">Continuous Batch Inspection</span>
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="p-3.5 rounded-lg bg-amber-950/30 border border-amber-900/60 flex items-center justify-between">
+                <div className="p-3.5 rounded-lg bg-[#f8efe3] border border-[#d2bea6] flex items-center justify-between">
                   <div>
-                    <div className="text-xs text-amber-300 font-medium">Critical Expiry Window (&le; 7 Days)</div>
+                    <div className="text-xs text-[#3c2415] font-semibold">Critical Expiry Window (&le; 7 Days)</div>
                     <div className="text-xl font-bold font-mono text-white mt-0.5">{expiryAlerts.expiring_soon_count || 0} Batches</div>
                   </div>
-                  <span className="text-[10px] text-amber-400 font-mono">FIFO Prioritization</span>
+                  <span className="text-[10px] text-[#3c2415] font-mono">FIFO Prioritization</span>
                 </div>
                 
                 <div className="p-3.5 rounded-lg bg-red-950/30 border border-red-900/60 flex items-center justify-between">
@@ -353,7 +353,7 @@ export const BloodBankDashboard = () => {
         <div className="clinical-card border-slate-800 bg-slate-900 overflow-hidden">
           <div className="p-4 border-b border-slate-800 flex items-center justify-between">
             <h2 className="text-sm font-bold text-white flex items-center gap-2">
-              <Inbox className="w-4 h-4 text-emerald-400" />
+              <Inbox className="w-4 h-4 text-[#2d1b14]" />
               <span>Inbound Hospital Requisitions</span>
             </h2>
             <span className="text-xs text-slate-400 font-mono">Open Orders: {receivedRequests.length}</span>
@@ -389,12 +389,12 @@ export const BloodBankDashboard = () => {
                           {req.blood_component || 'RBC'}
                         </span>
                       </td>
-                      <td className="py-3 px-4 font-bold text-amber-400 font-mono">{req.remaining_quantity} units</td>
+                      <td className="py-3 px-4 font-bold text-[#3c2415] font-mono">{req.remaining_quantity} units</td>
                       <td className="py-3 px-4">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-semibold border ${
                           req.priority === 'CRITICAL' 
                             ? 'bg-red-950/60 text-red-300 border-red-800' 
-                            : 'bg-amber-950/60 text-amber-300 border-amber-800'
+                            : 'bg-[#f7ede0] text-[#3d2212] border-[#d8c2aa]'
                         }`}>
                           {req.priority}
                         </span>
@@ -427,7 +427,7 @@ export const BloodBankDashboard = () => {
           <div className="clinical-card border-slate-800 bg-slate-900 overflow-hidden">
             <div className="p-4 border-b border-slate-800 flex items-center justify-between">
               <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <ArrowUpRight className="w-4 h-4 text-amber-400" />
+                <ArrowUpRight className="w-4 h-4 text-[#3c2415]" />
                 <span>Outbound Hospital Blood Transfers & Dock Handshakes</span>
               </h2>
               <span className="text-xs text-slate-400 font-mono">Active Outbound: {outgoingTransfers.length}</span>
@@ -467,8 +467,8 @@ export const BloodBankDashboard = () => {
                         <td className="py-3 px-4">
                           <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase border ${
                             tr.status === 'COMPLETED' 
-                              ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800' 
-                              : 'bg-amber-950/60 text-amber-300 border-amber-800'
+                              ? 'bg-[#ede5d5] text-[#2d1b14] border-[#c4b59f]' 
+                              : 'bg-[#f7ede0] text-[#3d2212] border-[#d8c2aa]'
                           }`}>
                             {tr.status}
                           </span>
@@ -496,8 +496,8 @@ export const BloodBankDashboard = () => {
                             {(tr.status === 'DISPATCHED' || tr.status === 'OTP_PENDING') && (
                               <div className="flex flex-col items-end gap-1">
                                 <div className="flex items-center gap-1.5">
-                                  <span className="text-[10px] text-amber-400 font-semibold uppercase tracking-wider">Dispatch PIN:</span>
-                                  <span className="px-2 py-0.5 rounded bg-slate-950 border border-amber-600/40 text-amber-300 font-mono font-bold text-xs">
+                                  <span className="text-[10px] text-[#3c2415] font-semibold uppercase tracking-wider">Dispatch PIN:</span>
+                                  <span className="px-2 py-0.5 rounded bg-[#f5ede2] border border-[#a88a6d] text-[#3c2415] font-mono font-bold text-xs">
                                     {tr.latest_otp_code || 'Generating...'}
                                   </span>
                                   {tr.latest_otp_code && (
@@ -520,7 +520,7 @@ export const BloodBankDashboard = () => {
                               </div>
                             )}
                             {tr.status === 'COMPLETED' && (
-                              <span className="text-emerald-400 font-semibold text-xs inline-flex items-center gap-1.5">
+                              <span className="text-[#2d1b14] font-semibold text-xs inline-flex items-center gap-1.5">
                                 <CheckCircle2 className="w-3.5 h-3.5" />
                                 <span>Custody Settled &bull; Verified by Receiver</span>
                               </span>
@@ -543,7 +543,7 @@ export const BloodBankDashboard = () => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
             <div>
               <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-emerald-400" />
+                <TrendingUp className="w-4 h-4 text-[#2d1b14]" />
                 <span>Regional Blood Demand Projections & Reserve Modeling</span>
               </h2>
               <p className="text-xs text-slate-400 mt-0.5">Predictive models calculate safe surplus quotas for partner hospital transfers.</p>
@@ -570,8 +570,8 @@ export const BloodBankDashboard = () => {
                   <span className="text-xl font-bold text-white font-mono">{p.blood_group}</span>
                   <span className={`px-2 py-0.5 text-[10px] font-semibold rounded border ${
                     p.possible_shortage > 0 
-                      ? 'bg-amber-950/60 text-amber-300 border-amber-800' 
-                      : 'bg-emerald-950/60 text-emerald-300 border-emerald-800'
+                      ? 'bg-[#f7ede0] text-[#3d2212] border-[#d8c2aa]' 
+                      : 'bg-[#ede5d5] text-[#2d1b14] border-[#c4b59f]'
                   }`}>
                     {p.status_note}
                   </span>
@@ -585,7 +585,7 @@ export const BloodBankDashboard = () => {
                     <span>Projected Demand:</span> 
                     <strong className="text-slate-200 font-mono">{p.future_blood_demand} units</strong>
                   </div>
-                  <div className="flex justify-between text-emerald-400 font-semibold border-t border-slate-800 pt-1.5">
+                  <div className="flex justify-between text-[#2d1b14] font-semibold border-t border-slate-800 pt-1.5">
                     <span>Safe to Share:</span> 
                     <span className="font-mono">{p.safe_amount_to_share} units</span>
                   </div>
@@ -629,9 +629,9 @@ export const BloodBankDashboard = () => {
                   auditLogs.map((log) => (
                     <tr key={log.id} className="clinical-table-row">
                       <td className="py-3 px-4 text-slate-400">{new Date(log.timestamp).toLocaleString()}</td>
-                      <td className="py-3 px-4 text-emerald-400">{log.user_name}</td>
+                      <td className="py-3 px-4 text-[#2d1b14]">{log.user_name}</td>
                       <td className="py-3 px-4 font-semibold text-slate-100">{log.action}</td>
-                      <td className="py-3 px-4 text-amber-400">{log.object_type} #{log.object_id}</td>
+                      <td className="py-3 px-4 text-[#3c2415]">{log.object_type} #{log.object_id}</td>
                       <td className="py-3 px-4 text-slate-300">{log.details}</td>
                     </tr>
                   ))
@@ -673,7 +673,7 @@ export const BloodBankDashboard = () => {
               </div>
               <div className="flex justify-between">
                 <span className="text-slate-400">Unfulfilled Demand:</span>
-                <strong className="text-amber-400 font-mono">{selectedRequest.remaining_quantity} units</strong>
+                <strong className="text-[#3c2415] font-mono">{selectedRequest.remaining_quantity} units</strong>
               </div>
             </div>
 
@@ -740,7 +740,7 @@ export const BloodBankDashboard = () => {
               <div className="flex justify-between items-center">
                 <span className="text-slate-500">Batch:</span>
                 <div className="flex items-center gap-1.5">
-                  <span className="text-emerald-400 font-bold">{selectedTransferForOtp.quantity} units {selectedTransferForOtp.blood_group}</span>
+                  <span className="text-[#2d1b14] font-bold">{selectedTransferForOtp.quantity} units {selectedTransferForOtp.blood_group}</span>
                   <span className="px-1.5 py-0.5 text-[10px] font-medium bg-slate-800 text-slate-300 rounded border border-slate-700">
                     {selectedTransferForOtp.blood_component || 'RBC'}
                   </span>
@@ -748,11 +748,11 @@ export const BloodBankDashboard = () => {
               </div>
             </div>
 
-            <div className="p-3 bg-amber-950/30 border border-amber-800/60 rounded-lg flex items-start gap-2.5 text-xs text-amber-200">
-              <Lock className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+            <div className="p-3 bg-[#f8efe3] border border-[#d2bea6] rounded-lg flex items-start gap-2.5 text-xs text-[#3c2415]">
+              <Lock className="w-4 h-4 text-[#3c2415] flex-shrink-0 mt-0.5" />
               <div>
                 <span className="font-semibold block">Custody Handshake Security</span>
-                <span className="text-[11px] text-amber-300/80">
+                <span className="text-[11px] text-[#4a2e18]">
                   Enter the 6-digit Handshake PIN provided on the courier transit manifest to verify authenticity and accept blood into inventory.
                 </span>
               </div>

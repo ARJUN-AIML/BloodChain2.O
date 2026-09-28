@@ -151,12 +151,12 @@ export const HospitalLogisticsDashboard = () => {
       )}
 
       {actionSuccess && (
-        <div className="p-3.5 rounded-lg bg-emerald-950/40 border border-emerald-800 text-emerald-300 text-xs flex items-center justify-between">
+        <div className="p-3.5 rounded-lg bg-[#ede5d5] border border-[#c4b59f] text-[#2d1b14] text-xs flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+            <CheckCircle2 className="w-4 h-4 text-[#2d1b14] flex-shrink-0" />
             <span>{actionSuccess}</span>
           </div>
-          <button onClick={() => setActionSuccess('')} className="text-xs font-semibold text-emerald-400 hover:text-emerald-200 cursor-pointer">Dismiss</button>
+          <button onClick={() => setActionSuccess('')} className="text-xs font-semibold text-[#2d1b14] hover:text-[#5a3825] cursor-pointer">Dismiss</button>
         </div>
       )}
 
@@ -197,7 +197,7 @@ export const HospitalLogisticsDashboard = () => {
       </div>
 
       {/* Segmented Tab Navigation */}
-      <div className="flex items-center p-1 rounded-lg bg-slate-950 border border-slate-800 overflow-x-auto" role="tablist">
+      <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto" role="tablist">
         {[
           { id: 'overview', label: `Active Dock Overview (${incomingInTransit + inTransitOutgoing})` },
           { id: 'dispatch_queue', label: `Awaiting Dispatch (${awaitingDispatch})` },
@@ -213,8 +213,8 @@ export const HospitalLogisticsDashboard = () => {
             onClick={() => setActiveTab(tab.id)}
             className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === tab.id
-                ? 'bg-slate-800 text-white border border-slate-700 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200'
+                ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
+                : 'text-stone-600 hover:text-stone-900'
             }`}
           >
             {tab.label}
@@ -273,21 +273,21 @@ export const HospitalLogisticsDashboard = () => {
                           </td>
                           <td className="py-3 px-4 font-mono font-semibold">{tr.quantity} units</td>
                           <td className="py-3 px-4">
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-teal-950/60 border border-teal-800/80 text-teal-300 text-[10px] font-mono font-semibold">
-                              <Thermometer className="w-3 h-3 text-teal-400" />
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-[#f0e8dc] border border-[#cbbba1] text-[#2d1b14] text-[10px] font-mono font-semibold">
+                              <Thermometer className="w-3 h-3 text-[#2d1b14]" />
                               3.8°C (Nominal)
                             </span>
                           </td>
                           <td className="py-3 px-4">
-                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-teal-950/60 text-teal-300 border border-teal-800">
+                            <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#eae0d0] text-[#2d1b14] border border-[#c4b59f]">
                               IN_TRANSIT
                             </span>
                           </td>
                           <td className="py-3 px-4 text-right">
                             <div className="flex flex-col items-end gap-1">
                               <div className="flex items-center gap-1.5">
-                                <span className="text-[10px] text-amber-400 font-semibold uppercase tracking-wider">Dispatch PIN:</span>
-                                <span className="px-2 py-0.5 rounded bg-slate-950 border border-amber-600/40 text-amber-300 font-mono font-bold text-xs">
+                                <span className="text-[10px] text-[#3c2415] font-semibold uppercase tracking-wider">Dispatch PIN:</span>
+                                <span className="px-2 py-0.5 rounded bg-[#f5ede2] border border-[#a88a6d] text-[#3c2415] font-mono font-bold text-xs">
                                   {tr.latest_otp_code || 'Generating...'}
                                 </span>
                                 {tr.latest_otp_code && (
@@ -324,7 +324,7 @@ export const HospitalLogisticsDashboard = () => {
         <div className="clinical-card border-slate-800 bg-slate-900 overflow-hidden">
           <div className="p-4 border-b border-slate-800 flex items-center justify-between">
             <h2 className="text-sm font-bold text-white flex items-center gap-2">
-              <Package className="w-4 h-4 text-amber-400" />
+              <Package className="w-4 h-4 text-[#3c2415]" />
               <span>Approved Outbound Batches Awaiting Physical Dispatch</span>
             </h2>
             <span className="text-xs text-slate-400 font-mono">Queue Count: {outgoingTransfers.filter(t => t.status === 'APPROVED').length}</span>
@@ -423,7 +423,7 @@ export const HospitalLogisticsDashboard = () => {
                       <td className="py-3 px-4">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase border ${
                           tr.status === 'COMPLETED'
-                            ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800'
+                            ? 'bg-[#ede5d5] text-[#2d1b14] border-[#c4b59f]'
                             : 'bg-teal-950/60 text-teal-300 border-teal-800'
                         }`}>
                           {tr.status}
@@ -433,7 +433,7 @@ export const HospitalLogisticsDashboard = () => {
                         {(tr.status === 'DISPATCHED' || tr.status === 'OTP_PENDING') && (
                           <div className="flex items-center justify-end gap-2.5">
                             <span className="px-2 py-0.5 rounded bg-slate-950 border border-slate-800 text-slate-400 font-mono text-[11px] flex items-center gap-1">
-                              <Lock className="w-3 h-3 text-amber-500" />
+                              <Lock className="w-3 h-3 text-[#3c2415]" />
                               <span>Courier PIN Required</span>
                             </span>
                             <button
@@ -451,7 +451,7 @@ export const HospitalLogisticsDashboard = () => {
                           </div>
                         )}
                         {tr.status === 'COMPLETED' && (
-                          <span className="text-emerald-400 font-semibold text-xs inline-flex items-center gap-1">
+                          <span className="text-[#2d1b14] font-semibold text-xs inline-flex items-center gap-1">
                             <CheckCircle2 className="w-3.5 h-3.5" />
                             <span>Received in Inventory</span>
                           </span>
@@ -516,7 +516,7 @@ export const HospitalLogisticsDashboard = () => {
                       <td className="py-3 px-4">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase border ${
                           tr.status === 'COMPLETED'
-                            ? 'bg-emerald-950/60 text-emerald-300 border-emerald-800'
+                            ? 'bg-[#ede5d5] text-[#2d1b14] border-[#c4b59f]'
                             : 'bg-teal-950/60 text-teal-300 border-teal-800'
                         }`}>
                           {tr.status}
@@ -553,7 +553,7 @@ export const HospitalLogisticsDashboard = () => {
                           </div>
                         )}
                         {tr.status === 'COMPLETED' && (
-                          <span className="text-emerald-400 font-semibold text-xs inline-flex items-center gap-1">
+                          <span className="text-[#2d1b14] font-semibold text-xs inline-flex items-center gap-1">
                             <CheckCircle2 className="w-3.5 h-3.5" />
                             <span>Delivered & Settled</span>
                           </span>
@@ -603,7 +603,7 @@ export const HospitalLogisticsDashboard = () => {
                       <td className="py-3 px-4 text-slate-400">{new Date(log.timestamp).toLocaleString()}</td>
                       <td className="py-3 px-4 text-teal-400">{log.user_name}</td>
                       <td className="py-3 px-4 font-semibold text-slate-100">{log.action}</td>
-                      <td className="py-3 px-4 text-amber-400">{log.object_type} #{log.object_id}</td>
+                      <td className="py-3 px-4 text-[#3c2415]">{log.object_type} #{log.object_id}</td>
                       <td className="py-3 px-4 text-slate-300">{log.details}</td>
                     </tr>
                   ))
@@ -636,7 +636,7 @@ export const HospitalLogisticsDashboard = () => {
               <div className="text-3xl font-mono font-bold text-teal-400 tracking-widest">
                 {otpModalData.otp_code}
               </div>
-              <div className="text-[11px] text-amber-400 mt-1.5 font-mono">
+              <div className="text-[11px] text-[#3c2415] mt-1.5 font-mono">
                 Single-use cryptographic custody token
               </div>
             </div>
@@ -687,11 +687,11 @@ export const HospitalLogisticsDashboard = () => {
               </div>
             </div>
 
-            <div className="p-3 bg-amber-950/30 border border-amber-800/60 rounded-lg flex items-start gap-2.5 text-xs text-amber-200">
-              <Lock className="w-4 h-4 text-amber-400 flex-shrink-0 mt-0.5" />
+            <div className="p-3 bg-[#f8efe3] border border-[#d2bea6] rounded-lg flex items-start gap-2.5 text-xs text-[#3c2415]">
+              <Lock className="w-4 h-4 text-[#3c2415] flex-shrink-0 mt-0.5" />
               <div>
                 <span className="font-semibold block">Custody Handshake Security</span>
-                <span className="text-[11px] text-amber-300/80">
+                <span className="text-[11px] text-[#4a2e18]">
                   The sender sealed this shipment with a unique custody PIN on the transit manifest. Inspect the cold-chain parcel and enter the 6-digit PIN from the delivery personnel to verify authenticity and accept blood into hospital inventory.
                 </span>
               </div>

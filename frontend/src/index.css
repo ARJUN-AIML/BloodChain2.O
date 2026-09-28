@@ -4,65 +4,75 @@
 
 @layer base {
   :root {
-    --clinical-bg: #0b0f17;
-    --clinical-surface: #111827;
-    --clinical-surface-elevated: #1f2937;
-    --clinical-border: #374151;
-    --clinical-border-subtle: #1f2937;
-    --clinical-text: #f9fafb;
-    --clinical-text-muted: #9ca3af;
-    --clinical-red: #dc2626;
-    --clinical-red-dark: #991b1b;
-    --clinical-teal: #0d9488;
-    --clinical-emerald: #059669;
-    --clinical-amber: #d97706;
+    --clinical-bg: #dbcfb9;
+    --clinical-surface: rgba(228, 218, 198, 0.92);
+    --clinical-surface-elevated: rgba(238, 230, 215, 0.96);
+    --clinical-border: rgba(170, 150, 120, 0.45);
+    --clinical-border-subtle: rgba(190, 170, 140, 0.35);
+    --clinical-text: #1c1917;
+    --clinical-text-muted: #57534e;
+    --clinical-red: #e11d48;
+    --clinical-red-dark: #be123c;
+    --clinical-teal: #0f766e;
+    --clinical-emerald: #047857;
+    --clinical-amber: #b45309;
   }
 
   body {
-    background-color: var(--clinical-bg);
-    color: var(--clinical-text);
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: #dbcfb9;
+    background-image: 
+      radial-gradient(ellipse at 50% 25%, rgba(225, 29, 72, 0.06) 0%, rgba(219, 207, 185, 0) 70%),
+      linear-gradient(rgba(219, 207, 185, 0.25), rgba(219, 207, 185, 0.35));
+    background-attachment: fixed;
+    color: #1c1917;
+    font-family: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom scrollbar for data tables */
+  /* Custom scrollbar matching warm parchment theme */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #0b0f17;
+    background: #dbcfb9;
   }
   ::-webkit-scrollbar-thumb {
-    background: #374151;
+    background: #c5b59e;
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #4b5563;
+    background: #b19e84;
   }
 }
 
-/* Professional enterprise card styling - no blurry radial blobs */
+/* Warm Parchment Glass Cards matching Login Page */
 .clinical-card {
-  background-color: #111827;
-  border: 1px solid #1f2937;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4), 0 1px 2px -1px rgba(0, 0, 0, 0.4);
+  background-color: rgba(228, 218, 198, 0.92) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(170, 150, 120, 0.45) !important;
+  border-radius: 1rem;
+  box-shadow: 0 12px 32px -8px rgba(80, 50, 30, 0.12), 0 0 20px -5px rgba(225, 29, 72, 0.05);
+  color: #1c1917 !important;
 }
 
 .clinical-card-elevated {
-  background-color: #161f2e;
-  border: 1px solid #283548;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.5);
+  background-color: rgba(238, 230, 215, 0.96) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(170, 150, 120, 0.60) !important;
+  border-radius: 1rem;
+  box-shadow: 0 20px 48px -10px rgba(80, 50, 30, 0.18), 0 0 30px -6px rgba(225, 29, 72, 0.08);
+  color: #1c1917 !important;
 }
 
 .clinical-table-row {
   transition: background-color 150ms ease-in-out;
 }
 .clinical-table-row:hover {
-  background-color: rgba(31, 41, 55, 0.6);
+  background-color: rgba(215, 200, 175, 0.35);
 }
 
 /* Status tokens */
@@ -76,5 +86,135 @@
   font-weight: 600;
   letter-spacing: 0.025em;
   text-transform: uppercase;
+}
+
+/* High-contrast headings on parchment surfaces */
+h1, h2, h3, h4, h5, h6,
+h1.text-white, h2.text-white, h3.text-white, h4.text-white,
+.clinical-card h1, .clinical-card h2, .clinical-card h3, .clinical-card h4,
+.clinical-card-elevated h1, .clinical-card-elevated h2, .clinical-card-elevated h3 {
+  color: #1c1917 !important;
+}
+
+span.font-semibold.text-white, span.font-bold.text-white, span.text-white.font-mono,
+div.font-semibold.text-white, div.font-bold.text-white {
+  color: #1c1917 !important;
+}
+
+/* Clean white/ivory inputs matching login page */
+input:not([type="checkbox"]):not([type="radio"]), select, textarea {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  color: #1c1917 !important;
+  border-color: #d1c1a9 !important;
+}
+input:not([type="checkbox"]):not([type="radio"]):focus, select:focus, textarea:focus {
+  border-color: #e11d48 !important;
+  box-shadow: 0 0 0 2px rgba(225, 29, 72, 0.20) !important;
+  outline: none !important;
+}
+
+/* Tables in the dashboard */
+table {
+  color: #1c1917 !important;
+}
+thead tr {
+  background-color: rgba(220, 206, 184, 0.75) !important;
+  color: #44403c !important;
+  border-bottom: 1px solid rgba(170, 150, 120, 0.5) !important;
+}
+tbody tr {
+  border-bottom: 1px solid rgba(190, 175, 150, 0.3) !important;
+}
+tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.50) !important;
+}
+
+/* Dark mode utility class translations to warm parchment */
+.bg-slate-950 {
+  background-color: #dbcfb9 !important;
+}
+.bg-slate-900 {
+  background-color: rgba(228, 218, 198, 0.92) !important;
+}
+.bg-slate-800 {
+  background-color: rgba(240, 232, 220, 0.95) !important;
+  color: #1c1917 !important;
+}
+.bg-slate-800\/90, .bg-slate-800\/80, .bg-slate-800\/60, .bg-slate-800\/50 {
+  background-color: rgba(240, 232, 220, 0.85) !important;
+  color: #1c1917 !important;
+}
+.bg-slate-900\/90, .bg-slate-900\/80, .bg-slate-900\/95, .bg-slate-950\/60, .bg-slate-950\/70, .bg-slate-950\/40 {
+  background-color: rgba(228, 218, 198, 0.92) !important;
+}
+.border-slate-800, .border-slate-700, .border-slate-800\/80, .border-slate-700\/80, .border-slate-600 {
+  border-color: rgba(170, 150, 120, 0.45) !important;
+}
+.text-slate-100, .text-slate-200, .text-slate-300 {
+  color: #1c1917 !important;
+}
+.text-slate-400 {
+  color: #57534e !important;
+}
+.text-slate-500 {
+  color: #78716c !important;
+}
+.text-slate-600 {
+  color: #a8a29e !important;
+}
+
+/* Buttons with white text on colored backgrounds keep white text */
+button.bg-rose-600, button.bg-red-600, button.bg-red-700, button.bg-teal-700, button.bg-teal-600, 
+.bg-gradient-to-r, [class*="bg-rose-600"], [class*="bg-red-600"], [class*="bg-teal-700"], [class*="bg-teal-600"] {
+  color: #ffffff !important;
+}
+
+/* High contrast dark brown medical badges on warm parchment */
+[class*="bg-emerald-950"] {
+  background-color: #ede5d5 !important;
+  color: #2d1b14 !important;
+  border-color: #c4b59f !important;
+}
+[class*="bg-red-950"], [class*="bg-rose-950"] {
+  background-color: #fff1f2 !important;
+  color: #9f1239 !important;
+  border-color: #fecdd3 !important;
+}
+[class*="bg-teal-950"] {
+  background-color: #ede5d5 !important;
+  color: #2d1b14 !important;
+  border-color: #c4b59f !important;
+}
+[class*="bg-indigo-950"] {
+  background-color: #eef2ff !important;
+  color: #3730a3 !important;
+  border-color: #c7d2fe !important;
+}
+[class*="bg-amber-950"] {
+  background-color: #f7ede0 !important;
+  color: #3d2212 !important;
+  border-color: #d8c2aa !important;
+}
+
+/* Dashboard text color overrides - replace any remaining green, teal, and yellow with rich dark brown */
+.clinical-card [class*="text-emerald"]:not(button):not(.btn),
+.clinical-card [class*="text-green"]:not(button):not(.btn),
+.clinical-card [class*="text-teal"]:not(button):not(.btn),
+.clinical-card-elevated [class*="text-emerald"]:not(button):not(.btn),
+.clinical-card-elevated [class*="text-green"]:not(button):not(.btn),
+.clinical-card-elevated [class*="text-teal"]:not(button):not(.btn),
+table [class*="text-emerald"]:not(button):not(.btn),
+table [class*="text-green"]:not(button):not(.btn),
+table [class*="text-teal"]:not(button):not(.btn) {
+  color: #2d1b14 !important;
+}
+
+.clinical-card [class*="text-amber"]:not(button):not(.btn),
+.clinical-card [class*="text-yellow"]:not(button):not(.btn),
+.clinical-card-elevated [class*="text-amber"]:not(button):not(.btn),
+.clinical-card-elevated [class*="text-yellow"]:not(button):not(.btn),
+table [class*="text-amber"]:not(button):not(.btn),
+table [class*="text-yellow"]:not(button):not(.btn) {
+  color: #3c2415 !important;
 }
 

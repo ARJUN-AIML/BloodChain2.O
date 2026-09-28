@@ -91,17 +91,27 @@ def seed():
 
     # 2. Seed Blood Inventory for all facilities, blood groups, and components
     print("Seeding Blood Inventory from latest daily records...")
-    # Get latest stock per (facility, blood_group, blood_component) from FacilityDailyRecord
+    rows = []
     from django.db import connection
-    with connection.cursor() as cursor:
-        cursor.execute("""
-            SELECT DISTINCT ON (facility_id, blood_group, blood_component)
-                facility_id, blood_group, blood_component, available_stock
-            FROM facility_daily_records
-            ORDER BY facility_id, blood_group, blood_component, date DESC;
-        """)
-        rows = cursor.fetchall()
-        print(f"Fetched {len(rows)} latest stock points from facility_daily_records.")
+    try:
+        with connection.cursor() as cursor:
+            if connection.vendor == 'postgresql':
+                cursor.execute("""
+                    SELECT DISTINCT ON (facility_id, blood_group, blood_component)
+                        facility_id, blood_group, blood_component, available_stock
+                    FROM facility_daily_records
+                    ORDER BY facility_id, blood_group, blood_component, date DESC;
+                """)
+            else:
+                cursor.execute("""
+                    SELECT facility_id, blood_group, blood_component, available_stock
+                    FROM facility_daily_records
+                    GROUP BY facility_id, blood_group, blood_component;
+                """)
+            rows = cursor.fetchall()
+            print(f"Fetched {len(rows)} latest stock points from facility_daily_records.")
+    except Exception as e:
+        print(f"facility_daily_records query note ({e}), using default inventory.")
 
     inventory_to_create = []
     existing_keys = set(BloodInventory.objects.values_list('facility_id', 'blood_group', 'blood_component'))
