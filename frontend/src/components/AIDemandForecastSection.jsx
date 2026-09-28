@@ -572,30 +572,19 @@ export const AIDemandForecastSection = ({ facility, role }) => {
             <p className="text-[10px] text-stone-500 mt-1">Filtered dynamically to operational data present for this facility.</p>
           </div>
 
-          {/* Prediction Horizon Selector */}
+          {/* Prediction Horizon */}
           <div>
             <label className="block text-xs font-bold text-stone-700 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-rose-600" />
-              <span>Prediction Horizon (Calendar Days)</span>
+              <span>Prediction Horizon</span>
             </label>
-            <div className="grid grid-cols-3 gap-1.5 bg-stone-100 p-1.5 rounded-lg border border-stone-300">
-              {[7, 14, 30].map((d) => (
-                <button
-                  key={d}
-                  type="button"
-                  onClick={() => setForecastDays(d)}
-                  className={`py-1 text-xs font-bold rounded text-center transition-colors cursor-pointer ${
-                    forecastDays === d
-                      ? 'bg-rose-600 text-white shadow-xs'
-                      : 'text-stone-700 hover:text-stone-900 hover:bg-stone-200'
-                  }`}
-                >
-                  {d} Days
-                </button>
-              ))}
+            <div className="bg-stone-100 p-1.5 rounded-lg border border-stone-300 flex items-center justify-center">
+              <div className="w-full py-1 text-xs font-bold rounded text-center bg-rose-600 text-white shadow-xs">
+                7 Days Forecast
+              </div>
             </div>
             <p className="text-[10px] text-stone-500 mt-1">
-              Select 7, 14, or 30 days to dynamically generate and display accurate predictions in the calendar.
+              Standard 7-day predictive requirement series displayed in the operational calendar.
             </p>
           </div>
         </div>
@@ -823,24 +812,10 @@ export const AIDemandForecastSection = ({ facility, role }) => {
                       <span>Card Grid</span>
                     </button>
 
-                    {/* Quick Horizon Buttons inside Calendar Toolbar */}
-                    <div className="flex items-center gap-1 bg-[#faf6ee] p-1 rounded-lg border border-[#d5c7b2]">
-                      <span className="text-[11px] font-bold text-stone-600 px-1.5 hidden sm:inline">Horizon:</span>
-                      {[7, 14, 30].map((d) => (
-                        <button
-                          key={d}
-                          type="button"
-                          onClick={() => setForecastDays(d)}
-                          className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer ${
-                            forecastDays === d
-                              ? 'bg-rose-600 text-white shadow-2xs'
-                              : 'text-stone-700 hover:text-stone-900 hover:bg-stone-200/60'
-                          }`}
-                          title={`Forecast for ${d} days in calendar`}
-                        >
-                          {d} Days
-                        </button>
-                      ))}
+                    {/* Active Horizon Indicator in Calendar Toolbar */}
+                    <div className="flex items-center gap-1.5 bg-[#faf6ee] px-2.5 py-1.5 rounded-lg border border-[#d5c7b2] text-xs font-bold text-rose-700">
+                      <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></span>
+                      <span>7-Day Forecast</span>
                     </div>
                   </div>
 
