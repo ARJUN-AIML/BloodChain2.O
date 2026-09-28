@@ -21,6 +21,7 @@ import {
   ExternalLink,
   Droplet
 } from 'lucide-react';
+import { DonorIcon } from './DonorIcon';
 
 export const DonorRegistrations = ({ donor, onNavigateToCertificates }) => {
   const [registrations, setRegistrations] = useState([]);
@@ -253,7 +254,7 @@ export const DonorRegistrations = ({ donor, onNavigateToCertificates }) => {
               <div className="flex items-center justify-between border-b border-stone-800/80 pb-3 mb-4">
                 <div className="flex items-center gap-2">
                   <div className="w-7 h-7 rounded-lg bg-rose-600 flex items-center justify-center shadow-md">
-                    <Droplet className="w-3.5 h-3.5 text-white fill-white" />
+                    <DonorIcon className="w-3.5 h-3.5 text-white" />
                   </div>
                   <div>
                     <span className="font-extrabold tracking-tight text-xs text-stone-100 flex items-center gap-1">

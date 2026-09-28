@@ -18,6 +18,7 @@ import {
   Heart,
   User
 } from 'lucide-react';
+import { DonorIcon } from '../features/donor/DonorIcon';
 
 export const Navbar = () => {
   const { profile, facility, role, logout, loginWithDevToken } = useAuth();
@@ -169,7 +170,7 @@ export const Navbar = () => {
               {/* Role Indicator Pill */}
               <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-white/80 border border-stone-300 text-stone-800 shadow-2xs">
                 {role === 'DONOR' ? (
-                  <Heart className="w-3.5 h-3.5 text-rose-600 fill-rose-600" />
+                  <DonorIcon className="w-3.5 h-3.5 text-rose-600" />
                 ) : role === 'HOSPITAL_LOGISTICS' ? (
                   <Truck className="w-3.5 h-3.5 text-teal-600" />
                 ) : role === 'BLOOD_BANK' ? (
@@ -184,7 +185,7 @@ export const Navbar = () => {
               <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/60 border border-stone-300 text-xs text-stone-700 shadow-2xs">
                 {role === 'DONOR' ? (
                   <>
-                    <User className="w-3.5 h-3.5 text-rose-600" />
+                    <DonorIcon className="w-3.5 h-3.5 text-rose-600" />
                     <span className="font-semibold text-stone-900 max-w-[220px] truncate">{profile?.name}</span>
                     <span className="text-[10px] font-mono text-rose-700 font-bold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">
                       DONOR
@@ -289,7 +290,7 @@ export const Navbar = () => {
                   <div className="space-y-2 p-3 rounded-lg bg-rose-950/30 border border-rose-900/50">
                     <div className="flex items-center justify-between text-xs font-semibold text-rose-300">
                       <span className="flex items-center gap-1.5 text-rose-200">
-                        <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+                        <DonorIcon className="w-3.5 h-3.5 text-rose-400" />
                         <span>Voluntary Donor Personas (Seed Accounts)</span>
                       </span>
                       <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-900 text-rose-200 font-mono">

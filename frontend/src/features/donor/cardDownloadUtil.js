@@ -64,11 +64,49 @@ export function downloadDonorPassCard({ donor, camp, timeslot, qrValue }) {
       ctx.lineTo(width, 75);
       ctx.stroke();
 
-      // Brand Logo Droplet
+      // Brand Logo Donor Badge
       ctx.fillStyle = '#e11d48';
-      ctx.beginPath();
-      ctx.arc(45, 38, 16, 0, Math.PI * 2);
+      roundRect(28, 22, 34, 34, 9);
       ctx.fill();
+
+      // HandHeart Donor Emblem on Canvas
+      ctx.save();
+      ctx.translate(33, 26);
+      ctx.scale(1.05, 1.05);
+      ctx.strokeStyle = '#ffffff';
+      ctx.fillStyle = '#ffffff';
+      ctx.lineWidth = 1.8;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      ctx.beginPath();
+      ctx.moveTo(11, 14);
+      ctx.lineTo(13, 14);
+      ctx.arc(13, 12, 2, Math.PI / 2, -Math.PI / 2, true);
+      ctx.lineTo(10, 10);
+      ctx.lineTo(3, 16);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(7, 20);
+      ctx.lineTo(8.6, 18.6);
+      ctx.lineTo(14, 18.6);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(2, 15);
+      ctx.lineTo(8, 21);
+      ctx.stroke();
+
+      // Heart of Life
+      ctx.beginPath();
+      ctx.moveTo(16, 12);
+      ctx.bezierCurveTo(14.5, 9.5, 11, 8.5, 11, 6.5);
+      ctx.bezierCurveTo(11, 4.5, 13.5, 4, 16, 6.5);
+      ctx.bezierCurveTo(18.5, 4, 21, 4.5, 21, 6.5);
+      ctx.bezierCurveTo(21, 8.5, 17.5, 9.5, 16, 12);
+      ctx.fill();
+      ctx.restore();
 
       // Brand Text
       ctx.fillStyle = '#ffffff';

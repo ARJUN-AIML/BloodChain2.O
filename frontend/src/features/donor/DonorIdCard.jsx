@@ -17,6 +17,7 @@ import {
   Info,
   HeartHandshake
 } from 'lucide-react';
+import { DonorIcon } from './DonorIcon';
 
 export const DonorIdCard = ({ donor }) => {
   const [copied, setCopied] = useState(false);
@@ -123,7 +124,7 @@ export const DonorIdCard = ({ donor }) => {
           <div className="flex items-center justify-between border-b border-stone-800/80 pb-4 mb-6 relative z-10">
             <div className="flex items-center gap-2.5">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-rose-500 to-red-700 flex items-center justify-center shadow-lg shadow-rose-900/30">
-                <Droplet className="w-5 h-5 text-white fill-white" />
+                <DonorIcon className="w-5 h-5 text-white" />
               </div>
               <div>
                 <span className="font-extrabold tracking-tight text-base text-stone-100 flex items-center gap-1.5">

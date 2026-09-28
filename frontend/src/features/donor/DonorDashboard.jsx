@@ -29,6 +29,7 @@ import {
   Layers,
   Sparkles
 } from 'lucide-react';
+import { DonorIcon } from './DonorIcon';
 
 export const DonorDashboard = () => {
   const { profile, logout } = useAuth();
@@ -82,7 +83,7 @@ export const DonorDashboard = () => {
         {/* Donor Identity Bar */}
         <div className="flex items-center gap-3">
           <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-rose-600 to-red-700 flex items-center justify-center text-white shadow-md shadow-rose-900/20 font-bold shrink-0">
-            <Droplet className="w-6 h-6 fill-white" />
+            <DonorIcon className="w-6 h-6 text-white" />
           </div>
           <div>
             <div className="flex items-center gap-2">

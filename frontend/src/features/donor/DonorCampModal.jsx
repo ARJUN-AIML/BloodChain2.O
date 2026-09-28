@@ -23,6 +23,7 @@ import {
   QrCode,
   Sparkles
 } from 'lucide-react';
+import { DonorIcon } from './DonorIcon';
 
 export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
   const [timeslot, setTimeslot] = useState('09:00 AM - 10:00 AM');
@@ -179,7 +180,7 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
               <div className="flex items-center justify-between border-b border-stone-800/80 pb-3 mb-4 relative z-10">
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-xl bg-rose-600 flex items-center justify-center shadow-lg shadow-rose-900/30">
-                    <Droplet className="w-4 h-4 text-white fill-white" />
+                    <DonorIcon className="w-4 h-4 text-white" />
                   </div>
                   <div>
                     <span className="font-extrabold tracking-tight text-sm text-stone-100 flex items-center gap-1.5">

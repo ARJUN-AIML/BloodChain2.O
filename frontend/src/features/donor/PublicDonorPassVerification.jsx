@@ -13,6 +13,7 @@ import {
   Printer, 
   ExternalLink 
 } from 'lucide-react';
+import { DonorIcon } from './DonorIcon';
 
 export const PublicDonorPassVerification = ({ tokenOverride, onBackToApp }) => {
   const [data, setData] = useState(null);
@@ -169,8 +170,8 @@ export const PublicDonorPassVerification = ({ tokenOverride, onBackToApp }) => {
             {/* SECTION 1: DONOR DETAILS */}
             <div className="space-y-3">
               <div className="border-b border-stone-200 pb-1.5 flex items-center justify-between">
-                <h2 className="text-xs font-mono font-bold text-stone-500 uppercase tracking-widest flex items-center gap-1.5">
-                  🩸 DONOR DETAILS
+                <h2 className="text-xs font-mono font-bold text-stone-700 uppercase tracking-widest flex items-center gap-1.5">
+                  <DonorIcon className="w-4 h-4 text-rose-600" /> DONOR DETAILS
                 </h2>
                 <span className="text-[10px] font-mono text-stone-400">AUTHENTICATED</span>
               </div>
