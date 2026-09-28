@@ -14,6 +14,40 @@ from apps.camps.serializers import (
 )
 
 
+def get_donor_or_auto_create(user):
+    """
+    Safely retrieve the donor profile for an authenticated user.
+    If the user has role 'DONOR' but the DonorProfile record is missing,
+    auto-create and link it so the user never encounters a 'Donor profile not found' error.
+    """
+    if not user or not user.is_authenticated:
+        return None
+
+    donor = getattr(user, 'donor_profile', None)
+    if not donor:
+        try:
+            donor = DonorProfile.objects.filter(user=user).first()
+        except Exception:
+            donor = None
+
+    if not donor:
+        profile = getattr(user, 'profile', None)
+        if (profile and profile.role == 'DONOR') or UserProfile.objects.filter(user=user, role='DONOR').exists():
+            name = (profile.name if profile else None) or user.get_full_name() or user.username
+            donor, _ = DonorProfile.objects.get_or_create(
+                user=user,
+                defaults={
+                    'name': name,
+                    'email': user.email or '',
+                    'blood_group': 'O+',
+                    'city': 'Chennai',
+                    'state': 'Tamil Nadu',
+                    'is_active': True,
+                }
+            )
+    return donor
+
+
 class DonorRegisterView(views.APIView):
     """Public endpoint for donor registration."""
     permission_classes = [permissions.AllowAny]
@@ -115,7 +149,7 @@ class DonorLoginView(views.APIView):
                 status=status.HTTP_403_FORBIDDEN
             )
 
-        donor = getattr(user, 'donor_profile', None)
+        donor = get_donor_or_auto_create(user)
         if not donor:
             return response.Response(
                 {'detail': 'Donor profile not found.'},
@@ -136,7 +170,7 @@ class DonorMeView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        donor = getattr(request.user, 'donor_profile', None)
+        donor = get_donor_or_auto_create(request.user)
         if not donor:
             return response.Response(
                 {'detail': 'Donor profile not found.'},
@@ -159,7 +193,7 @@ class DonorMeView(views.APIView):
         return response.Response(data)
 
     def patch(self, request):
-        donor = getattr(request.user, 'donor_profile', None)
+        donor = get_donor_or_auto_create(request.user)
         if not donor:
             return response.Response(
                 {'detail': 'Donor profile not found.'},
@@ -175,6 +209,11 @@ class DonorMeView(views.APIView):
             if profile:
                 profile.name = request.data['name']
                 profile.save()
+
+        # Also update User email if changed
+        if 'email' in request.data and request.data['email']:
+            request.user.email = request.data['email']
+            request.user.save()
 
         return response.Response(DonorProfileSerializer(donor).data)
 
@@ -232,7 +271,7 @@ class DonorDonationsView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        donor = getattr(request.user, 'donor_profile', None)
+        donor = get_donor_or_auto_create(request.user)
         if not donor:
             return response.Response({'detail': 'Donor profile not found.'}, status=404)
         donations = VerifiedDonation.objects.filter(donor=donor).select_related(
@@ -246,7 +285,7 @@ class DonorCertificatesView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        donor = getattr(request.user, 'donor_profile', None)
+        donor = get_donor_or_auto_create(request.user)
         if not donor:
             return response.Response({'detail': 'Donor profile not found.'}, status=404)
         certs = DonationCertificate.objects.filter(donor=donor).select_related('donation')
@@ -258,7 +297,7 @@ class DonorAchievementsView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        donor = getattr(request.user, 'donor_profile', None)
+        donor = get_donor_or_auto_create(request.user)
         if not donor:
             return response.Response({'detail': 'Donor profile not found.'}, status=404)
         return response.Response({
@@ -272,7 +311,7 @@ class DonorRegistrationsView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        donor = getattr(request.user, 'donor_profile', None)
+        donor = get_donor_or_auto_create(request.user)
         if not donor:
             return response.Response({'detail': 'Donor profile not found.'}, status=404)
         regs = CampRegistration.objects.filter(donor=donor).select_related(
@@ -286,7 +325,7 @@ class DonorNotificationsView(views.APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        donor = getattr(request.user, 'donor_profile', None)
+        donor = get_donor_or_auto_create(request.user)
         if not donor:
             return response.Response({'detail': 'Donor profile not found.'}, status=404)
         notifs = DonorNotification.objects.filter(donor=donor)[:50]
@@ -294,7 +333,7 @@ class DonorNotificationsView(views.APIView):
 
     def patch(self, request):
         """Mark notifications as read."""
-        donor = getattr(request.user, 'donor_profile', None)
+        donor = get_donor_or_auto_create(request.user)
         if not donor:
             return response.Response({'detail': 'Donor profile not found.'}, status=404)
         ids = request.data.get('ids', [])

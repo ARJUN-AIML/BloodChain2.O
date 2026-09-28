@@ -37,12 +37,27 @@ class DonorLoginSerializer(serializers.Serializer):
 
 
 class DonorProfileUpdateSerializer(serializers.ModelSerializer):
+    date_of_birth = serializers.DateField(required=False, allow_null=True)
+
     class Meta:
         model = DonorProfile
         fields = [
-            'name', 'phone', 'blood_group', 'date_of_birth',
+            'name', 'phone', 'email', 'blood_group', 'date_of_birth',
             'gender', 'address', 'city', 'state'
         ]
+
+    def to_internal_value(self, data):
+        data = data.copy() if hasattr(data, 'copy') else dict(data)
+        if 'date_of_birth' in data:
+            val = data.get('date_of_birth')
+            if val == '' or val is None:
+                data['date_of_birth'] = None
+            elif isinstance(val, str) and '-' in val:
+                parts = val.strip().split('-')
+                # If format is DD-MM-YYYY (e.g. 01-07-2006)
+                if len(parts) == 3 and len(parts[0]) <= 2 and len(parts[2]) == 4:
+                    data['date_of_birth'] = f"{parts[2]}-{parts[1].zfill(2)}-{parts[0].zfill(2)}"
+        return super().to_internal_value(data)
 
 
 class DonorPublicVerifySerializer(serializers.ModelSerializer):

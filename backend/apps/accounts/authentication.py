@@ -129,17 +129,36 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
                     elif '_log' in email.lower() or '_log' in username:
                         role = 'HOSPITAL_LOGISTICS'
 
-                    # Safely update_or_create to prevent OneToOne IntegrityError
-                    profile, _ = UserProfile.objects.update_or_create(
-                        user=user,
-                        defaults={
-                            'firebase_uid': uid,
-                            'name': username.replace('_', ' ').replace('-', ' ').title(),
-                            'role': role,
-                            'facility': facility,
-                            'is_active': True
-                        }
-                    )
+            # Safely update_or_create to prevent OneToOne IntegrityError
+            profile, _ = UserProfile.objects.update_or_create(
+                user=user,
+                defaults={
+                    'firebase_uid': uid,
+                    'name': username.replace('_', ' ').replace('-', ' ').title(),
+                    'role': role,
+                    'facility': facility,
+                    'is_active': True
+                }
+            )
+
+            # Ensure DonorProfile exists if authenticated user is a donor
+            if profile.role == 'DONOR':
+                try:
+                    from apps.donors.models import DonorProfile
+                    if not hasattr(profile.user, 'donor_profile') or not DonorProfile.objects.filter(user=profile.user).exists():
+                        DonorProfile.objects.get_or_create(
+                            user=profile.user,
+                            defaults={
+                                'name': profile.name or profile.user.get_full_name() or profile.user.username,
+                                'email': profile.user.email or email or '',
+                                'blood_group': 'O+',
+                                'city': 'Chennai',
+                                'state': 'Tamil Nadu',
+                                'is_active': True,
+                            }
+                        )
+                except Exception as d_err:
+                    logger.warning("Auto-create DonorProfile on Firebase auth failed: %s", d_err)
 
             return (profile.user, None)
 
@@ -340,6 +359,23 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
         profile = UserProfile.objects.select_related('user', 'facility').filter(firebase_uid=token, is_active=True).first()
         if profile and profile.user and profile.user.username == info['username'] and profile.role == info['role']:
             if is_donor or (profile.facility and profile.facility.facility_id == info.get('facility_id')):
+                if is_donor:
+                    try:
+                        from apps.donors.models import DonorProfile
+                        if not hasattr(profile.user, 'donor_profile') or not DonorProfile.objects.filter(user=profile.user).exists():
+                            DonorProfile.objects.get_or_create(
+                                user=profile.user,
+                                defaults={
+                                    'name': info['name'],
+                                    'email': profile.user.email or '',
+                                    'blood_group': 'O+',
+                                    'city': 'Trichy' if '002' in token else 'Chennai',
+                                    'state': 'Tamil Nadu',
+                                    'is_active': True
+                                }
+                            )
+                    except Exception as d_err:
+                        logger.warning("Auto-create DonorProfile in dev token failed: %s", d_err)
                 return (profile.user, None)
 
         user, _ = User.objects.get_or_create(username=info['username'])
