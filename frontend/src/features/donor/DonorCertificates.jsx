@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import api from '../../services/api';
 import { 
@@ -167,9 +168,14 @@ export const DonorCertificates = ({ donor }) => {
       )}
 
       {/* Formal Certificate Modal */}
-      {selectedCert && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/70 backdrop-blur-sm animate-fade-in overflow-y-auto">
-          <div className="max-w-2xl w-full my-8 bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-amber-300 relative text-center">
+      {selectedCert && typeof document !== 'undefined' && createPortal(
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-stone-950/60 backdrop-blur-md animate-fade-in overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedCert(null);
+          }}
+        >
+          <div className="max-w-2xl w-full my-auto bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-amber-300 relative text-center">
             {/* Modal Controls */}
             <div className="absolute top-4 right-4 flex items-center gap-2 print:hidden">
               <button
@@ -258,7 +264,8 @@ export const DonorCertificates = ({ donor }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

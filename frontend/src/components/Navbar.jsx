@@ -228,7 +228,7 @@ export const Navbar = () => {
 
       {/* Switch Facility Persona Modal (All 50 Facilities from Dataset) */}
       {showSwitchModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-stone-950/60 backdrop-blur-md animate-fade-in">
           <div className="clinical-card-elevated max-w-4xl w-full p-6 bg-slate-900 border-slate-700 space-y-4">
             
             <div className="flex items-center justify-between border-b border-slate-800 pb-3">
