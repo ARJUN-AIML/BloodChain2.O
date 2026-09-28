@@ -5,10 +5,43 @@ import { Login } from './features/auth/Login';
 import { HospitalPortalHub } from './features/hospital/HospitalPortalHub';
 import { BloodBankDashboard } from './features/bloodbank/BloodBankDashboard';
 import { DonorDashboard } from './features/donor/DonorDashboard';
+import { PublicDonorPassVerification } from './features/donor/PublicDonorPassVerification';
+import { PublicCertificateVerify } from './features/donor/PublicCertificateVerify';
 import { Activity } from 'lucide-react';
 
 const AppShell = () => {
   const { profile, role, loading } = useAuth();
+
+  // Public verification routing
+  const path = window.location.pathname;
+  const search = window.location.search;
+  const params = new URLSearchParams(search);
+
+  const isDonorVerify = 
+    path.startsWith('/verify/donor') || 
+    path === '/verify-donor' || 
+    params.has('verify_donor') || 
+    (params.has('id') && (params.get('id').startsWith('BC-D-') || params.has('camp')));
+
+  const isCertVerify = 
+    path.startsWith('/verify/certificate') || 
+    params.has('verify_cert');
+
+  if (isDonorVerify) {
+    return <PublicDonorPassVerification onBackToApp={() => { window.location.href = '/'; }} />;
+  }
+
+  if (isCertVerify) {
+    const certToken = params.get('verify_cert') || path.split('/').pop();
+    return (
+      <div className="min-h-screen bg-[#dbcfb9] flex items-center justify-center p-4">
+        <PublicCertificateVerify 
+          certificateId={certToken} 
+          onClose={() => { window.location.href = '/'; }} 
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#dbcfb9] text-stone-900 flex flex-col">
@@ -17,7 +50,7 @@ const AppShell = () => {
         {loading ? (
           <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center space-y-4">
             <Activity className="w-10 h-10 text-rose-500 animate-spin" />
-            <p className="text-xs text-slate-400 font-mono">Loading BloodChain Facility Portal...</p>
+            <p className="text-xs text-slate-400 font-mono">Loading BloodChain Portal...</p>
           </div>
         ) : !profile ? (
           <Login />

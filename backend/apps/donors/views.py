@@ -303,3 +303,80 @@ class DonorNotificationsView(views.APIView):
         else:
             DonorNotification.objects.filter(donor=donor, is_read=False).update(is_read=True)
         return response.Response({'status': 'ok'})
+
+
+class DonorPublicVerifyView(views.APIView):
+    """
+    Public verification endpoint — accessible without login when a phone/scanner
+    scans the QR code on a donor pass, registration card, or ID card.
+    """
+    permission_classes = [permissions.AllowAny]
+
+    def get(self, request, identifier):
+        import uuid as uuid_lib
+        from django.utils import timezone
+
+        donor = None
+        try:
+            token_uuid = uuid_lib.UUID(identifier)
+            donor = DonorProfile.objects.filter(qr_token=token_uuid, is_active=True).first()
+        except (ValueError, AttributeError):
+            pass
+
+        if not donor:
+            donor = DonorProfile.objects.filter(donor_id__iexact=identifier.strip(), is_active=True).first()
+
+        if not donor:
+            return response.Response(
+                {'detail': 'Donor record not found or inactive.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        camp_id = request.query_params.get('camp') or request.query_params.get('camp_id')
+        pass_reg = None
+        if camp_id:
+            pass_reg = donor.camp_registrations.filter(camp__camp_id=camp_id).select_related('camp', 'camp__organizer').first()
+
+        if not pass_reg:
+            pass_reg = donor.camp_registrations.filter(
+                status__in=['REGISTERED', 'CHECKED_IN']
+            ).select_related('camp', 'camp__organizer').first()
+
+        pass_data = None
+        if pass_reg:
+            pass_data = {
+                'camp_id': pass_reg.camp.camp_id,
+                'camp_name': pass_reg.camp.camp_name,
+                'camp_type': pass_reg.camp.camp_type,
+                'venue_name': pass_reg.camp.venue_name,
+                'venue_address': pass_reg.camp.venue_address,
+                'organizer_name': pass_reg.camp.organizer.name if pass_reg.camp.organizer else 'BloodChain Network',
+                'organizer_type': pass_reg.camp.organizer.facility_type if pass_reg.camp.organizer else 'HOSPITAL',
+                'start_datetime': pass_reg.camp.start_datetime,
+                'end_datetime': pass_reg.camp.end_datetime,
+                'preferred_timeslot': getattr(pass_reg, 'preferred_timeslot', '09:00 AM - 10:00 AM'),
+                'status': pass_reg.status,
+                'registered_at': pass_reg.registered_at,
+            }
+
+        verified_donations_count = donor.verified_donation_count
+        status_label = 'Verified Donor' if verified_donations_count > 0 else 'Registered Donor'
+
+        return response.Response({
+            'status': 'verified',
+            'donor_id': donor.donor_id,
+            'name': donor.name,
+            'blood_group': donor.blood_group,
+            'donor_status': status_label,
+            'is_verified_donor': verified_donations_count > 0,
+            'member_since': donor.member_since_year,
+            'city': donor.city,
+            'state': donor.state,
+            'verified_donations_count': verified_donations_count,
+            'lives_impacted': verified_donations_count * 3,
+            'certificates_count': donor.certificates.count(),
+            'pass_registration': pass_data,
+            'verification_timestamp': timezone.now(),
+            'network': 'BloodChain Decentralized Blood Safety Network'
+        })
+

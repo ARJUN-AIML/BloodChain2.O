@@ -195,12 +195,19 @@ class CampRegisterView(views.APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        reg = CampRegistration.objects.create(camp=camp, donor=donor)
+        timeslot = request.data.get('preferred_timeslot') or '09:00 AM - 10:00 AM'
+        notes = request.data.get('notes', '')
+        reg = CampRegistration.objects.create(
+            camp=camp,
+            donor=donor,
+            preferred_timeslot=timeslot,
+            notes=notes
+        )
 
         DonorNotification.objects.create(
             donor=donor,
             title='Camp Registration Confirmed',
-            message=f'You have registered for {camp.camp_name} on {camp.start_datetime.strftime("%b %d, %Y")}.',
+            message=f'You have registered for {camp.camp_name} ({timeslot}) on {camp.start_datetime.strftime("%b %d, %Y")}.',
             notification_type='CAMP_REGISTERED',
             related_camp=camp
         )

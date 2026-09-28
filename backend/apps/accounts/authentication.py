@@ -356,6 +356,7 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
                 'facility': facility,
                 'is_active': True
             }
+        )
         if is_donor:
             try:
                 from apps.donors.models import DonorProfile

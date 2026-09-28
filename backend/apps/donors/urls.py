@@ -2,7 +2,8 @@ from django.urls import path
 from .views import (
     DonorRegisterView, DonorLoginView, DonorMeView,
     DonorQRVerifyView, DonorDonationsView, DonorCertificatesView,
-    DonorAchievementsView, DonorRegistrationsView, DonorNotificationsView
+    DonorAchievementsView, DonorRegistrationsView, DonorNotificationsView,
+    DonorPublicVerifyView
 )
 
 urlpatterns = [
@@ -15,4 +16,5 @@ urlpatterns = [
     path('me/registrations/', DonorRegistrationsView.as_view(), name='donor-registrations'),
     path('me/notifications/', DonorNotificationsView.as_view(), name='donor-notifications'),
     path('qr-verify/<uuid:qr_token>/', DonorQRVerifyView.as_view(), name='donor-qr-verify'),
+    path('public-verify/<str:identifier>/', DonorPublicVerifyView.as_view(), name='donor-public-verify'),
 ]

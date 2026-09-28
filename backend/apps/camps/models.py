@@ -93,6 +93,8 @@ class CampRegistration(models.Model):
     camp = models.ForeignKey(DonationCamp, on_delete=models.CASCADE, related_name='registrations')
     donor = models.ForeignKey(DonorProfile, on_delete=models.CASCADE, related_name='camp_registrations')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='REGISTERED')
+    preferred_timeslot = models.CharField(max_length=100, blank=True, default='09:00 AM - 10:00 AM')
+    notes = models.TextField(blank=True, default='')
     registered_at = models.DateTimeField(auto_now_add=True)
     checked_in_at = models.DateTimeField(null=True, blank=True)
     checked_in_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='checkins_performed')

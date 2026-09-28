@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import api from '../../services/api';
 import confetti from 'canvas-confetti';
+import { QRCodeCanvas } from 'qrcode.react';
+import { downloadDonorPassCard } from './cardDownloadUtil';
 import { 
   X, 
   Calendar, 
@@ -12,7 +14,12 @@ import {
   ShieldCheck, 
   Droplet,
   Check,
-  AlertCircle
+  AlertCircle,
+  Download,
+  Printer,
+  ExternalLink,
+  QrCode,
+  Sparkles
 } from 'lucide-react';
 
 export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
@@ -20,6 +27,7 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
   const [notes, setNotes] = useState('');
   const [healthChecked, setHealthChecked] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [downloading, setDownloading] = useState(false);
   const [error, setError] = useState(null);
   const [successData, setSuccessData] = useState(null);
 
@@ -33,6 +41,9 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
     '02:00 PM - 03:00 PM',
     '03:00 PM - 04:00 PM',
   ];
+
+  // URL encoded in the QR code: public verification endpoint that shows donor details
+  const qrVerificationUrl = `${window.location.origin}/verify-donor?id=${donor?.donor_id}&camp=${camp?.camp_id}`;
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -54,8 +65,8 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
       // Trigger celebration confetti
       try {
         confetti({
-          particleCount: 80,
-          spread: 70,
+          particleCount: 100,
+          spread: 80,
           origin: { y: 0.6 }
         });
       } catch (cErr) {
@@ -71,6 +82,27 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
     } finally {
       setSubmitting(false);
     }
+  };
+
+  const handleDownloadCard = async () => {
+    try {
+      setDownloading(true);
+      await downloadDonorPassCard({
+        donor,
+        camp,
+        timeslot,
+        qrValue: qrVerificationUrl
+      });
+    } catch (err) {
+      console.error('Failed to download card:', err);
+      alert('Unable to generate download image automatically. You can still use the Print Pass button.');
+    } finally {
+      setDownloading(false);
+    }
+  };
+
+  const handlePrint = () => {
+    window.print();
   };
 
   const formatDate = (dateStr) => {
@@ -93,7 +125,9 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm animate-fade-in">
-      <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-stone-200 relative max-h-[90vh] overflow-y-auto">
+      <div className={`bg-white rounded-3xl w-full p-6 sm:p-8 shadow-2xl border border-stone-200 relative max-h-[92vh] overflow-y-auto ${
+        successData ? 'max-w-2xl' : 'max-w-xl'
+      }`}>
         <button
           onClick={onClose}
           className="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition"
@@ -102,46 +136,147 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
         </button>
 
         {successData ? (
-          /* Success Screen */
-          <div className="text-center py-6 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 mx-auto flex items-center justify-center">
-              <CheckCircle2 className="w-10 h-10" />
+          /* Approved Pass Screen with Downloadable Card */
+          <div className="space-y-6">
+            <div className="text-center space-y-1">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold font-mono">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                REGISTRATION APPROVED & CONFIRMED
+              </div>
+              <h3 className="text-2xl font-black text-stone-900">Your Camp Pass is Ready!</h3>
+              <p className="text-xs text-stone-500 max-w-md mx-auto">
+                Scan the QR code with any smartphone camera to view verified donor details, or download your pass card below.
+              </p>
             </div>
 
-            <h3 className="text-2xl font-bold text-stone-800">You Are Registered!</h3>
-            <p className="text-sm text-stone-600 max-w-md mx-auto">
-              Your donation slot has been secured. Your digital donor pass will be recognized at check-in.
-            </p>
+            {/* The Physical Card Simulation */}
+            <div 
+              id="printable-camp-pass-card"
+              className="bg-gradient-to-br from-stone-900 via-stone-850 to-neutral-900 text-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-rose-900/40 relative overflow-hidden"
+            >
+              {/* Subtle Holographic Radial Glows */}
+              <div className="absolute -right-16 -top-16 w-52 h-52 rounded-full bg-rose-600/15 blur-3xl pointer-events-none" />
+              <div className="absolute -left-16 -bottom-16 w-52 h-52 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
 
-            <div className="bg-stone-50 rounded-2xl p-4 border border-stone-200 text-left space-y-2 text-xs font-mono">
-              <div className="flex justify-between">
-                <span className="text-stone-500">Camp:</span>
-                <span className="font-bold text-stone-800 text-right">{camp.camp_name}</span>
+              {/* Top Bar */}
+              <div className="flex items-center justify-between border-b border-stone-800/80 pb-3 mb-4 relative z-10">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-xl bg-rose-600 flex items-center justify-center shadow-lg shadow-rose-900/30">
+                    <Droplet className="w-4 h-4 text-white fill-white" />
+                  </div>
+                  <div>
+                    <span className="font-extrabold tracking-tight text-sm text-stone-100 flex items-center gap-1.5">
+                      BloodChain <span className="text-[9px] font-mono font-semibold px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">CAMP PASS</span>
+                    </span>
+                    <p className="text-[9px] text-stone-400 font-mono tracking-widest uppercase">Decentralized Blood Network</p>
+                  </div>
+                </div>
+
+                <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  PASS CONFIRMED
+                </span>
               </div>
-              <div className="flex justify-between">
-                <span className="text-stone-500">Venue:</span>
-                <span className="text-stone-800 text-right">{camp.venue_name}</span>
+
+              {/* Middle Section: Donor Details & QR Code */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 items-center relative z-10">
+                {/* Left 2 Columns: Donor & Camp Details */}
+                <div className="sm:col-span-2 space-y-3">
+                  <div>
+                    <p className="text-[9px] font-mono text-stone-400 uppercase tracking-wider">Registered Donor</p>
+                    <h4 className="text-xl font-bold text-white tracking-wide truncate">{donor?.name}</h4>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <p className="text-[9px] font-mono text-stone-400 uppercase">Permanent ID</p>
+                      <span className="text-xs font-mono font-bold text-rose-400 bg-rose-950/60 px-2 py-0.5 rounded border border-rose-900/60 inline-block">
+                        {donor?.donor_id}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-mono text-stone-400 uppercase">Blood Group</p>
+                      <span className="text-sm font-black text-rose-400">
+                        {donor?.blood_group} <span className="text-[9px] font-mono text-stone-400">Rh {donor?.blood_group?.includes('-') ? 'Neg' : 'Pos'}</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Camp & Venue */}
+                  <div className="space-y-1 text-xs text-stone-300 pt-1 border-t border-stone-800/80">
+                    <p className="font-bold text-stone-100 truncate">{camp.camp_name}</p>
+                    <p className="text-[11px] text-stone-400 flex items-center gap-1 truncate">
+                      <MapPin className="w-3 h-3 text-rose-500 shrink-0" />
+                      {camp.venue_name}
+                    </p>
+                    <div className="flex items-center gap-3 text-[11px] text-amber-400 pt-0.5 font-mono">
+                      <span>📅 {formatDate(camp.start_datetime)}</span>
+                      <span>🕒 {timeslot}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Scannable QR Code */}
+                <div className="flex flex-col items-center justify-center bg-white p-3 rounded-2xl shadow-inner border border-stone-200">
+                  <QRCodeCanvas
+                    value={qrVerificationUrl}
+                    size={120}
+                    level="H"
+                    includeMargin={false}
+                    data-qr={donor?.donor_id}
+                  />
+                  <span className="text-[8px] font-mono font-bold text-stone-700 mt-2 uppercase tracking-wider text-center">
+                    SCAN FOR DETAILS
+                  </span>
+                  <span className="text-[7px] font-mono text-stone-400 uppercase">
+                    MOBILE SCAN READY
+                  </span>
+                </div>
               </div>
-              <div className="flex justify-between">
-                <span className="text-stone-500">Date:</span>
-                <span className="text-stone-800">{formatDate(camp.start_datetime)}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-500">Selected Slot:</span>
-                <span className="text-rose-700 font-bold">{timeslot}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-stone-500">Donor ID:</span>
-                <span className="text-stone-800 font-bold">{donor?.donor_id}</span>
+
+              {/* Bottom Footer */}
+              <div className="mt-4 pt-3 border-t border-stone-800/80 flex items-center justify-between text-[9px] text-stone-400 font-mono relative z-10">
+                <span className="text-stone-400">Non-Transferable • Verifiable on BloodChain</span>
+                <span className="text-emerald-400">● SECURE TOKEN AUTH</span>
               </div>
             </div>
 
-            <div className="pt-4 flex justify-center gap-3">
+            {/* Action Buttons: Download, Print, Test Scan */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-2">
+              <button
+                onClick={handleDownloadCard}
+                disabled={downloading}
+                className="py-2.5 px-4 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 text-white font-semibold text-xs shadow-md shadow-rose-950/20 transition flex items-center justify-center gap-2"
+              >
+                <Download className="w-4 h-4" />
+                {downloading ? 'Generating PNG...' : 'Download Pass Card (PNG)'}
+              </button>
+
+              <button
+                onClick={handlePrint}
+                className="py-2.5 px-4 rounded-xl bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs transition flex items-center justify-center gap-2 border border-stone-800"
+              >
+                <Printer className="w-4 h-4" />
+                Print / Save PDF
+              </button>
+
+              <a
+                href={`/verify-donor?id=${donor?.donor_id}&camp=${camp?.camp_id}`}
+                target="_blank"
+                rel="noreferrer"
+                className="py-2.5 px-4 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-semibold text-xs transition flex items-center justify-center gap-1.5 border border-stone-300"
+              >
+                <ExternalLink className="w-3.5 h-3.5 text-stone-600" />
+                Preview QR Scan Link
+              </a>
+            </div>
+
+            <div className="text-center pt-2">
               <button
                 onClick={onClose}
-                className="px-6 py-2.5 rounded-xl bg-stone-900 text-white font-semibold text-sm hover:bg-stone-800 transition"
+                className="text-xs font-semibold text-stone-500 hover:text-stone-800 underline transition"
               >
-                Close & View Registrations
+                Done & Return to Camp Finder
               </button>
             </div>
           </div>
@@ -163,7 +298,7 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
 
             <h3 className="text-xl font-bold text-stone-900 mb-1">{camp.camp_name}</h3>
             
-            {/* Organizer vs Venue Distinction as strictly specified */}
+            {/* Organizer vs Venue Distinction */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 my-4 p-3.5 bg-stone-50 rounded-2xl border border-stone-200 text-xs">
               <div>
                 <span className="text-stone-400 font-mono block uppercase text-[10px]">Organized By</span>

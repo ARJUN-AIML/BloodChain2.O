@@ -59,7 +59,7 @@ class CampRegistrationSerializer(serializers.ModelSerializer):
             'camp_venue', 'camp_status', 'camp_type',
             'organizer_name', 'organizer_type',
             'donor_id', 'donor_name', 'donor_blood_group',
-            'status', 'registered_at', 'checked_in_at'
+            'status', 'preferred_timeslot', 'notes', 'registered_at', 'checked_in_at'
         ]
 
 
