@@ -1,9 +1,23 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
+const resolveApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
+    if (typeof window !== 'undefined' && window.location) {
+      const isRemoteDevice = window.location.hostname !== 'localhost' && 
+                             window.location.hostname !== '127.0.0.1' && 
+                             window.location.hostname !== '0.0.0.0';
+      if (isRemoteDevice && (envUrl.includes('localhost') || envUrl.includes('127.0.0.1'))) {
+        return '/api';
+      }
+    }
+    return envUrl;
+  }
+  return '/api';
+};
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: resolveApiBaseUrl(),
   headers: {
     'Content-Type': 'application/json',
   },

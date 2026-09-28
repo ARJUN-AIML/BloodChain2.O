@@ -48,14 +48,31 @@ export const PublicDonorPassVerification = ({ tokenOverride, onBackToApp }) => {
         setLoading(true);
         setError(null);
 
-        // Try primary API base URL or fallback to localhost:8000
-        const apiBase = import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api';
+        // Determine API base: use relative /api when accessed via tunnel or remote device
+        let apiBase = import.meta.env.VITE_API_BASE_URL || '/api';
+        
+        // If apiBase points to localhost but the page is opened on a remote phone/tunnel,
+        // switch to relative '/api' so traffic flows through the Vite tunnel proxy
+        if (typeof window !== 'undefined' && window.location) {
+          const isRemoteDevice = window.location.hostname !== 'localhost' && 
+                                 window.location.hostname !== '127.0.0.1' && 
+                                 window.location.hostname !== '0.0.0.0';
+          if (isRemoteDevice && (apiBase.includes('localhost') || apiBase.includes('127.0.0.1'))) {
+            apiBase = '/api';
+          }
+        }
+
         let res;
         try {
-          res = await axios.get(`${apiBase}/verify/${token}/`);
+          const cleanBase = apiBase.replace(/\/+$/, '');
+          res = await axios.get(`${cleanBase}/verify/${token}/`);
         } catch (firstErr) {
-          // Fallback to localhost if remote fails in dev
-          res = await axios.get(`http://127.0.0.1:8000/api/verify/${token}/`);
+          // Fallback to relative /api if absolute base failed
+          if (apiBase !== '/api') {
+            res = await axios.get(`/api/verify/${token}/`);
+          } else {
+            throw firstErr;
+          }
         }
 
         if (res.data && res.data.status === 'verified') {
