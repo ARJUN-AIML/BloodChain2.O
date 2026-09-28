@@ -30,10 +30,19 @@ class BloodRequestSerializer(serializers.ModelSerializer):
             'priority', 'reason', 'notes', 'status', 'allocations', 'created_at'
         ]
 
+from datetime import date, timedelta
+
 class CreateBloodRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = BloodRequest
         fields = ['blood_group', 'blood_component', 'requested_quantity', 'required_date', 'priority', 'reason', 'notes']
+        extra_kwargs = {
+            'reason': {'required': False, 'allow_blank': True},
+            'notes': {'required': False, 'allow_blank': True},
+            'required_date': {'required': False},
+            'priority': {'required': False},
+            'blood_component': {'required': False},
+        }
 
     def validate(self, attrs):
         request = self.context.get('request')
@@ -50,6 +59,18 @@ class CreateBloodRequestSerializer(serializers.ModelSerializer):
 
         if attrs.get('requested_quantity', 0) <= 0:
             raise serializers.ValidationError("Requested quantity must be greater than zero.")
+
+        # Default required_date if omitted
+        if not attrs.get('required_date'):
+            attrs['required_date'] = date.today() + timedelta(days=1)
+
+        # Normalize priority
+        if attrs.get('priority'):
+            attrs['priority'] = str(attrs['priority']).upper()
+
+        # Default blood_component if omitted
+        if not attrs.get('blood_component'):
+            attrs['blood_component'] = 'RBC'
 
         return attrs
 

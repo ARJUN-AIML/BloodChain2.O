@@ -101,7 +101,18 @@ export const HospitalDashboard = () => {
       setShowCreateModal(false);
       fetchData();
     } catch (err) {
-      setActionError(err.response?.data?.detail || 'Failed to create blood request.');
+      const data = err.response?.data;
+      let msg = 'Failed to create blood request.';
+      if (data) {
+        if (typeof data === 'string') msg = data;
+        else if (data.detail) msg = data.detail;
+        else if (typeof data === 'object') {
+          msg = Object.entries(data)
+            .map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(', ') : v}`)
+            .join(' | ');
+        }
+      }
+      setActionError(msg);
     }
   };
 
