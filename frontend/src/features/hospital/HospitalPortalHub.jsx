@@ -4,7 +4,8 @@ import { HospitalApprovalDesk } from './HospitalApprovalDesk';
 import { HospitalLogisticsDashboard } from './HospitalLogisticsDashboard';
 import { AIDemandForecastSection } from '../../components/AIDemandForecastSection';
 import { WorkflowGuide } from '../../components/WorkflowGuide';
-import { CheckSquare, Truck, Building2, TrendingUp } from 'lucide-react';
+import { FacilityCampManagement } from '../camps/FacilityCampManagement';
+import { CheckSquare, Truck, Building2, TrendingUp, MapPin } from 'lucide-react';
 
 export const HospitalPortalHub = () => {
   const { role, facility } = useAuth();
@@ -33,13 +34,13 @@ export const HospitalPortalHub = () => {
             </span>
           </div>
 
-          <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300" role="tablist">
+          <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto" role="tablist">
             <button
               type="button"
               role="tab"
               aria-selected={activeWorkspace === 'approval'}
               onClick={() => setActiveWorkspace('approval')}
-              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeWorkspace === 'approval'
                   ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -54,7 +55,7 @@ export const HospitalPortalHub = () => {
               role="tab"
               aria-selected={activeWorkspace === 'logistics'}
               onClick={() => setActiveWorkspace('logistics')}
-              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeWorkspace === 'logistics'
                   ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -67,9 +68,24 @@ export const HospitalPortalHub = () => {
             <button
               type="button"
               role="tab"
+              aria-selected={activeWorkspace === 'camps'}
+              onClick={() => setActiveWorkspace('camps')}
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
+                activeWorkspace === 'camps'
+                  ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+            >
+              <MapPin className="w-3.5 h-3.5 text-rose-600" />
+              <span>Donation Camps & Reception</span>
+            </button>
+
+            <button
+              type="button"
+              role="tab"
               aria-selected={activeWorkspace === 'forecast'}
               onClick={() => setActiveWorkspace('forecast')}
-              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
                 activeWorkspace === 'forecast'
                   ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -84,7 +100,7 @@ export const HospitalPortalHub = () => {
       </div>
 
       {/* Protocol SOP Stepper (for approval & logistics workspaces) */}
-      {activeWorkspace !== 'forecast' && (
+      {(activeWorkspace === 'approval' || activeWorkspace === 'logistics') && (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <WorkflowGuide
             activeStep={activeWorkspace === 'approval' ? 2 : 4}
@@ -98,6 +114,8 @@ export const HospitalPortalHub = () => {
           <HospitalApprovalDesk onNavigateToForecast={() => setActiveWorkspace('forecast')} />
         ) : activeWorkspace === 'logistics' ? (
           <HospitalLogisticsDashboard onNavigateToForecast={() => setActiveWorkspace('forecast')} />
+        ) : activeWorkspace === 'camps' ? (
+          <FacilityCampManagement />
         ) : (
           <AIDemandForecastSection facility={facility} role={role || 'HOSPITAL'} />
         )}

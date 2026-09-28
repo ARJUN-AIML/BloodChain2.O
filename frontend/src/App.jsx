@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Login } from './features/auth/Login';
 import { HospitalPortalHub } from './features/hospital/HospitalPortalHub';
 import { BloodBankDashboard } from './features/bloodbank/BloodBankDashboard';
+import { DonorDashboard } from './features/donor/DonorDashboard';
 import { Activity } from 'lucide-react';
 
 const AppShell = () => {
@@ -20,13 +21,15 @@ const AppShell = () => {
           </div>
         ) : !profile ? (
           <Login />
+        ) : role === 'DONOR' ? (
+          <DonorDashboard />
         ) : ['HOSPITAL', 'HOSPITAL_APPROVAL', 'HOSPITAL_LOGISTICS'].includes(role) ? (
           <HospitalPortalHub />
         ) : role === 'BLOOD_BANK' ? (
           <BloodBankDashboard />
         ) : (
           <div className="text-center py-20 text-slate-400">
-            Unknown facility role: {role}
+            Unknown portal role: {role}
           </div>
         )}
       </main>

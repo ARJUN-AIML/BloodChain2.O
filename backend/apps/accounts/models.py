@@ -7,6 +7,7 @@ ROLE_CHOICES = [
     ('HOSPITAL_APPROVAL', 'Hospital Approval Desk'),
     ('HOSPITAL_LOGISTICS', 'Hospital Logistics'),
     ('BLOOD_BANK', 'Blood Bank'),
+    ('DONOR', 'Donor'),
 ]
 
 class UserProfile(models.Model):

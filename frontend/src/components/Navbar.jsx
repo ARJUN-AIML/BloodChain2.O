@@ -14,7 +14,9 @@ import {
   Search,
   MapPin,
   ChevronRight,
-  ArrowRight
+  ArrowRight,
+  Heart,
+  User
 } from 'lucide-react';
 
 export const Navbar = () => {
@@ -114,6 +116,7 @@ export const Navbar = () => {
     if (r === 'HOSPITAL_APPROVAL') return 'Clinical Approval Desk';
     if (r === 'HOSPITAL_LOGISTICS') return 'Logistics & Cold-Chain Desk';
     if (r === 'BLOOD_BANK') return 'Regional Blood Bank Operations';
+    if (r === 'DONOR') return 'Voluntary Blood Donor';
     return r;
   };
 
@@ -165,7 +168,9 @@ export const Navbar = () => {
               
               {/* Role Indicator Pill */}
               <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-white/80 border border-stone-300 text-stone-800 shadow-2xs">
-                {role === 'HOSPITAL_LOGISTICS' ? (
+                {role === 'DONOR' ? (
+                  <Heart className="w-3.5 h-3.5 text-rose-600 fill-rose-600" />
+                ) : role === 'HOSPITAL_LOGISTICS' ? (
                   <Truck className="w-3.5 h-3.5 text-teal-600" />
                 ) : role === 'BLOOD_BANK' ? (
                   <Droplet className="w-3.5 h-3.5 text-rose-600" />
@@ -175,11 +180,23 @@ export const Navbar = () => {
                 <span>{getRoleBadgeLabel(role)}</span>
               </div>
 
-              {/* Facility Identity Pill */}
+              {/* Facility Identity Pill / Donor Name */}
               <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/60 border border-stone-300 text-xs text-stone-700 shadow-2xs">
-                <Building2 className="w-3.5 h-3.5 text-stone-500" />
-                <span className="font-semibold text-stone-900 max-w-[220px] truncate">{facility?.name}</span>
-                <span className="text-[10px] font-mono text-stone-500">({facility?.facility_id})</span>
+                {role === 'DONOR' ? (
+                  <>
+                    <User className="w-3.5 h-3.5 text-rose-600" />
+                    <span className="font-semibold text-stone-900 max-w-[220px] truncate">{profile?.name}</span>
+                    <span className="text-[10px] font-mono text-rose-700 font-bold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">
+                      DONOR
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Building2 className="w-3.5 h-3.5 text-stone-500" />
+                    <span className="font-semibold text-stone-900 max-w-[220px] truncate">{facility?.name}</span>
+                    <span className="text-[10px] font-mono text-stone-500">({facility?.facility_id})</span>
+                  </>
+                )}
               </div>
 
               {/* Persona Switcher Button */}
@@ -267,6 +284,88 @@ export const Navbar = () => {
               {/* If no search term, show Featured Clusters first */}
               {!facilitySearch && selectedDistrict === 'ALL' && (
                 <div className="space-y-4">
+                  
+                  {/* Donor Test Accounts Quick Switch */}
+                  <div className="space-y-2 p-3 rounded-lg bg-rose-950/30 border border-rose-900/50">
+                    <div className="flex items-center justify-between text-xs font-semibold text-rose-300">
+                      <span className="flex items-center gap-1.5 text-rose-200">
+                        <Heart className="w-3.5 h-3.5 text-rose-500 fill-rose-500" />
+                        <span>Voluntary Donor Personas (Seed Accounts)</span>
+                      </span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-rose-900 text-rose-200 font-mono">
+                        DONOR PORTAL
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          await loginWithDevToken('dev-token-donor-001');
+                          setShowSwitchModal(false);
+                        }}
+                        className="p-2.5 rounded-lg border border-rose-800/60 bg-slate-900/90 hover:border-rose-500 text-left transition flex flex-col justify-between cursor-pointer"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-mono text-rose-400 font-bold">BC-D-20992</span>
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-rose-950 text-rose-300 font-bold">O+</span>
+                          </div>
+                          <div className="text-xs font-bold text-white mt-1">Arun Kumar</div>
+                          <div className="text-[10px] text-slate-400">4 Donations • 4 Certificates</div>
+                        </div>
+                        <div className="mt-2 text-[10px] font-mono text-rose-400 font-semibold flex items-center justify-between">
+                          <span>Enter Portal</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          await loginWithDevToken('dev-token-donor-002');
+                          setShowSwitchModal(false);
+                        }}
+                        className="p-2.5 rounded-lg border border-rose-800/60 bg-slate-900/90 hover:border-rose-500 text-left transition flex flex-col justify-between cursor-pointer"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-mono text-rose-400 font-bold">BC-D-80415</span>
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-rose-950 text-rose-300 font-bold">A+</span>
+                          </div>
+                          <div className="text-xs font-bold text-white mt-1">Priya Patel</div>
+                          <div className="text-[10px] text-slate-400">Checked-In at Apollo Camp</div>
+                        </div>
+                        <div className="mt-2 text-[10px] font-mono text-rose-400 font-semibold flex items-center justify-between">
+                          <span>Enter Portal</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          await loginWithDevToken('dev-token-donor-003');
+                          setShowSwitchModal(false);
+                        }}
+                        className="p-2.5 rounded-lg border border-rose-800/60 bg-slate-900/90 hover:border-rose-500 text-left transition flex flex-col justify-between cursor-pointer"
+                      >
+                        <div>
+                          <div className="flex items-center justify-between">
+                            <span className="text-[10px] font-mono text-rose-400 font-bold">BC-D-78280</span>
+                            <span className="text-[9px] px-1.5 py-0.2 rounded bg-rose-950 text-rose-300 font-bold">AB-</span>
+                          </div>
+                          <div className="text-xs font-bold text-white mt-1">Anand Kumar</div>
+                          <div className="text-[10px] text-slate-400">Newly Registered Donor</div>
+                        </div>
+                        <div className="mt-2 text-[10px] font-mono text-rose-400 font-semibold flex items-center justify-between">
+                          <span>Enter Portal</span>
+                          <ArrowRight className="w-3 h-3" />
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
                   <div className="text-[11px] font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 px-1">
                     <ShieldCheck className="w-3.5 h-3.5 text-teal-400" />
                     <span>Primary Regional Clusters</span>

@@ -267,48 +267,85 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
                 'name': 'Officer Vasanth (Coimbatore Medical College Blood Bank)',
                 'role': 'BLOOD_BANK',
                 'facility_id': 'co_b_01'
+            },
+
+            # Donor Test Accounts
+            'dev-token-donor-001': {
+                'username': 'donor_001',
+                'name': 'Arun Kumar',
+                'role': 'DONOR',
+                'facility_id': None
+            },
+            'dev-token-donor-002': {
+                'username': 'donor_002',
+                'name': 'Priya Sharma',
+                'role': 'DONOR',
+                'facility_id': None
+            },
+            'dev-token-donor-003': {
+                'username': 'donor_003',
+                'name': 'Rajesh Venkatesh',
+                'role': 'DONOR',
+                'facility_id': None
             }
         }
 
         info = token_map.get(token)
         if not info:
-            # Dynamic lookup for any facility ID in the dataset
-            # e.g. dev-token-ar-h-01 -> ar_h_01
-            raw_id = token.replace('dev-token-', '').replace('-', '_')
-            fac = Facility.objects.filter(facility_id__iexact=raw_id).first()
-            if not fac:
-                # Try without trailing role if any
-                clean_id = raw_id.split('_admin')[0].split('_appr')[0].split('_log')[0]
-                fac = Facility.objects.filter(facility_id__iexact=clean_id).first()
+            # Check if this is a dynamically-registered donor token (e.g. dev-token-donor-10482)
+            if token.startswith('dev-token-donor-'):
+                donor_suffix = token.replace('dev-token-donor-', '')
+                # Look up existing profile by firebase_uid
+                existing_profile = UserProfile.objects.select_related('user').filter(
+                    firebase_uid=token, is_active=True, role='DONOR'
+                ).first()
+                if existing_profile:
+                    return (existing_profile.user, None)
 
-            if fac:
-                role = 'BLOOD_BANK' if fac.facility_type == 'BLOOD_BANK' else 'HOSPITAL'
-                if '_appr' in token:
-                    role = 'HOSPITAL_APPROVAL'
-                elif '_log' in token:
-                    role = 'HOSPITAL_LOGISTICS'
+                # Fallback: create a donor user profile on-the-fly
                 info = {
-                    'username': f"{fac.facility_id}_{role.lower()}",
-                    'name': f"Officer ({fac.name})",
-                    'role': role,
-                    'facility_id': fac.facility_id
+                    'username': f"donor_{donor_suffix}",
+                    'name': f"Donor {donor_suffix}",
+                    'role': 'DONOR',
+                    'facility_id': None
                 }
             else:
-                raise exceptions.AuthenticationFailed('Invalid dev authentication token')
+                # Dynamic lookup for any facility ID in the dataset
+                # e.g. dev-token-ar-h-01 -> ar_h_01
+                raw_id = token.replace('dev-token-', '').replace('-', '_')
+                fac = Facility.objects.filter(facility_id__iexact=raw_id).first()
+                if not fac:
+                    # Try without trailing role if any
+                    clean_id = raw_id.split('_admin')[0].split('_appr')[0].split('_log')[0]
+                    fac = Facility.objects.filter(facility_id__iexact=clean_id).first()
+
+                if fac:
+                    role = 'BLOOD_BANK' if fac.facility_type == 'BLOOD_BANK' else 'HOSPITAL'
+                    if '_appr' in token:
+                        role = 'HOSPITAL_APPROVAL'
+                    elif '_log' in token:
+                        role = 'HOSPITAL_LOGISTICS'
+                    info = {
+                        'username': f"{fac.facility_id}_{role.lower()}",
+                        'name': f"Officer ({fac.name})",
+                        'role': role,
+                        'facility_id': fac.facility_id
+                    }
+                else:
+                    raise exceptions.AuthenticationFailed('Invalid dev authentication token')
+
+        # For donors: facility check is different (facility_id can be None)
+        is_donor = info.get('role') == 'DONOR'
 
         profile = UserProfile.objects.select_related('user', 'facility').filter(firebase_uid=token, is_active=True).first()
-        if (
-            profile
-            and profile.user
-            and profile.user.username == info['username']
-            and profile.role == info['role']
-            and profile.facility
-            and profile.facility.facility_id == info['facility_id']
-        ):
-            return (profile.user, None)
+        if profile and profile.user and profile.user.username == info['username'] and profile.role == info['role']:
+            if is_donor or (profile.facility and profile.facility.facility_id == info.get('facility_id')):
+                return (profile.user, None)
 
         user, _ = User.objects.get_or_create(username=info['username'])
-        facility = Facility.objects.filter(facility_id=info['facility_id']).first()
+        facility = None
+        if info.get('facility_id'):
+            facility = Facility.objects.filter(facility_id=info['facility_id']).first()
 
         profile, _ = UserProfile.objects.update_or_create(
             user=user,
@@ -319,6 +356,21 @@ class FirebaseAuthentication(authentication.BaseAuthentication):
                 'facility': facility,
                 'is_active': True
             }
-        )
+        if is_donor:
+            try:
+                from apps.donors.models import DonorProfile
+                DonorProfile.objects.get_or_create(
+                    user=user,
+                    defaults={
+                        'name': info['name'],
+                        'blood_group': 'O+',
+                        'city': 'Chennai',
+                        'state': 'Tamil Nadu',
+                        'is_active': True
+                    }
+                )
+            except Exception as e:
+                logger.warning("Failed to auto-create DonorProfile for %s: %s", user.username, e)
 
         return (user, None)
+

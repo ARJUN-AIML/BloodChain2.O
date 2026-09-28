@@ -4,10 +4,11 @@ import { useAuth } from '../../context/AuthContext';
 import { StatCard } from '../../components/StatCard';
 import { WorkflowGuide } from '../../components/WorkflowGuide';
 import { AIDemandForecastSection } from '../../components/AIDemandForecastSection';
+import { FacilityCampManagement } from '../camps/FacilityCampManagement';
 import {
   Building2, Droplet, Inbox, ArrowUpRight, ArrowDownLeft,
   AlertTriangle, CheckCircle2, KeyRound, TrendingUp, History, RefreshCw, AlertCircle,
-  X, ShieldCheck, Copy, Lock, Clock
+  X, ShieldCheck, Copy, Lock, Clock, MapPin
 } from 'lucide-react';
 
 export const BloodBankDashboard = () => {
@@ -247,6 +248,7 @@ export const BloodBankDashboard = () => {
           { id: 'overview', label: 'Central Inventory & Testing' },
           { id: 'requests', label: `Hospital Requests Received (${receivedRequests.length})` },
           { id: 'transfers', label: `Transfers & OTP Verification (${outgoingTransfers.length + incomingTransfers.length})` },
+          { id: 'camps', label: 'Donation Camps & Reception' },
           { id: 'demand', label: 'AI Demand Forecast' },
           { id: 'audit', label: 'Facility Audit Log' },
         ].map((tab) => (
@@ -538,7 +540,12 @@ export const BloodBankDashboard = () => {
         </div>
       )}
 
-      {/* TAB 4: AI OUTBOUND REQUIREMENT FORECAST */}
+      {/* TAB 4: DONATION CAMPS & RECEPTION DESK */}
+      {activeTab === 'camps' && (
+        <FacilityCampManagement />
+      )}
+
+      {/* TAB 5: AI OUTBOUND REQUIREMENT FORECAST */}
       {activeTab === 'demand' && (
         <AIDemandForecastSection facility={facility} role={role || 'BLOOD_BANK'} />
       )}

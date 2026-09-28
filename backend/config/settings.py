@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'apps.transfers',
     'apps.demand',
     'apps.audit',
+    'apps.donors',
+    'apps.camps',
 ]
 
 MIDDLEWARE = [
