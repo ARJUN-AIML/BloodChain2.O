@@ -5,10 +5,11 @@ import { StatCard } from '../../components/StatCard';
 import {
   Building2, CheckSquare, Clock, ArrowUpRight, CheckCircle2, XCircle,
   PlusCircle, RefreshCw, AlertCircle, History, FileText, Send, Droplet,
-  ShieldCheck, X
+  ShieldCheck, X, TrendingUp
 } from 'lucide-react';
+import { AIDemandForecastSection } from '../../components/AIDemandForecastSection';
 
-export const HospitalApprovalDesk = () => {
+export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
   const { facility, profile } = useAuth();
   const [activeTab, setActiveTab] = useState('queue');
 
@@ -149,6 +150,19 @@ export const HospitalApprovalDesk = () => {
         <div className="flex items-center gap-2.5">
           <button
             type="button"
+            onClick={() => {
+              if (onNavigateToForecast) onNavigateToForecast();
+              else setActiveTab('forecast');
+            }}
+            className="px-3.5 py-2 rounded-lg bg-rose-700 hover:bg-rose-600 text-white font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
+            title="View 7-day future ML demand predictions"
+          >
+            <TrendingUp className="w-4 h-4" />
+            <span>AI Demand Forecast</span>
+          </button>
+
+          <button
+            type="button"
             onClick={() => setShowCreateModal(true)}
             className="px-3.5 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-white font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
           >
@@ -231,6 +245,7 @@ export const HospitalApprovalDesk = () => {
           { id: 'requests_sent', label: `Requests Issued (${sentRequests.length})` },
           { id: 'transfer_approvals', label: `Transfer Approvals (${pendingTransfers})` },
           { id: 'stock_summary', label: 'Inventory Stock Summary' },
+          { id: 'forecast', label: '🩸 AI Demand Forecast' },
           { id: 'audit', label: 'Approval Audit History' },
         ].map((tab) => (
           <button
@@ -549,6 +564,11 @@ export const HospitalApprovalDesk = () => {
             </table>
           </div>
         </div>
+      )}
+
+      {/* TAB 6: AI DEMAND FORECAST */}
+      {activeTab === 'forecast' && (
+        <AIDemandForecastSection facility={facility} role={profile?.role || 'HOSPITAL'} />
       )}
 
       {/* MODAL 1: CREATE REQUEST */}

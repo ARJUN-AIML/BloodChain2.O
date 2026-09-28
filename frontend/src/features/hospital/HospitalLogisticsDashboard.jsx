@@ -5,11 +5,12 @@ import { StatCard } from '../../components/StatCard';
 import {
   Truck, ArrowUpRight, ArrowDownLeft, KeyRound, CheckCircle2,
   AlertTriangle, RefreshCw, AlertCircle, History, Package, ShieldCheck,
-  Thermometer, X, Lock, Clock, Copy
+  Thermometer, X, Lock, Clock, Copy, TrendingUp
 } from 'lucide-react';
+import { AIDemandForecastSection } from '../../components/AIDemandForecastSection';
 
-export const HospitalLogisticsDashboard = () => {
-  const { facility } = useAuth();
+export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
+  const { facility, role } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
 
   // State
@@ -123,6 +124,19 @@ export const HospitalLogisticsDashboard = () => {
         </div>
 
         <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => {
+              if (onNavigateToForecast) onNavigateToForecast();
+              else setActiveTab('forecast');
+            }}
+            className="px-3.5 py-2 rounded-lg bg-rose-700 hover:bg-rose-600 text-white font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
+            title="View 7-day future ML demand predictions"
+          >
+            <TrendingUp className="w-4 h-4" />
+            <span>AI Demand Forecast</span>
+          </button>
+
           <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 text-xs text-slate-300">
             <Thermometer className="w-3.5 h-3.5 text-teal-400" />
             <span className="font-mono text-[11px] text-teal-300 font-semibold">Cold-Chain: 3.8°C Nominal</span>
@@ -203,6 +217,7 @@ export const HospitalLogisticsDashboard = () => {
           { id: 'dispatch_queue', label: `Awaiting Dispatch (${awaitingDispatch})` },
           { id: 'incoming', label: `Inbound Receiving Dock (${incomingTransfers.length})` },
           { id: 'outgoing', label: `Outbound Dispatch Dock (${outgoingTransfers.length})` },
+          { id: 'forecast', label: '🩸 AI Demand Forecast' },
           { id: 'audit', label: 'Logistics Custody Trail' },
         ].map((tab) => (
           <button
@@ -612,6 +627,11 @@ export const HospitalLogisticsDashboard = () => {
             </table>
           </div>
         </div>
+      )}
+
+      {/* TAB 6: AI DEMAND FORECAST */}
+      {activeTab === 'forecast' && (
+        <AIDemandForecastSection facility={facility} role={role || 'HOSPITAL'} />
       )}
 
       {/* MODAL 1: OTP DISPLAY */}

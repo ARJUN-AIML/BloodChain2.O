@@ -3,6 +3,7 @@ import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { StatCard } from '../../components/StatCard';
 import { WorkflowGuide } from '../../components/WorkflowGuide';
+import { AIDemandForecastSection } from '../../components/AIDemandForecastSection';
 import {
   Building2, Droplet, Inbox, ArrowUpRight, ArrowDownLeft,
   AlertTriangle, CheckCircle2, KeyRound, TrendingUp, History, RefreshCw, AlertCircle,
@@ -10,7 +11,7 @@ import {
 } from 'lucide-react';
 
 export const BloodBankDashboard = () => {
-  const { facility } = useAuth();
+  const { facility, role } = useAuth();
   const [activeTab, setActiveTab] = useState('overview');
 
   // State
@@ -246,7 +247,7 @@ export const BloodBankDashboard = () => {
           { id: 'overview', label: 'Central Inventory & Testing' },
           { id: 'requests', label: `Hospital Requests Received (${receivedRequests.length})` },
           { id: 'transfers', label: `Transfers & OTP Verification (${outgoingTransfers.length + incomingTransfers.length})` },
-          { id: 'demand', label: 'Regional Demand Projections' },
+          { id: 'demand', label: 'AI Demand Forecast' },
           { id: 'audit', label: 'Facility Audit Log' },
         ].map((tab) => (
           <button
@@ -537,63 +538,9 @@ export const BloodBankDashboard = () => {
         </div>
       )}
 
-      {/* TAB 4: DEMAND PLANNING */}
-      {activeTab === 'demand' && demandData && (
-        <div className="clinical-card p-6 border-slate-800 bg-slate-900 space-y-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
-            <div>
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-[#2d1b14]" />
-                <span>Regional Blood Demand Projections & Reserve Modeling</span>
-              </h2>
-              <p className="text-xs text-slate-400 mt-0.5">Predictive models calculate safe surplus quotas for partner hospital transfers.</p>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400 font-medium">Projection Horizon:</span>
-              <select
-                value={timeframe}
-                onChange={(e) => setTimeframe(e.target.value)}
-                className="bg-slate-950 border border-slate-800 text-xs text-white rounded-md px-2.5 py-1 focus:outline-none focus:ring-1 focus:ring-slate-600 font-mono"
-              >
-                <option value="1-day">Next 24 Hours</option>
-                <option value="7-day">Next 7 Days</option>
-                <option value="30-day">Next 30 Days</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
-            {demandData.predictions.map((p) => (
-              <div key={p.blood_group} className="p-4 rounded-lg bg-slate-950 border border-slate-800 space-y-2.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xl font-bold text-white font-mono">{p.blood_group}</span>
-                  <span className={`px-2 py-0.5 text-[10px] font-semibold rounded border ${
-                    p.possible_shortage > 0 
-                      ? 'bg-[#f7ede0] text-[#3d2212] border-[#d8c2aa]' 
-                      : 'bg-[#ede5d5] text-[#2d1b14] border-[#c4b59f]'
-                  }`}>
-                    {p.status_note}
-                  </span>
-                </div>
-                <div className="space-y-1 text-xs text-slate-300">
-                  <div className="flex justify-between text-slate-400">
-                    <span>Current Inventory:</span> 
-                    <strong className="text-white font-mono">{p.current_available_stock} units</strong>
-                  </div>
-                  <div className="flex justify-between text-slate-400">
-                    <span>Projected Demand:</span> 
-                    <strong className="text-slate-200 font-mono">{p.future_blood_demand} units</strong>
-                  </div>
-                  <div className="flex justify-between text-[#2d1b14] font-semibold border-t border-slate-800 pt-1.5">
-                    <span>Safe to Share:</span> 
-                    <span className="font-mono">{p.safe_amount_to_share} units</span>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* TAB 4: AI OUTBOUND REQUIREMENT FORECAST */}
+      {activeTab === 'demand' && (
+        <AIDemandForecastSection facility={facility} role={role || 'BLOOD_BANK'} />
       )}
 
       {/* TAB 5: AUDIT LOG */}

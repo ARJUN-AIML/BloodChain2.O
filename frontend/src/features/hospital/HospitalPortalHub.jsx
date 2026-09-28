@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { HospitalApprovalDesk } from './HospitalApprovalDesk';
 import { HospitalLogisticsDashboard } from './HospitalLogisticsDashboard';
+import { AIDemandForecastSection } from '../../components/AIDemandForecastSection';
 import { WorkflowGuide } from '../../components/WorkflowGuide';
-import { CheckSquare, Truck, Building2 } from 'lucide-react';
+import { CheckSquare, Truck, Building2, TrendingUp } from 'lucide-react';
 
 export const HospitalPortalHub = () => {
   const { role, facility } = useAuth();
@@ -26,6 +27,10 @@ export const HospitalPortalHub = () => {
             <span className="font-mono text-stone-500 text-[11px]">({facility?.facility_id})</span>
             <span className="text-stone-400">&bull;</span>
             <span className="text-stone-700 font-medium">District {facility?.district || 'Madurai'}</span>
+            <span className="text-stone-400">&bull;</span>
+            <span className="px-2 py-0.5 rounded text-[10px] font-bold uppercase bg-stone-200 text-stone-800 border border-stone-300">
+              {facility?.facility_type || 'HOSPITAL'}
+            </span>
           </div>
 
           <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300" role="tablist">
@@ -58,27 +63,48 @@ export const HospitalPortalHub = () => {
               <Truck className="w-3.5 h-3.5 text-teal-600" />
               <span>Logistics & Cold-Chain Desk</span>
             </button>
+
+            <button
+              type="button"
+              role="tab"
+              aria-selected={activeWorkspace === 'forecast'}
+              onClick={() => setActiveWorkspace('forecast')}
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 transition-colors cursor-pointer ${
+                activeWorkspace === 'forecast'
+                  ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
+                  : 'text-stone-600 hover:text-stone-900'
+              }`}
+            >
+              <TrendingUp className="w-3.5 h-3.5 text-rose-600" />
+              <span>AI Demand Forecast</span>
+            </button>
           </div>
 
         </div>
       </div>
 
-      {/* Protocol SOP Stepper */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <WorkflowGuide
-          activeStep={activeWorkspace === 'approval' ? 2 : 4}
-        />
-      </div>
+      {/* Protocol SOP Stepper (for approval & logistics workspaces) */}
+      {activeWorkspace !== 'forecast' && (
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <WorkflowGuide
+            activeStep={activeWorkspace === 'approval' ? 2 : 4}
+          />
+        </div>
+      )}
 
       {/* Render Active Workspace */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {activeWorkspace === 'approval' ? (
-          <HospitalApprovalDesk />
+          <HospitalApprovalDesk onNavigateToForecast={() => setActiveWorkspace('forecast')} />
+        ) : activeWorkspace === 'logistics' ? (
+          <HospitalLogisticsDashboard onNavigateToForecast={() => setActiveWorkspace('forecast')} />
         ) : (
-          <HospitalLogisticsDashboard />
+          <AIDemandForecastSection facility={facility} role={role || 'HOSPITAL'} />
         )}
       </div>
 
     </div>
   );
 };
+
+export default HospitalPortalHub;

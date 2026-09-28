@@ -15,10 +15,15 @@ export const AuthProvider = ({ children }) => {
       setError(null);
       const res = await api.get('/accounts/me/');
       setProfile(res.data);
+      return res.data;
     } catch (err) {
-      console.error('Failed to fetch user profile:', err);
+      console.warn('Failed to fetch user profile:', err?.response?.data?.detail || err.message);
       setProfile(null);
       setError(err.response?.data?.detail || 'Authentication failed');
+      if (err.response?.status === 401 || err.response?.status === 403) {
+        localStorage.removeItem('bloodchain_token');
+      }
+      throw err;
     } finally {
       setLoading(false);
     }
@@ -26,16 +31,20 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem('bloodchain_token');
-    if (storedToken) {
-      fetchProfile();
+    if (storedToken && storedToken !== 'null' && storedToken !== 'undefined') {
+      fetchProfile().catch(() => {});
     } else {
+      localStorage.removeItem('bloodchain_token');
       setLoading(false);
     }
   }, []);
 
   const loginWithDevToken = async (devToken) => {
+    if (!devToken || devToken === 'null' || devToken === 'undefined') {
+      throw new Error('Invalid authentication token');
+    }
     localStorage.setItem('bloodchain_token', devToken);
-    await fetchProfile();
+    return await fetchProfile();
   };
 
   const logout = async () => {

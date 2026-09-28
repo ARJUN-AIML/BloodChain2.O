@@ -456,6 +456,24 @@ export const Login = ({ initialFacility }) => {
 
               <button
                 type="button"
+                onClick={() => handleAutofill(TEST_FACILITIES.APOLLO_CHENNAI)}
+                className="w-full py-2 px-3 rounded-lg bg-white/55 hover:bg-white/85 border border-stone-300/70 hover:border-rose-400 text-left transition-colors cursor-pointer group flex items-center justify-between shadow-2xs backdrop-blur-xs"
+              >
+                <div className="truncate text-left">
+                  <span className="text-[11px] font-semibold text-stone-900 group-hover:text-rose-600 transition-colors block truncate">
+                    {TEST_FACILITIES.APOLLO_CHENNAI.label}
+                  </span>
+                  <span className="text-[10px] font-mono text-stone-600 block truncate">
+                    {TEST_FACILITIES.APOLLO_CHENNAI.email}
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono font-semibold text-[#2d1b14] bg-[#ede5d5] border border-[#c4b59f] px-1.5 py-0.5 rounded flex-shrink-0 ml-2">
+                  FILL
+                </span>
+              </button>
+
+              <button
+                type="button"
                 onClick={() => handleAutofill(TEST_FACILITIES.INDIAN_VOLUNTARY_BANK)}
                 className="w-full py-2 px-3 rounded-lg bg-white/55 hover:bg-white/85 border border-stone-300/70 hover:border-rose-400 text-left transition-colors cursor-pointer group flex items-center justify-between shadow-2xs backdrop-blur-xs"
               >
