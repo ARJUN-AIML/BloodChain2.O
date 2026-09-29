@@ -1,0 +1,127 @@
+# ===================================================
+# BloodChain Multi-Container Orchestration
+# ===================================================
+# Architecture:
+#   1. db:       PostgreSQL 16 Database with persistent storage
+#   2. backend:  Django 5 + DRF + ML/XGBoost Forecasting + Gunicorn
+#   3. frontend: React 18 + Vite + TailwindCSS + Nginx Reverse Proxy
+# ===================================================
+
+services:
+  # ==========================================
+  # 1. Database Service (PostgreSQL 16)
+  # ==========================================
+  db:
+    image: postgres:16-alpine
+    container_name: bloodchain_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-bloodchain}
+      POSTGRES_USER: ${POSTGRES_USER:-bloodchain}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bloodchain_secret_2026}
+    volumes:
+      - bloodchain_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-bloodchain} -d ${POSTGRES_DB:-bloodchain}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - bloodchain_network
+
+  # ==========================================
+  # 2. Backend & ML Service (Django + XGBoost)
+  # ==========================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bloodchain_backend
+    restart: unless-stopped
+    environment:
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-django-insecure-bloodchain-master-key-2026}
+      DEBUG: ${DEBUG:-False}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1,backend,frontend,*}
+      DATABASE_URL: ${DATABASE_URL:-postgresql://${POSTGRES_USER:-bloodchain}:${POSTGRES_PASSWORD:-bloodchain_secret_2026}@db:5432/${POSTGRES_DB:-bloodchain}}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-bloodchain}
+      POSTGRES_USER: ${POSTGRES_USER:-bloodchain}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-bloodchain_secret_2026}
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID:-bloodchain-95960}
+      FIREBASE_API_KEY: ${FIREBASE_API_KEY:-AIzaSyDbMwrUoDEqMw_X4Rm_ss_bAzxRqdN1GuU}
+      FIREBASE_AUTH_DOMAIN: ${FIREBASE_AUTH_DOMAIN:-bloodchain-95960.firebaseapp.com}
+      FIREBASE_DATABASE_URL: ${FIREBASE_DATABASE_URL:-https://bloodchain-95960-default-rtdb.asia-southeast1.firebasedatabase.app}
+      FIREBASE_STORAGE_BUCKET: ${FIREBASE_STORAGE_BUCKET:-bloodchain-95960.firebasestorage.app}
+      FIREBASE_MESSAGING_SENDER_ID: ${FIREBASE_MESSAGING_SENDER_ID:-836624051781}
+    volumes:
+      - bloodchain_media_data:/app/media
+      - bloodchain_ml_models:/app/ml_models
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/api/health/ || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    networks:
+      - bloodchain_network
+
+  # ==========================================
+  # 3. Frontend Service (React + Vite + Nginx)
+  # ==========================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-/api}
+        PUBLIC_APP_URL: ${PUBLIC_APP_URL:-https://bloodchain.org}
+        VITE_PUBLIC_APP_URL: ${VITE_PUBLIC_APP_URL:-https://bloodchain.org}
+        VITE_FIREBASE_API_KEY: ${VITE_FIREBASE_API_KEY:-AIzaSyDbMwrUoDEqMw_X4Rm_ss_bAzxRqdN1GuU}
+        VITE_FIREBASE_AUTH_DOMAIN: ${VITE_FIREBASE_AUTH_DOMAIN:-bloodchain-95960.firebaseapp.com}
+        VITE_FIREBASE_DATABASE_URL: ${VITE_FIREBASE_DATABASE_URL:-https://bloodchain-95960-default-rtdb.asia-southeast1.firebasedatabase.app}
+        VITE_FIREBASE_PROJECT_ID: ${VITE_FIREBASE_PROJECT_ID:-bloodchain-95960}
+        VITE_FIREBASE_STORAGE_BUCKET: ${VITE_FIREBASE_STORAGE_BUCKET:-bloodchain-95960.firebasestorage.app}
+        VITE_FIREBASE_MESSAGING_SENDER_ID: ${VITE_FIREBASE_MESSAGING_SENDER_ID:-836624051781}
+        VITE_FIREBASE_APP_ID: ${VITE_FIREBASE_APP_ID:-1:836624051781:web:2ec7be72a04e317ab67d2c}
+        VITE_FIREBASE_MEASUREMENT_ID: ${VITE_FIREBASE_MEASUREMENT_ID:-G-7ZNRYWT6Y1}
+    container_name: bloodchain_frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:80/healthz || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - bloodchain_network
+
+# ==========================================
+# Named Persistent Volumes
+# ==========================================
+volumes:
+  bloodchain_db_data:
+    name: bloodchain_db_data
+  bloodchain_media_data:
+    name: bloodchain_media_data
+  bloodchain_ml_models:
+    name: bloodchain_ml_models
+
+# ==========================================
+# Isolated Bridge Network
+# ==========================================
+networks:
+  bloodchain_network:
+    name: bloodchain_network
+    driver: bridge

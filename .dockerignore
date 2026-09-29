@@ -1,0 +1,45 @@
+# Version control
+.git/
+.gitignore
+
+# Package dependencies
+node_modules/
+**/node_modules/
+venv/
+**/venv/
+.venv/
+**/.venv/
+
+# Python compiled bytecode
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Build outputs
+dist/
+**/dist/
+build/
+**/build/
+staticfiles/
+
+# Logs and environment configs
+*.log
+.env
+.env.local
+.env.*.local
+
+# Binary executables not needed in container
+cloudflared.exe
+*.exe
+
+# Database files
+*.sqlite3
+*.sqlite3-journal
+
+# IDE and OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

@@ -43,6 +43,29 @@ SITEMAP_XML = """<?xml version="1.0" encoding="UTF-8"?>
   </url>
 </urlset>"""
 
+from django.http import HttpResponse, JsonResponse
+from django.db import connection
+
+def health_check_view(request):
+    """
+    Health check endpoint for Docker container readiness & liveness probes.
+    Verifies that the Django application and database connection are responsive.
+    """
+    health_data = {
+        "status": "healthy",
+        "service": "bloodchain-backend",
+    }
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+        health_data["database"] = "connected"
+        return JsonResponse(health_data, status=200)
+    except Exception as e:
+        health_data["status"] = "unhealthy"
+        health_data["database"] = f"error: {str(e)}"
+        return JsonResponse(health_data, status=503)
+
 def sitemap_view(request):
     return HttpResponse(SITEMAP_XML, content_type='application/xml')
 
@@ -50,6 +73,8 @@ def robots_view(request):
     return HttpResponse("User-agent: *\nAllow: /\nSitemap: /sitemap.xml\n", content_type='text/plain')
 
 urlpatterns = [
+    path('health/', health_check_view, name='health-check-root'),
+    path('api/health/', health_check_view, name='health-check-api'),
     path('sitemap.xml', sitemap_view, name='sitemap-xml'),
     path('robots.txt', robots_view, name='robots-txt'),
     path('admin/', admin.site.urls),

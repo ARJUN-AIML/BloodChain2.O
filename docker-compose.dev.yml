@@ -1,0 +1,30 @@
+# ===================================================
+# BloodChain Development Docker Compose Configuration
+# Features: Hot Module Reloading (Vite) + Live Python Reload + Debugging
+# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+# ===================================================
+
+services:
+  db:
+    ports:
+      - "${DB_PORT:-5432}:5432"
+
+  backend:
+    environment:
+      DEBUG: "True"
+    volumes:
+      - ./backend:/app
+      - /app/__pycache__
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+  frontend:
+    build:
+      target: builder
+    command: ["npm", "run", "dev", "--", "--host", "0.0.0.0", "--port", "5173"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8000/api

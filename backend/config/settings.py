@@ -75,8 +75,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database configuration (Neon PostgreSQL or fallback)
+# Database configuration (PostgreSQL via DATABASE_URL or POSTGRES_* env vars, with SQLite fallback)
 DATABASE_URL = os.getenv('DATABASE_URL')
+if not DATABASE_URL and os.getenv('POSTGRES_HOST'):
+    db_user = os.getenv('POSTGRES_USER', 'bloodchain')
+    db_pass = os.getenv('POSTGRES_PASSWORD', '')
+    db_host = os.getenv('POSTGRES_HOST', 'localhost')
+    db_port = os.getenv('POSTGRES_PORT', '5432')
+    db_name = os.getenv('POSTGRES_DB', 'bloodchain')
+    DATABASE_URL = f"postgresql://{db_user}:{db_pass}@{db_host}:{db_port}/{db_name}"
+
 if DATABASE_URL:
     DATABASES = {
         'default': dj_database_url.config(
@@ -131,6 +139,10 @@ USE_TZ = True
 # Static files
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Media files
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
