@@ -206,3 +206,8 @@ class DonorNotification(models.Model):
 
     def __str__(self):
         return f"{self.donor.donor_id}: {self.title}"
+
+
+# Backward & domain compatibility alias
+BloodDonationCamp = DonationCamp
+

@@ -10,6 +10,7 @@ class DonationCampSerializer(serializers.ModelSerializer):
     organizer_name = serializers.CharField(source='organizer.name', read_only=True)
     organizer_type = serializers.CharField(source='organizer.facility_type', read_only=True)
     organizer_id = serializers.CharField(source='organizer.facility_id', read_only=True)
+    organizer_district = serializers.CharField(source='organizer.district', read_only=True)
     registered_count = serializers.ReadOnlyField()
     checked_in_count = serializers.ReadOnlyField()
 
@@ -17,7 +18,7 @@ class DonationCampSerializer(serializers.ModelSerializer):
         model = DonationCamp
         fields = [
             'camp_id', 'camp_name', 'organizer_id', 'organizer_name',
-            'organizer_type', 'camp_type', 'urgency', 'status',
+            'organizer_type', 'organizer_district', 'camp_type', 'urgency', 'status',
             'venue_name', 'venue_address', 'latitude', 'longitude',
             'start_datetime', 'end_datetime', 'required_blood_groups',
             'description', 'contact_phone', 'contact_email',

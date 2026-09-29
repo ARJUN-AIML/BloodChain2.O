@@ -36,6 +36,7 @@ class CampListView(views.APIView):
         blood_group = request.query_params.get('blood_group')
         camp_type = request.query_params.get('camp_type')
         organizer_type = request.query_params.get('organizer_type')
+        district = request.query_params.get('district')
 
         if blood_group:
             camps = camps.filter(required_blood_groups__contains=[blood_group])
@@ -43,6 +44,13 @@ class CampListView(views.APIView):
             camps = camps.filter(camp_type=camp_type.upper())
         if organizer_type:
             camps = camps.filter(organizer__facility_type=organizer_type.upper())
+        if district and district.upper() != 'ALL':
+            from django.db.models import Q
+            camps = camps.filter(
+                Q(organizer__district__iexact=district) |
+                Q(venue_address__icontains=district) |
+                Q(venue_name__icontains=district)
+            )
 
         return response.Response(DonationCampSerializer(camps, many=True).data)
 

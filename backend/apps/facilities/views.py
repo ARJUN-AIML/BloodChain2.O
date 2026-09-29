@@ -9,6 +9,9 @@ class FacilityListView(generics.ListAPIView):
     def get_queryset(self):
         queryset = Facility.objects.filter(is_active=True).order_by('district', 'name')
         facility_type = self.request.query_params.get('type')
+        district = self.request.query_params.get('district')
         if facility_type:
             queryset = queryset.filter(facility_type=facility_type.upper())
+        if district and district.upper() != 'ALL':
+            queryset = queryset.filter(district__iexact=district)
         return queryset
