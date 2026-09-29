@@ -17,7 +17,9 @@ export const AuthProvider = ({ children }) => {
       setProfile(res.data);
       return res.data;
     } catch (err) {
-      console.warn('Failed to fetch user profile:', err?.response?.data?.detail || err.message);
+      if (err?.response?.status !== 401) {
+        console.warn('Failed to fetch user profile:', err?.response?.data?.detail || err.message);
+      }
       setProfile(null);
       setError(err.response?.data?.detail || 'Authentication failed');
       if (err.response?.status === 401 || err.response?.status === 403) {

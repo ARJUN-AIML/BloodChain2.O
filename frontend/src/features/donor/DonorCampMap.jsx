@@ -280,15 +280,9 @@ export const DonorCampMap = ({ donor }) => {
       setError(null);
 
       const [campsRes, facilitiesRes, regsRes] = await Promise.all([
-        api.get('/camps/').catch((err) => {
-          console.warn('Error fetching camps:', err);
-          return { data: [] };
-        }),
-        api.get('/facilities/').catch((err) => {
-          console.warn('Error fetching facilities:', err);
-          return { data: [] };
-        }),
-        api.get('/donors/me/registrations/').catch(() => ({ data: [] }))
+        api.get('/camps/').catch(() => ({ data: [] })),
+        api.get('/facilities/').catch(() => ({ data: [] })),
+        donor ? api.get('/donors/me/registrations/').catch(() => ({ data: [] })) : Promise.resolve({ data: [] })
       ]);
 
       const campList = Array.isArray(campsRes.data)

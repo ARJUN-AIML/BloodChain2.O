@@ -38,7 +38,9 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
-      console.warn('Unauthorized request. Redirecting or resetting auth session.');
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('bloodchain_token');
+      }
     }
     return Promise.reject(error);
   }
