@@ -24,6 +24,7 @@ export const AIDemandForecastSection = ({ facility, role }) => {
   const [historicalDays, setHistoricalDays] = useState(14);
   const [forecastData, setForecastData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isChangingHorizon, setIsChangingHorizon] = useState(false);
   const [recalculating, setRecalculating] = useState(false);
   const [error, setError] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
@@ -44,6 +45,12 @@ export const AIDemandForecastSection = ({ facility, role }) => {
   const predictedLabel = isBloodBank ? 'AI Predicted Outbound Requirement' : 'AI Predicted Demand';
   const expectedDropdownTitle = isBloodBank ? 'Expected Outbound Requirement' : 'Expected Demand';
 
+  const handleSelectForecastDays = (days) => {
+    if (days === forecastDays) return;
+    setIsChangingHorizon(true);
+    setForecastDays(days);
+  };
+
   const fetchForecast = async (showLoading = true) => {
     try {
       if (showLoading && !forecastData) setLoading(true);
@@ -62,6 +69,7 @@ export const AIDemandForecastSection = ({ facility, role }) => {
       setError(err.response?.data?.detail || 'Unable to retrieve ML forecast. Please retry.');
     } finally {
       setLoading(false);
+      setIsChangingHorizon(false);
     }
   };
 
@@ -348,8 +356,8 @@ export const AIDemandForecastSection = ({ facility, role }) => {
       });
     }
 
-    // Trailing days to complete 6 full 7-day rows (42 cells standard calendar grid)
-    const totalCellsNeeded = 42;
+    // Trailing days to complete full 7-day rows (5 or 6 rows dynamically based on days needed)
+    const totalCellsNeeded = Math.ceil(days.length / 7) * 7;
     const remaining = totalCellsNeeded - days.length;
     for (let t = 1; t <= remaining; t++) {
       const nextDate = new Date(year, month + 1, t);
@@ -573,19 +581,33 @@ export const AIDemandForecastSection = ({ facility, role }) => {
             <p className="text-[10px] text-stone-500 mt-1">Filtered dynamically to operational data present for this facility.</p>
           </div>
 
-          {/* Prediction Horizon */}
+          {/* Prediction Horizon Selector */}
           <div>
             <label className="block text-xs font-bold text-stone-700 uppercase tracking-wide mb-1.5 flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-rose-600" />
-              <span>Prediction Horizon</span>
+              <span>Prediction Horizon (Calendar Days)</span>
             </label>
-            <div className="bg-stone-100 p-1.5 rounded-lg border border-stone-300 flex items-center justify-center">
-              <div className="w-full py-1 text-xs font-bold rounded text-center bg-rose-600 text-white shadow-xs">
-                7 Days Forecast
-              </div>
+            <div className="grid grid-cols-3 gap-1.5 bg-stone-100 p-1.5 rounded-lg border border-stone-300">
+              {[7, 14, 30].map((d) => (
+                <button
+                  key={d}
+                  type="button"
+                  onClick={() => handleSelectForecastDays(d)}
+                  className={`py-1 text-xs font-bold rounded text-center transition-colors cursor-pointer flex items-center justify-center gap-1 ${
+                    forecastDays === d
+                      ? 'bg-rose-600 text-white shadow-xs font-extrabold'
+                      : 'text-stone-700 hover:text-stone-900 hover:bg-stone-200'
+                  }`}
+                >
+                  {isChangingHorizon && forecastDays === d && (
+                    <RefreshCw className="w-2.5 h-2.5 animate-spin" />
+                  )}
+                  <span>{d} Days</span>
+                </button>
+              ))}
             </div>
             <p className="text-[10px] text-stone-500 mt-1">
-              Standard 7-day predictive requirement series displayed in the operational calendar.
+              Select 7, 14, or 30 days to dynamically generate and display accurate predictions in the calendar.
             </p>
           </div>
         </div>
@@ -765,7 +787,7 @@ export const AIDemandForecastSection = ({ facility, role }) => {
               {/* Right Side: Spacious Forecast Days Badge + Prominent Calendar Icon + Chevron */}
               <div className="flex items-center gap-4 sm:gap-5 shrink-0 self-end md:self-auto">
                 <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-stone-200/80 border border-stone-300/90 text-stone-800 text-xs font-bold font-mono shadow-2xs">
-                  <span>{dailyForecast.length} Forecast Days</span>
+                  <span>{dailyForecast.length || forecastDays} Forecast Days</span>
                 </div>
                 {/* Prominent Calendar Icon with generous padding */}
                 <div 
@@ -803,7 +825,7 @@ export const AIDemandForecastSection = ({ facility, role }) => {
                         title="Display continuous calendar rows covering the full selected forecast horizon"
                       >
                         <Calendar className="w-3.5 h-3.5" />
-                        <span>Forecast Horizon ({dailyForecast.length}d)</span>
+                        <span>Forecast Horizon ({dailyForecast.length || forecastDays}d)</span>
                       </button>
                       <button
                         type="button"
@@ -836,10 +858,27 @@ export const AIDemandForecastSection = ({ facility, role }) => {
                       <span>Card Grid</span>
                     </button>
 
-                    {/* Active Horizon Indicator in Calendar Toolbar */}
-                    <div className="flex items-center gap-1.5 bg-[#faf6ee] px-2.5 py-1.5 rounded-lg border border-[#d5c7b2] text-xs font-bold text-rose-700">
-                      <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></span>
-                      <span>7-Day Forecast</span>
+                    {/* Quick Horizon Buttons inside Calendar Toolbar */}
+                    <div className="flex items-center gap-1 bg-[#faf6ee] p-1 rounded-lg border border-[#d5c7b2]">
+                      <span className="text-[11px] font-bold text-stone-600 px-1.5 hidden sm:inline">Horizon:</span>
+                      {[7, 14, 30].map((d) => (
+                        <button
+                          key={d}
+                          type="button"
+                          onClick={() => handleSelectForecastDays(d)}
+                          className={`px-2.5 py-1 text-xs font-bold rounded-md transition-all cursor-pointer flex items-center gap-1 ${
+                            forecastDays === d
+                              ? 'bg-rose-600 text-white shadow-2xs font-extrabold'
+                              : 'text-stone-700 hover:text-stone-900 hover:bg-stone-200/60'
+                          }`}
+                          title={`Forecast for ${d} days in calendar`}
+                        >
+                          {isChangingHorizon && forecastDays === d && (
+                            <RefreshCw className="w-2.5 h-2.5 animate-spin" />
+                          )}
+                          <span>{d} Days</span>
+                        </button>
+                      ))}
                     </div>
                   </div>
 
@@ -910,7 +949,7 @@ export const AIDemandForecastSection = ({ facility, role }) => {
                       <span className="w-2 h-2 rounded-full bg-rose-600 animate-pulse"></span>
                       <span>{dailyForecast[0]?.display_label} – {dailyForecast[dailyForecast.length - 1]?.display_label}</span>
                       <span className="text-stone-400">•</span>
-                      <span className="text-rose-700">{dailyForecast.length} Forecast Days Active</span>
+                      <span className="text-rose-700">{dailyForecast.length || forecastDays} Forecast Days Active</span>
                     </div>
                   )}
                 </div>
@@ -1085,7 +1124,7 @@ export const AIDemandForecastSection = ({ facility, role }) => {
                         <div className="flex items-center gap-2.5 text-stone-600">
                           <Calendar className="w-4 h-4 text-rose-600 shrink-0" />
                           <span>
-                            <strong>AI Calendar Horizon ({dailyForecast.length} Days Active):</strong> Values for all {dailyForecast.length} future days are shown directly in the cells (<strong className="text-rose-700">{dailyForecast[0]?.display_label} – {dailyForecast[dailyForecast.length - 1]?.display_label}</strong>). Hover any card for detailed metrics.
+                            <strong>AI Calendar Horizon ({dailyForecast.length || forecastDays} Days Active):</strong> Values for all {dailyForecast.length || forecastDays} future days are shown directly in the cells (<strong className="text-rose-700">{dailyForecast[0]?.display_label} – {dailyForecast[dailyForecast.length - 1]?.display_label}</strong>). Hover any card for detailed metrics.
                           </span>
                         </div>
                       )}
