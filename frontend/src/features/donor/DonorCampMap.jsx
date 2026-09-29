@@ -158,48 +158,7 @@ function MapController({ center, zoom, onZoomChange }) {
   return null;
 }
 
-// 1. Custom District Hub Marker (Displayed in State Overview to prevent clustering clutter)
-const createDistrictClusterMarker = (cluster) => {
-  const { districtName, facilityCount, criticalCampsCount, campsCount } = cluster;
-
-  let alertBadge = '';
-  if (criticalCampsCount > 0) {
-    alertBadge = `
-      <span class="px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[9px] font-extrabold animate-pulse border border-white flex items-center gap-0.5 shadow-sm">
-        🚨 ${criticalCampsCount} Critical
-      </span>
-    `;
-  } else if (campsCount > 0) {
-    alertBadge = `
-      <span class="px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[9px] font-bold border border-white shadow-sm">
-        ⛺ ${campsCount} Drives
-      </span>
-    `;
-  }
-
-  return L.divIcon({
-    className: 'custom-district-hub-pin',
-    html: `
-      <div class="relative flex items-center justify-center cursor-pointer group">
-        <div class="px-3 py-1.5 rounded-2xl bg-white/95 text-stone-900 shadow-xl border-2 border-rose-500/80 backdrop-blur-md flex items-center gap-2 transform hover:scale-110 hover:shadow-2xl transition duration-200">
-          <div class="w-6 h-6 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
-            🏥
-          </div>
-          <div class="flex flex-col text-left leading-tight pr-1">
-            <span class="text-xs font-extrabold text-stone-900 tracking-tight whitespace-nowrap">${districtName}</span>
-            <span class="text-[10px] text-stone-500 font-mono font-medium">${facilityCount} Nodes</span>
-          </div>
-          ${alertBadge}
-        </div>
-      </div>
-    `,
-    iconSize: [140, 40],
-    iconAnchor: [70, 20],
-    popupAnchor: [0, -22],
-  });
-};
-
-// 2. Custom Camp Marker (Distinguished by Urgency with Tent Emblem)
+// 1. Custom Camp Marker (Distinguished by Urgency with Tent Emblem)
 const createCampMarker = (camp, isUserRegistered = false) => {
   const isCritical = camp.urgency === 'CRITICAL';
   const isActive = camp.status === 'ACTIVE';
@@ -477,36 +436,6 @@ export const DonorCampMap = ({ donor }) => {
     return filteredCamps.filter((c) => c.urgency === 'CRITICAL');
   }, [isDistrictZoomed, filteredCamps]);
 
-  // Compute District Clusters for State Overview Mode
-  const districtClusters = useMemo(() => {
-    return districts
-      .filter((d) => d !== 'ALL')
-      .map((districtName) => {
-        const districtFacilities = facilities.filter(
-          (f) => f.district?.toLowerCase() === districtName.toLowerCase()
-        );
-        const districtCamps = camps.filter(
-          (c) =>
-            (c.organizer_district && c.organizer_district.toLowerCase() === districtName.toLowerCase()) ||
-            c.venue_address?.toLowerCase().includes(districtName.toLowerCase()) ||
-            c.venue_name?.toLowerCase().includes(districtName.toLowerCase())
-        );
-        const criticalCamps = districtCamps.filter((c) => c.urgency === 'CRITICAL');
-        const coords = DISTRICT_COORDINATES[districtName] || DEFAULT_MAP_CENTER;
-
-        return {
-          districtName,
-          facilityCount: districtFacilities.length,
-          hospitalCount: districtFacilities.filter((f) => f.facility_type === 'HOSPITAL').length,
-          bloodBankCount: districtFacilities.filter((f) => f.facility_type === 'BLOOD_BANK').length,
-          campsCount: districtCamps.length,
-          criticalCampsCount: criticalCamps.length,
-          coords,
-        };
-      })
-      .filter((cluster) => cluster.facilityCount > 0 || cluster.campsCount > 0);
-  }, [districts, facilities, camps]);
-
   const hospitalsCount = filteredFacilities.filter((f) => f.facility_type === 'HOSPITAL').length;
   const bloodBanksCount = filteredFacilities.filter((f) => f.facility_type === 'BLOOD_BANK').length;
   const campsCount = filteredCamps.length;
@@ -782,11 +711,16 @@ export const DonorCampMap = ({ donor }) => {
           
           {/* FLOATING ZOOM / DISTRICT CONTEXT BANNER */}
           {!isDistrictZoomed ? (
-            <div className="absolute top-3 left-14 z-[400] bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl border border-stone-300 shadow-lg text-xs flex items-center gap-2.5 max-w-xl">
+            <div className="absolute top-3 left-14 z-[400] bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-stone-300 shadow-lg text-xs flex items-center gap-2.5 max-w-xl">
               <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping shrink-0 inline-block" />
               <div className="text-stone-800">
-                <strong className="text-red-700 font-extrabold uppercase tracking-wide">State Emergency View:</strong>{' '}
-                <span>Showing critical emergency blood drives across Tamil Nadu. Click any district hub below or select a district to reveal all local hospitals and scheduled camps.</span>
+                <strong className="text-red-700 font-extrabold uppercase tracking-wide">State Overview:</strong>{' '}
+                <span>
+                  {mapCampsToRender.length > 0 
+                    ? `Showing ${mapCampsToRender.length} Critical Need emergency drive${mapCampsToRender.length > 1 ? 's' : ''}. ` 
+                    : ''}
+                  Zoom in on the map or select a district to reveal local hospitals, blood banks & camps.
+                </span>
               </div>
             </div>
           ) : (
@@ -829,56 +763,6 @@ export const DonorCampMap = ({ donor }) => {
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | BloodChain'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-
-            {/* A. STATE OVERVIEW MODE (Not Zoomed In): RENDER DISTRICT HUBS */}
-            {!isDistrictZoomed && districtClusters.map((cluster) => (
-              <Marker
-                key={`hub-${cluster.districtName}`}
-                position={cluster.coords}
-                icon={createDistrictClusterMarker(cluster)}
-                eventHandlers={{
-                  click: () => {
-                    handleDistrictChange(cluster.districtName);
-                  },
-                }}
-              >
-                <Popup className="bloodchain-custom-popup">
-                  <div className="p-2 space-y-2.5 max-w-xs font-sans">
-                    <div className="flex items-center justify-between border-b border-stone-200 pb-1.5">
-                      <span className="text-xs font-extrabold text-stone-900">{cluster.districtName} Medical Hub</span>
-                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">
-                        {cluster.facilityCount} Nodes
-                      </span>
-                    </div>
-
-                    <div className="space-y-1 text-xs text-stone-600">
-                      <div className="flex items-center justify-between">
-                        <span>🏥 Hospitals:</span>
-                        <strong className="text-stone-900">{cluster.hospitalCount}</strong>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span>🏢 Blood Banks:</span>
-                        <strong className="text-stone-900">{cluster.bloodBankCount}</strong>
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span>⛺ Scheduled Camps:</span>
-                        <strong className="text-stone-900">
-                          {cluster.campsCount} {cluster.criticalCampsCount > 0 ? `(${cluster.criticalCampsCount} Critical Need)` : ''}
-                        </strong>
-                      </div>
-                    </div>
-
-                    <button
-                      onClick={() => handleDistrictChange(cluster.districtName)}
-                      className="w-full mt-2 py-2 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-md shadow-blue-900/20"
-                    >
-                      <ZoomIn className="w-3.5 h-3.5" />
-                      <span>Zoom Into {cluster.districtName}</span>
-                    </button>
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
 
             {/* B. CAMPS LAYER:
                 - If State View: ONLY Critical Need camps are rendered!
@@ -947,7 +831,23 @@ export const DonorCampMap = ({ donor }) => {
                       )}
 
                       {/* Registration Action / Status */}
-                      <div className="pt-2">
+                      <div className="pt-2 space-y-1.5">
+                        {!isDistrictZoomed && (
+                          <button
+                            onClick={() => {
+                              if (camp.organizer_district) {
+                                setSelectedDistrict(camp.organizer_district);
+                              }
+                              setMapCenter([camp.latitude, camp.longitude]);
+                              setMapZoom(12);
+                              setCurrentZoom(12);
+                            }}
+                            className="w-full py-1.5 px-3 bg-stone-100 hover:bg-stone-200 text-stone-800 rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 border border-stone-300"
+                          >
+                            <ZoomIn className="w-3.5 h-3.5 text-stone-600" />
+                            <span>Zoom in to Nearby Hospitals</span>
+                          </button>
+                        )}
                         {isRegistered ? (
                           <div className="w-full py-1.5 px-3 bg-emerald-50 border border-emerald-200 text-emerald-800 rounded-xl text-xs font-bold text-center flex items-center justify-center gap-1.5">
                             <CheckCircle2 className="w-4 h-4 text-emerald-600" />
