@@ -179,6 +179,73 @@ FIREBASE_DATABASE_URL=https://bloodchain-95960-default-rtdb.asia-southeast1.fire
 
 ---
 
+## ☁️ Cloud Deployment: Vercel (Frontend) + Render (Backend & DB)
+
+BloodChain is fully optimized for zero-configuration deployment with **Frontend on Vercel** and **Backend + Database on Render**.
+
+### 1. Backend Deployment on Render (`render.com`)
+
+#### Option A: One-Click Blueprint (`render.yaml`)
+1. In your [Render Dashboard](https://dashboard.render.com/), click **New** -> **Blueprint**.
+2. Connect your Git repository (`BloodChain2.O`).
+3. Render reads [`render.yaml`](render.yaml) and automatically provisions:
+   - **PostgreSQL Database** (`bloodchain-db`)
+   - **Web Service** (`bloodchain-backend`) with pre-configured migrations, initial seed data, and Gunicorn server.
+4. Click **Apply**.
+
+#### Option B: Manual Web Service Setup on Render
+1. Create a **PostgreSQL Database** on Render (Name: `bloodchain-db`).
+2. Copy the **Internal Database URL** (`postgresql://...`).
+3. Create a **New Web Service** pointing to your repository:
+   - **Root Directory**: `backend`
+   - **Runtime**: `Python 3`
+   - **Build Command**: `./build.sh`
+   - **Start Command**: `gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --workers 3 --timeout 120`
+4. Add the following **Environment Variables** in the Render Dashboard:
+   - `PYTHON_VERSION`: `3.12.9`
+   - `DJANGO_SECRET_KEY`: `<generate-a-secure-random-key>`
+   - `DEBUG`: `False`
+   - `ALLOWED_HOSTS`: `*`
+   - `CORS_ALLOW_ALL_ORIGINS`: `True`
+   - `DATABASE_URL`: `<paste-your-render-postgresql-url>`
+   - `FIREBASE_PROJECT_ID`: `bloodchain-95960`
+   - `FIREBASE_API_KEY`: `AIzaSyDbMwrUoDEqMw_X4Rm_ss_bAzxRqdN1GuU`
+   - `FIREBASE_AUTH_DOMAIN`: `bloodchain-95960.firebaseapp.com`
+   - `FIREBASE_DATABASE_URL`: `https://bloodchain-95960-default-rtdb.asia-southeast1.firebasedatabase.app`
+   - `FIREBASE_STORAGE_BUCKET`: `bloodchain-95960.firebasestorage.app`
+   - `FIREBASE_MESSAGING_SENDER_ID`: `836624051781`
+5. Click **Create Web Service**. Your backend will be live at:
+   `https://bloodchain-backend.onrender.com`
+
+---
+
+### 2. Frontend Deployment on Vercel (`vercel.com`)
+
+1. Go to your [Vercel Dashboard](https://vercel.com/dashboard) and click **Add New...** -> **Project**.
+2. Import your Git repository (`BloodChain2.O`).
+3. In the configuration screen:
+   - **Framework Preset**: `Vite`
+   - **Root Directory**: Click *Edit* and select `frontend`
+   - **Build Command**: `npm run build` (default)
+   - **Output Directory**: `dist` (default)
+4. Under **Environment Variables**, add:
+   - `VITE_API_BASE_URL`: `https://your-backend.onrender.com/api` *(replace with your Render backend URL)*
+   - `PUBLIC_APP_URL`: `https://your-app.vercel.app` *(your Vercel live URL)*
+   - `VITE_PUBLIC_APP_URL`: `https://your-app.vercel.app`
+   - `VITE_FIREBASE_API_KEY`: `AIzaSyDbMwrUoDEqMw_X4Rm_ss_bAzxRqdN1GuU`
+   - `VITE_FIREBASE_AUTH_DOMAIN`: `bloodchain-95960.firebaseapp.com`
+   - `VITE_FIREBASE_DATABASE_URL`: `https://bloodchain-95960-default-rtdb.asia-southeast1.firebasedatabase.app`
+   - `VITE_FIREBASE_PROJECT_ID`: `bloodchain-95960`
+   - `VITE_FIREBASE_STORAGE_BUCKET`: `bloodchain-95960.firebasestorage.app`
+   - `VITE_FIREBASE_MESSAGING_SENDER_ID`: `836624051781`
+   - `VITE_FIREBASE_APP_ID`: `1:836624051781:web:2ec7be72a04e317ab67d2c`
+   - `VITE_FIREBASE_MEASUREMENT_ID`: `G-7ZNRYWT6Y1`
+5. Click **Deploy**.
+
+Vercel will compile the React 18 production bundle, and [`frontend/vercel.json`](frontend/vercel.json) automatically routes all SPA paths (`/donor`, `/hospital`, `/bloodbank`, `/verify/:token`) without 404 errors!
+
+---
+
 ## 🩸 QR Verification & Cross-Device Testing Architecture
 
 BloodChain features a cryptographic QR code verification pass system for registered blood donors and emergency donation camps. 

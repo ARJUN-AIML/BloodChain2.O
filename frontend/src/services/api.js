@@ -3,15 +3,20 @@ import axios from 'axios';
 const resolveApiBaseUrl = () => {
   const envUrl = import.meta.env.VITE_API_BASE_URL;
   if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
+    let trimmed = envUrl.trim().replace(/\/+$/, '');
     if (typeof window !== 'undefined' && window.location) {
       const isRemoteDevice = window.location.hostname !== 'localhost' && 
                              window.location.hostname !== '127.0.0.1' && 
                              window.location.hostname !== '0.0.0.0';
-      if (isRemoteDevice && (envUrl.includes('localhost') || envUrl.includes('127.0.0.1'))) {
+      if (isRemoteDevice && (trimmed.includes('localhost') || trimmed.includes('127.0.0.1'))) {
         return '/api';
       }
     }
-    return envUrl;
+    // If origin only is provided (e.g. https://bloodchain.onrender.com), append /api
+    if (trimmed.startsWith('http') && !trimmed.endsWith('/api') && !trimmed.includes('/api/')) {
+      trimmed = `${trimmed}/api`;
+    }
+    return trimmed;
   }
   return '/api';
 };
