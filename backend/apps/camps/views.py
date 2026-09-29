@@ -298,36 +298,97 @@ class CampCheckInView(views.APIView):
         except DonationCamp.DoesNotExist:
             return response.Response({'detail': 'Camp not found.'}, status=404)
 
-        if profile.facility and camp.organizer != profile.facility:
+        if profile.facility and camp.organizer_id != profile.facility_id:
             return response.Response({'detail': 'Not your camp.'}, status=403)
 
-        donor_id = request.data.get('donor_id') or request.data.get('donor_id_or_token')
-        qr_token = request.data.get('qr_token')
+        raw_identifier = (
+            request.data.get('registration_id') or
+            request.data.get('qr_token') or
+            request.data.get('donor_id') or
+            request.data.get('donor_id_or_token')
+        )
 
-        if not donor_id and not qr_token:
+        if not raw_identifier:
             return response.Response(
-                {'detail': 'Provide donor_id or qr_token.'},
+                {'detail': 'Provide donor_id, qr_token, or registration_id.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        try:
-            if qr_token:
-                donor = DonorProfile.objects.get(qr_token=qr_token)
-            else:
-                from django.db.models import Q
-                donor = DonorProfile.objects.filter(
-                    Q(donor_id=donor_id) | Q(qr_token=donor_id)
-                ).first()
-                if not donor:
-                    raise DonorProfile.DoesNotExist
-        except (DonorProfile.DoesNotExist, ValueError):
-            return response.Response({'detail': 'Donor not found.'}, status=404)
+        token_str = str(raw_identifier).strip()
 
+        # Check if token is a valid UUID
+        import uuid as uuid_lib
+        is_uuid = False
+        parsed_uuid = None
         try:
-            reg = CampRegistration.objects.get(camp=camp, donor=donor, status='REGISTERED')
-        except CampRegistration.DoesNotExist:
+            parsed_uuid = uuid_lib.UUID(token_str)
+            is_uuid = True
+        except (ValueError, AttributeError, TypeError):
+            is_uuid = False
+
+        reg = None
+        donor = None
+
+        # Strategy 1: If UUID, check CampRegistration.qr_token first, then DonorProfile.qr_token
+        if is_uuid:
+            reg = CampRegistration.objects.filter(camp=camp, qr_token=parsed_uuid).select_related('donor').first()
+            if not reg:
+                donor = DonorProfile.objects.filter(qr_token=parsed_uuid).first()
+                if donor:
+                    reg = CampRegistration.objects.filter(camp=camp, donor=donor).select_related('donor').first()
+
+        # Strategy 2: If integer registration ID, look up CampRegistration directly
+        if not reg and token_str.isdigit():
+            reg = CampRegistration.objects.filter(camp=camp, id=int(token_str)).select_related('donor').first()
+
+        # Strategy 3: Match donor_id string (case-insensitive) on DonorProfile
+        if not reg:
+            donor = DonorProfile.objects.filter(donor_id__iexact=token_str).first()
+            if donor:
+                reg = CampRegistration.objects.filter(camp=camp, donor=donor).select_related('donor').first()
+
+        # Strategy 4: Fallback search by donor email or phone
+        if not reg:
+            from django.db.models import Q
+            donor = DonorProfile.objects.filter(
+                Q(email__iexact=token_str) | Q(phone=token_str)
+            ).first()
+            if donor:
+                reg = CampRegistration.objects.filter(camp=camp, donor=donor).select_related('donor').first()
+
+        if not reg:
+            if donor:
+                return response.Response(
+                    {'detail': f"Donor '{donor.name}' ({donor.donor_id}) is not registered for this camp."},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             return response.Response(
-                {'detail': 'Donor is not registered for this camp.'},
+                {'detail': f"No registration or donor found matching '{token_str}'."},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        if reg.status == 'CHECKED_IN':
+            return response.Response({
+                'status': 'already_checked_in',
+                'detail': f"Donor '{reg.donor.name}' is already checked in.",
+                'donor_id': reg.donor.donor_id,
+                'donor_name': reg.donor.name,
+                'camp_id': camp.camp_id,
+                'checked_in_at': reg.checked_in_at.isoformat() if reg.checked_in_at else timezone.now().isoformat()
+            }, status=status.HTTP_200_OK)
+
+        if reg.status == 'COMPLETED':
+            return response.Response({
+                'status': 'completed',
+                'detail': f"Donor '{reg.donor.name}' has already completed their donation.",
+                'donor_id': reg.donor.donor_id,
+                'donor_name': reg.donor.name,
+                'camp_id': camp.camp_id,
+            }, status=status.HTTP_200_OK)
+
+        if reg.status == 'CANCELLED':
+            return response.Response(
+                {'detail': 'This registration was cancelled.'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
@@ -338,10 +399,12 @@ class CampCheckInView(views.APIView):
 
         return response.Response({
             'status': 'checked_in',
-            'donor_id': donor.donor_id,
-            'donor_name': donor.name,
+            'detail': f"Donor '{reg.donor.name}' checked in successfully.",
+            'donor_id': reg.donor.donor_id,
+            'donor_name': reg.donor.name,
             'camp_id': camp.camp_id,
-        })
+            'checked_in_at': reg.checked_in_at.isoformat()
+        }, status=status.HTTP_200_OK)
 
 
 class DonationVerifyView(views.APIView):
@@ -365,17 +428,16 @@ class DonationVerifyView(views.APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        try:
-            donor = DonorProfile.objects.get(donor_id=donor_id)
-        except DonorProfile.DoesNotExist:
-            return response.Response({'detail': 'Donor not found.'}, status=404)
+        donor = DonorProfile.objects.filter(donor_id__iexact=str(donor_id).strip()).first()
+        if not donor:
+            return response.Response({'detail': f"Donor '{donor_id}' not found."}, status=404)
 
         try:
             camp = DonationCamp.objects.get(camp_id=camp_id)
         except DonationCamp.DoesNotExist:
             return response.Response({'detail': 'Camp not found.'}, status=404)
 
-        if profile.facility and camp.organizer != profile.facility:
+        if profile.facility and camp.organizer_id != profile.facility_id:
             return response.Response({'detail': 'Not your camp.'}, status=403)
 
         # Create verified donation

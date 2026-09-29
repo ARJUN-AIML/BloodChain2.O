@@ -64,6 +64,7 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
   // Check-In Form State
   const [checkInInput, setCheckInInput] = useState('');
   const [checkingIn, setCheckingIn] = useState(false);
+  const [checkingInId, setCheckingInId] = useState(null);
   const [checkInMessage, setCheckInMessage] = useState(null);
 
   // Verify Donation Form State
@@ -88,26 +89,31 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
     { city: 'Tiruchirappalli (Cantonment)', lat: 10.7905, lng: 78.7047 },
   ];
 
-  const fetchFacilityCamps = async () => {
+  const fetchFacilityCamps = async (selectFirst = true) => {
     try {
-      setLoading(true);
+      if (selectFirst) setLoading(true);
       setError(null);
       const fid = activeFacility?.facility_id;
       const url = fid ? `/camps/facility_camps/?facility_id=${fid}` : '/camps/facility_camps/';
       const res = await api.get(url);
       const campList = Array.isArray(res.data) ? res.data : (res.data?.results || []);
       setCamps(campList);
-      if (campList.length > 0) {
-        selectCampForManagement(campList[0]);
-      } else {
-        setSelectedCamp(null);
-        setRegistrations([]);
+      if (selectFirst) {
+        if (campList.length > 0) {
+          selectCampForManagement(campList[0]);
+        } else {
+          setSelectedCamp(null);
+          setRegistrations([]);
+        }
+      } else if (selectedCamp) {
+        const updated = campList.find((c) => c.camp_id === selectedCamp.camp_id);
+        if (updated) setSelectedCamp(updated);
       }
     } catch (err) {
       console.error('Failed to load facility camps:', err);
-      setError('Unable to load facility donation camps.');
+      if (selectFirst) setError('Unable to load facility donation camps.');
     } finally {
-      setLoading(false);
+      if (selectFirst) setLoading(false);
     }
   };
 
@@ -121,6 +127,27 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
       console.error('Failed to fetch camp registrations:', err);
     } finally {
       setLoadingRegs(false);
+    }
+  };
+
+  const handleQuickCheckIn = async (reg) => {
+    if (!selectedCamp || !reg) return;
+    try {
+      setCheckingInId(reg.id);
+      await api.post(`/camps/${selectedCamp.camp_id}/check_in/`, {
+        donor_id: reg.donor_id || reg.donor?.donor_id,
+        qr_token: reg.qr_token,
+        registration_id: reg.id
+      });
+      // Refresh camp registrations
+      await selectCampForManagement(selectedCamp);
+      // Refresh camp list to update the checked-in counter badge
+      fetchFacilityCamps(false);
+    } catch (err) {
+      console.error('Failed to check in donor:', err);
+      alert(err.response?.data?.detail || 'Failed to check in donor.');
+    } finally {
+      setCheckingInId(null);
     }
   };
 
@@ -179,9 +206,13 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
         donor_id_or_token: checkInInput.trim(),
         donor_id: checkInInput.trim()
       });
-      setCheckInMessage({ type: 'success', text: `Donor checked in successfully! (${res.data.donor_name || 'Donor'})` });
+      setCheckInMessage({ 
+        type: 'success', 
+        text: res.data.detail || `Donor checked in successfully! (${res.data.donor_name || 'Donor'})` 
+      });
       setCheckInInput('');
-      selectCampForManagement(selectedCamp);
+      await selectCampForManagement(selectedCamp);
+      fetchFacilityCamps(false);
     } catch (err) {
       setCheckInMessage({ type: 'error', text: err.response?.data?.detail || 'Failed to check in donor.' });
     } finally {
@@ -213,6 +244,7 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
         setShowVerifyModal(false);
         setVerifyMessage(null);
         selectCampForManagement(selectedCamp);
+        fetchFacilityCamps(false);
       }, 2000);
     } catch (err) {
       setVerifyMessage({ type: 'error', text: err.response?.data?.detail || 'Failed to verify donation.' });
@@ -448,15 +480,18 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
                                 )}
                                 {reg.status === 'REGISTERED' && (
                                   <button
-                                    onClick={async () => {
-                                      await api.post(`/camps/${selectedCamp.camp_id}/check_in/`, {
-                                        donor_id_or_token: reg.donor_id || reg.donor?.donor_id
-                                      });
-                                      selectCampForManagement(selectedCamp);
-                                    }}
-                                    className="px-3 py-1 bg-stone-800 hover:bg-stone-900 text-white rounded-lg text-xs font-medium transition"
+                                    onClick={() => handleQuickCheckIn(reg)}
+                                    disabled={checkingInId === reg.id}
+                                    className="px-3 py-1 bg-stone-900 hover:bg-stone-800 disabled:opacity-60 text-white rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-1.5 ml-auto shadow-xs active:scale-95"
                                   >
-                                    Check In
+                                    {checkingInId === reg.id ? (
+                                      <>
+                                        <RefreshCw className="w-3 h-3 animate-spin" />
+                                        <span>Checking In...</span>
+                                      </>
+                                    ) : (
+                                      <span>Check In</span>
+                                    )}
                                   </button>
                                 )}
                               </td>
