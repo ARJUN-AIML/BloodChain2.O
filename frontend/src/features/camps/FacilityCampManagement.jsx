@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import api from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import { 
   Building2, 
   Plus, 
@@ -20,7 +21,10 @@ import {
   RefreshCw
 } from 'lucide-react';
 
-export const FacilityCampManagement = () => {
+export const FacilityCampManagement = ({ facility: propFacility }) => {
+  const { facility: authFacility } = useAuth() || {};
+  const activeFacility = propFacility || authFacility;
+
   const [camps, setCamps] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -88,10 +92,16 @@ export const FacilityCampManagement = () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await api.get('/camps/facility_camps/');
-      setCamps(res.data || []);
-      if (res.data?.length > 0 && !selectedCamp) {
-        selectCampForManagement(res.data[0]);
+      const fid = activeFacility?.facility_id;
+      const url = fid ? `/camps/facility_camps/?facility_id=${fid}` : '/camps/facility_camps/';
+      const res = await api.get(url);
+      const campList = Array.isArray(res.data) ? res.data : (res.data?.results || []);
+      setCamps(campList);
+      if (campList.length > 0) {
+        selectCampForManagement(campList[0]);
+      } else {
+        setSelectedCamp(null);
+        setRegistrations([]);
       }
     } catch (err) {
       console.error('Failed to load facility camps:', err);
@@ -116,7 +126,7 @@ export const FacilityCampManagement = () => {
 
   useEffect(() => {
     fetchFacilityCamps();
-  }, []);
+  }, [activeFacility?.facility_id]);
 
   const handleCityPresetChange = (presetName) => {
     const p = cityPresets.find((item) => item.city === presetName);
@@ -136,13 +146,17 @@ export const FacilityCampManagement = () => {
       setCreating(true);
       setCreateError(null);
 
-      // Validate dates
+        // Validate dates
       if (!formData.start_datetime || !formData.end_datetime) {
         setCreateError('Please specify start and end dates/times.');
         return;
       }
 
-      const res = await api.post('/camps/create/', formData);
+      const payload = {
+        ...formData,
+        facility_id: activeFacility?.facility_id
+      };
+      const res = await api.post('/camps/create/', payload);
       setShowCreateModal(false);
       fetchFacilityCamps();
       selectCampForManagement(res.data);
@@ -162,7 +176,8 @@ export const FacilityCampManagement = () => {
       setCheckingIn(true);
       setCheckInMessage(null);
       const res = await api.post(`/camps/${selectedCamp.camp_id}/check_in/`, {
-        donor_id_or_token: checkInInput.trim()
+        donor_id_or_token: checkInInput.trim(),
+        donor_id: checkInInput.trim()
       });
       setCheckInMessage({ type: 'success', text: `Donor checked in successfully! (${res.data.donor_name || 'Donor'})` });
       setCheckInInput('');
@@ -185,7 +200,8 @@ export const FacilityCampManagement = () => {
         donor_id: selectedDonorForVerify.donor_id || selectedDonorForVerify.donor?.donor_id,
         blood_group: selectedDonorForVerify.blood_group || selectedDonorForVerify.donor?.blood_group,
         units_donated: 1.0,
-        notes: verifyData.notes
+        notes: verifyData.notes,
+        camp_id: selectedCamp.camp_id
       });
 
       setVerifyMessage({

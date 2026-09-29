@@ -542,7 +542,7 @@ export const BloodBankDashboard = () => {
 
       {/* TAB 4: DONATION CAMPS & RECEPTION DESK */}
       {activeTab === 'camps' && (
-        <FacilityCampManagement />
+        <FacilityCampManagement facility={facility} />
       )}
 
       {/* TAB 5: AI OUTBOUND REQUIREMENT FORECAST */}

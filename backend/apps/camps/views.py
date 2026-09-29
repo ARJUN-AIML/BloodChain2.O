@@ -163,17 +163,33 @@ class CampDetailView(views.APIView):
 
 
 class FacilityCampsView(views.APIView):
-    """List camps owned by the authenticated facility."""
-    permission_classes = [permissions.IsAuthenticated]
+    """List camps owned by the authenticated facility or requested facility_id."""
+    permission_classes = [permissions.AllowAny]
 
     def get(self, request):
-        profile = getattr(request.user, 'profile', None)
-        if not profile or not profile.facility or profile.role == 'DONOR':
-            return response.Response({'detail': 'Facility staff only.'}, status=403)
+        facility_id = request.query_params.get('facility_id')
+        facility = None
 
-        camps = DonationCamp.objects.filter(
-            organizer=profile.facility
-        ).order_by('-start_datetime')
+        if facility_id:
+            facility = Facility.objects.filter(facility_id=facility_id).first()
+
+        if not facility and request.user.is_authenticated:
+            profile = getattr(request.user, 'profile', None)
+            if profile and profile.facility:
+                facility = profile.facility
+
+        if not facility:
+            profile = getattr(request.user, 'profile', None)
+            if profile and profile.facility:
+                facility = profile.facility
+
+        if facility:
+            camps = DonationCamp.objects.filter(
+                organizer=facility
+            ).order_by('-start_datetime')
+        else:
+            camps = DonationCamp.objects.all().order_by('-start_datetime')
+
         return response.Response(DonationCampSerializer(camps, many=True).data)
 
 
@@ -285,7 +301,7 @@ class CampCheckInView(views.APIView):
         if profile.facility and camp.organizer != profile.facility:
             return response.Response({'detail': 'Not your camp.'}, status=403)
 
-        donor_id = request.data.get('donor_id')
+        donor_id = request.data.get('donor_id') or request.data.get('donor_id_or_token')
         qr_token = request.data.get('qr_token')
 
         if not donor_id and not qr_token:
@@ -298,8 +314,13 @@ class CampCheckInView(views.APIView):
             if qr_token:
                 donor = DonorProfile.objects.get(qr_token=qr_token)
             else:
-                donor = DonorProfile.objects.get(donor_id=donor_id)
-        except DonorProfile.DoesNotExist:
+                from django.db.models import Q
+                donor = DonorProfile.objects.filter(
+                    Q(donor_id=donor_id) | Q(qr_token=donor_id)
+                ).first()
+                if not donor:
+                    raise DonorProfile.DoesNotExist
+        except (DonorProfile.DoesNotExist, ValueError):
             return response.Response({'detail': 'Donor not found.'}, status=404)
 
         try:
@@ -327,13 +348,13 @@ class DonationVerifyView(views.APIView):
     """Record a verified donation — facility staff only. Auto-generates certificate."""
     permission_classes = [permissions.IsAuthenticated]
 
-    def post(self, request):
+    def post(self, request, camp_id=None):
         profile = getattr(request.user, 'profile', None)
         if not profile or profile.role == 'DONOR':
             return response.Response({'detail': 'Facility staff only.'}, status=403)
 
         donor_id = request.data.get('donor_id')
-        camp_id = request.data.get('camp_id')
+        camp_id = camp_id or request.data.get('camp_id')
         blood_group = request.data.get('blood_group', '')
         units = request.data.get('units_donated', 1.0)
         notes = request.data.get('notes', '')

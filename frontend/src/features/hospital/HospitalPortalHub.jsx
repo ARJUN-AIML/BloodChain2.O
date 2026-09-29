@@ -115,7 +115,7 @@ export const HospitalPortalHub = () => {
         ) : activeWorkspace === 'logistics' ? (
           <HospitalLogisticsDashboard onNavigateToForecast={() => setActiveWorkspace('forecast')} />
         ) : activeWorkspace === 'camps' ? (
-          <FacilityCampManagement />
+          <FacilityCampManagement facility={facility} />
         ) : (
           <AIDemandForecastSection facility={facility} role={role || 'HOSPITAL'} />
         )}
