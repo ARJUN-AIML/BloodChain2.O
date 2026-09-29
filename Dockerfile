@@ -1,5 +1,5 @@
 # ===================================================
-# BloodChain Backend Service Dockerfile
+# BloodChain Backend Service (Root Dockerfile for Render / Cloud)
 # Python Runtime: 3.12-slim (Debian Bookworm)
 # ===================================================
 
@@ -20,12 +20,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python packages (Docker layer cache optimization)
-COPY requirements.txt /app/
+COPY backend/requirements.txt /app/
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Copy complete backend application code (including trained ML models & seed datasets)
-COPY . /app/
+COPY backend/ /app/
 
 # Ensure entrypoint is executable
 RUN chmod +x /app/docker-entrypoint.sh
@@ -38,13 +38,14 @@ RUN groupadd -r bloodchain && useradd -r -g bloodchain -d /app -s /sbin/nologin 
 # Switch to non-root user for security
 USER bloodchain
 
-# Expose backend port
+# Expose default port
 EXPOSE 8000
 
-# Docker Health Check
+# Docker Health Check (uses dynamic PORT if assigned by Render)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:8000/api/health/ || exit 1
+    CMD curl -f http://localhost:${PORT:-8000}/api/health/ || exit 1
 
 ENTRYPOINT ["/app/docker-entrypoint.sh"]
 
+# Use dynamic $PORT for Render compatibility (defaults to 8000)
 CMD ["sh", "-c", "gunicorn --bind 0.0.0.0:${PORT:-8000} --workers 3 --timeout 120 config.wsgi:application"]
