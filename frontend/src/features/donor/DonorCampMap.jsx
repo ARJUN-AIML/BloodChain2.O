@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 import api from '../../services/api';
@@ -27,7 +27,9 @@ import {
   ExternalLink,
   Hospital,
   Tent,
-  ArrowRight
+  ArrowRight,
+  ZoomIn,
+  RotateCcw
 } from 'lucide-react';
 
 // Fix Leaflet default icon issues in bundlers
@@ -131,18 +133,73 @@ export const FACILITY_COORDINATES = {
 const DEFAULT_MAP_CENTER = [11.1271, 78.6569]; // Center of Tamil Nadu
 const DEFAULT_MAP_ZOOM = 7;
 
-// Helper to smoothly fly map to coordinates on district/search changes
-function MapPanController({ center, zoom }) {
+// Map Controller: smooth flyTo and zoom synchronization
+function MapController({ center, zoom, onZoomChange }) {
   const map = useMap();
+
   useEffect(() => {
     if (center && Array.isArray(center) && center.length === 2 && !isNaN(center[0]) && !isNaN(center[1])) {
       map.flyTo(center, zoom || 11, { duration: 1.1 });
     }
   }, [center, zoom, map]);
+
+  useEffect(() => {
+    const handleZoom = () => {
+      if (onZoomChange) {
+        onZoomChange(map.getZoom());
+      }
+    };
+    map.on('zoomend', handleZoom);
+    return () => {
+      map.off('zoomend', handleZoom);
+    };
+  }, [map, onZoomChange]);
+
   return null;
 }
 
-// 1. Custom Camp Marker (Distinguished by Urgency with Tent Emblem)
+// 1. Custom District Hub Marker (Displayed in State Overview to prevent clustering clutter)
+const createDistrictClusterMarker = (cluster) => {
+  const { districtName, facilityCount, criticalCampsCount, campsCount } = cluster;
+
+  let alertBadge = '';
+  if (criticalCampsCount > 0) {
+    alertBadge = `
+      <span class="px-1.5 py-0.5 rounded-full bg-red-600 text-white text-[9px] font-extrabold animate-pulse border border-white flex items-center gap-0.5 shadow-sm">
+        🚨 ${criticalCampsCount} Critical
+      </span>
+    `;
+  } else if (campsCount > 0) {
+    alertBadge = `
+      <span class="px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[9px] font-bold border border-white shadow-sm">
+        ⛺ ${campsCount} Drives
+      </span>
+    `;
+  }
+
+  return L.divIcon({
+    className: 'custom-district-hub-pin',
+    html: `
+      <div class="relative flex items-center justify-center cursor-pointer group">
+        <div class="px-3 py-1.5 rounded-2xl bg-white/95 text-stone-900 shadow-xl border-2 border-rose-500/80 backdrop-blur-md flex items-center gap-2 transform hover:scale-110 hover:shadow-2xl transition duration-200">
+          <div class="w-6 h-6 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs font-bold shrink-0">
+            🏥
+          </div>
+          <div class="flex flex-col text-left leading-tight pr-1">
+            <span class="text-xs font-extrabold text-stone-900 tracking-tight whitespace-nowrap">${districtName}</span>
+            <span class="text-[10px] text-stone-500 font-mono font-medium">${facilityCount} Nodes</span>
+          </div>
+          ${alertBadge}
+        </div>
+      </div>
+    `,
+    iconSize: [140, 40],
+    iconAnchor: [70, 20],
+    popupAnchor: [0, -22],
+  });
+};
+
+// 2. Custom Camp Marker (Distinguished by Urgency with Tent Emblem)
 const createCampMarker = (camp, isUserRegistered = false) => {
   const isCritical = camp.urgency === 'CRITICAL';
   const isActive = camp.status === 'ACTIVE';
@@ -152,10 +209,10 @@ const createCampMarker = (camp, isUserRegistered = false) => {
   let pulseHtml = '';
 
   if (isCritical) {
-    bgClass = 'bg-red-600 text-white shadow-red-500/50';
-    pulseHtml = '<span class="absolute -inset-1.5 rounded-2xl bg-red-500 animate-ping opacity-75"></span>';
+    bgClass = 'bg-red-600 text-white shadow-lg shadow-red-600/50';
+    pulseHtml = '<span class="absolute -inset-2 rounded-2xl bg-red-500 animate-ping opacity-75"></span>';
   } else if (isActive) {
-    bgClass = 'bg-emerald-600 text-white shadow-emerald-500/50';
+    bgClass = 'bg-emerald-600 text-white shadow-lg shadow-emerald-600/50';
     pulseHtml = '<span class="absolute -inset-1.5 rounded-2xl bg-emerald-500 animate-pulse opacity-60"></span>';
   } else if (isCompleted) {
     bgClass = 'bg-stone-500 text-stone-100';
@@ -165,24 +222,29 @@ const createCampMarker = (camp, isUserRegistered = false) => {
     ? '<span class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-emerald-500 text-white text-[9px] font-bold flex items-center justify-center border-2 border-white shadow">✓</span>'
     : '';
 
+  const labelBadge = isCritical
+    ? '<span class="absolute -bottom-5 whitespace-nowrap px-2 py-0.5 bg-red-600 text-white text-[9px] font-extrabold rounded-full shadow border border-white uppercase tracking-wider">🚨 Critical Need</span>'
+    : '';
+
   return L.divIcon({
     className: 'custom-camp-pin',
     html: `
-      <div class="relative flex items-center justify-center cursor-pointer group">
+      <div class="relative flex flex-col items-center justify-center cursor-pointer group">
         ${pulseHtml}
         <div class="w-10 h-10 rounded-2xl ${bgClass} shadow-xl flex items-center justify-center text-sm font-bold border-2 border-white transform hover:scale-115 transition duration-200">
-          <span style="font-size: 16px;">⛺</span>
+          <span style="font-size: 17px;">⛺</span>
         </div>
         ${registeredBadge}
+        ${labelBadge}
       </div>
     `,
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
-    popupAnchor: [0, -22],
+    iconSize: [40, 48],
+    iconAnchor: [20, 24],
+    popupAnchor: [0, -26],
   });
 };
 
-// 2. Custom Hospital Marker (Distinguished by Blue Shield with Hospital Emblem)
+// 3. Custom Hospital Marker (Distinguished by Blue Shield with Hospital Emblem)
 const createHospitalMarker = (facility, activeCampsCount = 0) => {
   const campCountBadge = activeCampsCount > 0
     ? `<span class="absolute -top-1.5 -right-1.5 px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[9px] font-extrabold flex items-center justify-center border-2 border-white shadow animate-pulse">${activeCampsCount}</span>`
@@ -204,7 +266,7 @@ const createHospitalMarker = (facility, activeCampsCount = 0) => {
   });
 };
 
-// 3. Custom Blood Bank Marker (Distinguished by Purple/Indigo with Blood Bank Emblem)
+// 4. Custom Blood Bank Marker (Distinguished by Purple/Indigo with Blood Bank Emblem)
 const createBloodBankMarker = (facility, activeCampsCount = 0) => {
   const campCountBadge = activeCampsCount > 0
     ? `<span class="absolute -top-1.5 -right-1.5 px-1.5 py-0.5 rounded-full bg-rose-600 text-white text-[9px] font-extrabold flex items-center justify-center border-2 border-white shadow animate-pulse">${activeCampsCount}</span>`
@@ -241,9 +303,13 @@ export const DonorCampMap = ({ donor }) => {
   const [selectedBloodGroup, setSelectedBloodGroup] = useState('ALL');
   const [selectedUrgency, setSelectedUrgency] = useState('ALL'); // 'ALL' | 'CRITICAL' | 'ACTIVE' | 'UPCOMING'
   
-  // Dynamic Map Navigation Center & Zoom
+  // Dynamic Map Navigation Center & Zoom Tracking
   const [mapCenter, setMapCenter] = useState(DEFAULT_MAP_CENTER);
   const [mapZoom, setMapZoom] = useState(DEFAULT_MAP_ZOOM);
+  const [currentZoom, setCurrentZoom] = useState(DEFAULT_MAP_ZOOM);
+
+  // Zoom Threshold: Is the user zoomed in to a district level?
+  const isDistrictZoomed = currentZoom >= 9 || selectedDistrict !== 'ALL';
 
   // Registration Modal
   const [activeCampForModal, setActiveCampForModal] = useState(null);
@@ -292,10 +358,12 @@ export const DonorCampMap = ({ donor }) => {
   }, []);
 
   // Compute list of unique districts across facilities and camps
-  const districts = ['ALL', ...Array.from(new Set([
-    ...facilities.map((f) => f.district).filter(Boolean),
-    ...camps.map((c) => c.organizer_district).filter(Boolean)
-  ])).sort()];
+  const districts = useMemo(() => {
+    return ['ALL', ...Array.from(new Set([
+      ...facilities.map((f) => f.district).filter(Boolean),
+      ...camps.map((c) => c.organizer_district).filter(Boolean)
+    ])).sort()];
+  }, [facilities, camps]);
 
   // Handle District Change & Smooth Map FlyTo
   const handleDistrictChange = (districtName) => {
@@ -303,9 +371,19 @@ export const DonorCampMap = ({ donor }) => {
     if (districtName === 'ALL') {
       setMapCenter(DEFAULT_MAP_CENTER);
       setMapZoom(DEFAULT_MAP_ZOOM);
+      setCurrentZoom(DEFAULT_MAP_ZOOM);
     } else if (DISTRICT_COORDINATES[districtName]) {
       setMapCenter(DISTRICT_COORDINATES[districtName]);
       setMapZoom(11);
+      setCurrentZoom(11);
+    }
+  };
+
+  // Handle interactive zoom level changes from map
+  const handleZoomChange = (newZoom) => {
+    setCurrentZoom(newZoom);
+    if (newZoom < 9 && selectedDistrict !== 'ALL') {
+      setSelectedDistrict('ALL');
     }
   };
 
@@ -316,74 +394,123 @@ export const DonorCampMap = ({ donor }) => {
     );
   };
 
-  // Filter Camps
-  const filteredCamps = camps.filter((camp) => {
-    // Entity filter
-    if (['HOSPITAL', 'BLOOD_BANK', 'FACILITIES'].includes(selectedEntityType)) {
-      return false;
-    }
+  // Filter Camps based on search, district, entity, blood group, and urgency
+  const filteredCamps = useMemo(() => {
+    return camps.filter((camp) => {
+      // Entity filter
+      if (['HOSPITAL', 'BLOOD_BANK', 'FACILITIES'].includes(selectedEntityType)) {
+        return false;
+      }
 
-    // District filter
-    const campDistrict = camp.organizer_district || '';
-    const matchesDistrict =
-      selectedDistrict === 'ALL' ||
-      campDistrict.toLowerCase() === selectedDistrict.toLowerCase() ||
-      camp.venue_address?.toLowerCase().includes(selectedDistrict.toLowerCase()) ||
-      camp.venue_name?.toLowerCase().includes(selectedDistrict.toLowerCase());
+      // District filter
+      const campDistrict = camp.organizer_district || '';
+      const matchesDistrict =
+        selectedDistrict === 'ALL' ||
+        campDistrict.toLowerCase() === selectedDistrict.toLowerCase() ||
+        camp.venue_address?.toLowerCase().includes(selectedDistrict.toLowerCase()) ||
+        camp.venue_name?.toLowerCase().includes(selectedDistrict.toLowerCase());
 
-    // Search query match
-    const searchLower = searchTerm.toLowerCase();
-    const matchesSearch =
-      !searchTerm ||
-      camp.camp_name?.toLowerCase().includes(searchLower) ||
-      camp.venue_name?.toLowerCase().includes(searchLower) ||
-      camp.venue_address?.toLowerCase().includes(searchLower) ||
-      camp.organizer_name?.toLowerCase().includes(searchLower) ||
-      campDistrict.toLowerCase().includes(searchLower);
+      // Search query match
+      const searchLower = searchTerm.toLowerCase();
+      const matchesSearch =
+        !searchTerm ||
+        camp.camp_name?.toLowerCase().includes(searchLower) ||
+        camp.venue_name?.toLowerCase().includes(searchLower) ||
+        camp.venue_address?.toLowerCase().includes(searchLower) ||
+        camp.organizer_name?.toLowerCase().includes(searchLower) ||
+        campDistrict.toLowerCase().includes(searchLower);
 
-    // Blood group filter
-    const matchesBlood =
-      selectedBloodGroup === 'ALL' ||
-      (Array.isArray(camp.required_blood_groups) &&
-        (camp.required_blood_groups.includes(selectedBloodGroup) ||
-          camp.required_blood_groups.length === 0));
+      // Blood group filter
+      const matchesBlood =
+        selectedBloodGroup === 'ALL' ||
+        (Array.isArray(camp.required_blood_groups) &&
+          (camp.required_blood_groups.includes(selectedBloodGroup) ||
+            camp.required_blood_groups.length === 0));
 
-    // Urgency / Status filter
-    let matchesUrgency = true;
-    if (selectedUrgency === 'CRITICAL') matchesUrgency = camp.urgency === 'CRITICAL';
-    else if (selectedUrgency === 'ACTIVE') matchesUrgency = camp.status === 'ACTIVE';
-    else if (selectedUrgency === 'UPCOMING') matchesUrgency = camp.status === 'UPCOMING';
+      // Urgency / Status filter
+      let matchesUrgency = true;
+      if (selectedUrgency === 'CRITICAL') matchesUrgency = camp.urgency === 'CRITICAL';
+      else if (selectedUrgency === 'ACTIVE') matchesUrgency = camp.status === 'ACTIVE';
+      else if (selectedUrgency === 'UPCOMING') matchesUrgency = camp.status === 'UPCOMING';
 
-    return matchesDistrict && matchesSearch && matchesBlood && matchesUrgency;
-  });
+      return matchesDistrict && matchesSearch && matchesBlood && matchesUrgency;
+    });
+  }, [camps, selectedEntityType, selectedDistrict, searchTerm, selectedBloodGroup, selectedUrgency]);
 
   // Filter Facilities (Hospitals and Blood Banks)
-  const filteredFacilities = facilities.filter((fac) => {
-    // Entity filter
-    if (selectedEntityType === 'CAMP') return false;
-    if (selectedEntityType === 'HOSPITAL' && fac.facility_type !== 'HOSPITAL') return false;
-    if (selectedEntityType === 'BLOOD_BANK' && fac.facility_type !== 'BLOOD_BANK') return false;
+  const filteredFacilities = useMemo(() => {
+    return facilities.filter((fac) => {
+      // Entity filter
+      if (selectedEntityType === 'CAMP') return false;
+      if (selectedEntityType === 'HOSPITAL' && fac.facility_type !== 'HOSPITAL') return false;
+      if (selectedEntityType === 'BLOOD_BANK' && fac.facility_type !== 'BLOOD_BANK') return false;
 
-    // District filter
-    const matchesDistrict =
-      selectedDistrict === 'ALL' ||
-      fac.district?.toLowerCase() === selectedDistrict.toLowerCase();
+      // District filter
+      const matchesDistrict =
+        selectedDistrict === 'ALL' ||
+        fac.district?.toLowerCase() === selectedDistrict.toLowerCase();
 
-    // Search query match
-    const searchLower = searchTerm.toLowerCase();
-    const matchesSearch =
-      !searchTerm ||
-      fac.name?.toLowerCase().includes(searchLower) ||
-      fac.district?.toLowerCase().includes(searchLower) ||
-      fac.address?.toLowerCase().includes(searchLower) ||
-      fac.facility_id?.toLowerCase().includes(searchLower);
+      // Search query match
+      const searchLower = searchTerm.toLowerCase();
+      const matchesSearch =
+        !searchTerm ||
+        fac.name?.toLowerCase().includes(searchLower) ||
+        fac.district?.toLowerCase().includes(searchLower) ||
+        fac.address?.toLowerCase().includes(searchLower) ||
+        fac.facility_id?.toLowerCase().includes(searchLower);
 
-    return matchesDistrict && matchesSearch;
-  });
+      return matchesDistrict && matchesSearch;
+    });
+  }, [facilities, selectedEntityType, selectedDistrict, searchTerm]);
+
+  // UNCLUTTERED MAP RENDERING LOGIC:
+  // 1. If NOT zoomed in (State Overview):
+  //    - ONLY show Critical Need Blood Camps on the map!
+  //    - Show District Hub clusters (not 50 overlapping pins).
+  // 2. If ZOOMED in (District Detail):
+  //    - Show all local hospitals, blood banks, and all available scheduled camps!
+  const mapCampsToRender = useMemo(() => {
+    if (isDistrictZoomed) {
+      return filteredCamps;
+    }
+    // Zoomed out state view: ONLY show Critical Need camps!
+    return filteredCamps.filter((c) => c.urgency === 'CRITICAL');
+  }, [isDistrictZoomed, filteredCamps]);
+
+  // Compute District Clusters for State Overview Mode
+  const districtClusters = useMemo(() => {
+    return districts
+      .filter((d) => d !== 'ALL')
+      .map((districtName) => {
+        const districtFacilities = facilities.filter(
+          (f) => f.district?.toLowerCase() === districtName.toLowerCase()
+        );
+        const districtCamps = camps.filter(
+          (c) =>
+            (c.organizer_district && c.organizer_district.toLowerCase() === districtName.toLowerCase()) ||
+            c.venue_address?.toLowerCase().includes(districtName.toLowerCase()) ||
+            c.venue_name?.toLowerCase().includes(districtName.toLowerCase())
+        );
+        const criticalCamps = districtCamps.filter((c) => c.urgency === 'CRITICAL');
+        const coords = DISTRICT_COORDINATES[districtName] || DEFAULT_MAP_CENTER;
+
+        return {
+          districtName,
+          facilityCount: districtFacilities.length,
+          hospitalCount: districtFacilities.filter((f) => f.facility_type === 'HOSPITAL').length,
+          bloodBankCount: districtFacilities.filter((f) => f.facility_type === 'BLOOD_BANK').length,
+          campsCount: districtCamps.length,
+          criticalCampsCount: criticalCamps.length,
+          coords,
+        };
+      })
+      .filter((cluster) => cluster.facilityCount > 0 || cluster.campsCount > 0);
+  }, [districts, facilities, camps]);
 
   const hospitalsCount = filteredFacilities.filter((f) => f.facility_type === 'HOSPITAL').length;
   const bloodBanksCount = filteredFacilities.filter((f) => f.facility_type === 'BLOOD_BANK').length;
   const campsCount = filteredCamps.length;
+  const criticalCampsCount = camps.filter((c) => c.urgency === 'CRITICAL').length;
 
   const formatDate = (dateStr) => {
     if (!dateStr) return '';
@@ -414,8 +541,10 @@ export const DonorCampMap = ({ donor }) => {
     const lat = fac.latitude || (FACILITY_COORDINATES[fac.facility_id] || DISTRICT_COORDINATES[fac.district] || DEFAULT_MAP_CENTER)[0];
     const lng = fac.longitude || (FACILITY_COORDINATES[fac.facility_id] || DISTRICT_COORDINATES[fac.district] || DEFAULT_MAP_CENTER)[1];
     setViewMode('map');
+    setSelectedDistrict(fac.district);
     setMapCenter([lat, lng]);
     setMapZoom(13);
+    setCurrentZoom(13);
   };
 
   return (
@@ -437,7 +566,7 @@ export const DonorCampMap = ({ donor }) => {
               Donation Camps, Hospitals & Blood Banks
             </h2>
             <p className="text-sm text-stone-600 max-w-3xl mt-1">
-              Explore voluntary blood donation drives, accredited hospitals, and regional blood banks in one unified map. Pre-register for camps to receive your verifiable digital pass.
+              Explore voluntary blood donation drives, accredited hospitals, and regional blood banks. Zoom into any district to view all local facilities and available camps.
             </p>
           </div>
 
@@ -481,13 +610,13 @@ export const DonorCampMap = ({ donor }) => {
             >
               {districts.map((d) => (
                 <option key={d} value={d}>
-                  {d === 'ALL' ? '🌍 All Districts (Tamil Nadu)' : `📍 District: ${d}`}
+                  {d === 'ALL' ? '🌍 All Districts (State View)' : `📍 District: ${d}`}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* 2. ENTITY TYPE FILTER (Core Layer Toggle) */}
+          {/* 2. ENTITY TYPE FILTER */}
           <div className="space-y-1">
             <label className="text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
               2. Map Layer / Entity
@@ -562,10 +691,10 @@ export const DonorCampMap = ({ donor }) => {
           </div>
         </div>
 
-        {/* Metrics & Quick Category Pills */}
+        {/* Dynamic Context Header & Results Stats */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-stone-100 text-xs">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-stone-500 font-medium">Active Results:</span>
+            <span className="text-stone-500 font-medium">Quick Layer Filter:</span>
             
             <button
               onClick={() => setSelectedEntityType('ALL')}
@@ -589,7 +718,7 @@ export const DonorCampMap = ({ donor }) => {
                   : 'bg-rose-50 text-rose-800 hover:bg-rose-100 border border-rose-200'
               }`}
             >
-              <span>⛺ Donation Camps</span>
+              <span>⛺ Camps</span>
               <span className="px-1.5 py-0.2 rounded-full bg-white/30 text-[10px]">
                 {campsCount}
               </span>
@@ -624,24 +753,24 @@ export const DonorCampMap = ({ donor }) => {
             </button>
           </div>
 
-          {/* Map Legend */}
+          {/* Legend */}
           <div className="flex flex-wrap items-center gap-4 text-[11px] text-stone-600 font-mono">
             <span className="font-bold text-stone-700">Map Legend:</span>
             <span className="flex items-center gap-1">
               <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping inline-block" />
-              <span>Critical Camp</span>
+              <span>🚨 Critical Need Camp</span>
             </span>
             <span className="flex items-center gap-1">
               <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
-              <span>Active Today</span>
+              <span>🟢 Active Today</span>
             </span>
             <span className="flex items-center gap-1">
               <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
-              <span>Hospital Node</span>
+              <span>🏥 Hospital</span>
             </span>
             <span className="flex items-center gap-1">
               <span className="w-2.5 h-2.5 rounded-full bg-indigo-600" />
-              <span>Blood Bank</span>
+              <span>🏢 Blood Bank</span>
             </span>
           </div>
         </div>
@@ -650,6 +779,39 @@ export const DonorCampMap = ({ donor }) => {
       {/* Main View: Leaflet Map or List Directory */}
       {viewMode === 'map' ? (
         <div className="bg-white rounded-3xl overflow-hidden border border-stone-300 shadow-md relative h-[650px] z-10">
+          
+          {/* FLOATING ZOOM / DISTRICT CONTEXT BANNER */}
+          {!isDistrictZoomed ? (
+            <div className="absolute top-3 left-14 z-[400] bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl border border-stone-300 shadow-lg text-xs flex items-center gap-2.5 max-w-xl">
+              <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping shrink-0 inline-block" />
+              <div className="text-stone-800">
+                <strong className="text-red-700 font-extrabold uppercase tracking-wide">State Emergency View:</strong>{' '}
+                <span>Showing critical emergency blood drives across Tamil Nadu. Click any district hub below or select a district to reveal all local hospitals and scheduled camps.</span>
+              </div>
+            </div>
+          ) : (
+            <div className="absolute top-3 left-14 z-[400] bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl border border-stone-300 shadow-lg text-xs flex items-center justify-between gap-3 max-w-xl">
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
+                <span className="text-stone-800">
+                  <strong className="text-stone-900 font-bold">
+                    {selectedDistrict !== 'ALL' ? `District: ${selectedDistrict}` : 'District Detail View'}
+                  </strong>{' '}
+                  <span className="text-stone-500 font-mono text-[11px]">
+                    ({mapCampsToRender.length} Camps • {filteredFacilities.length} Facilities)
+                  </span>
+                </span>
+              </div>
+              <button
+                onClick={() => handleDistrictChange('ALL')}
+                className="px-2.5 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-[11px] transition border border-stone-300 flex items-center gap-1 shrink-0"
+              >
+                <RotateCcw className="w-3 h-3 text-stone-500" />
+                <span>State View</span>
+              </button>
+            </div>
+          )}
+
           <MapContainer
             center={mapCenter}
             zoom={mapZoom}
@@ -657,15 +819,71 @@ export const DonorCampMap = ({ donor }) => {
             className="w-full h-full"
             style={{ background: '#f5f5f4' }}
           >
-            <MapPanController center={mapCenter} zoom={mapZoom} />
+            <MapController
+              center={mapCenter}
+              zoom={mapZoom}
+              onZoomChange={handleZoomChange}
+            />
 
             <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | BloodChain Network'
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors | BloodChain'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
-            {/* 1. RENDER CAMPS MARKERS */}
-            {filteredCamps.map((camp) => {
+            {/* A. STATE OVERVIEW MODE (Not Zoomed In): RENDER DISTRICT HUBS */}
+            {!isDistrictZoomed && districtClusters.map((cluster) => (
+              <Marker
+                key={`hub-${cluster.districtName}`}
+                position={cluster.coords}
+                icon={createDistrictClusterMarker(cluster)}
+                eventHandlers={{
+                  click: () => {
+                    handleDistrictChange(cluster.districtName);
+                  },
+                }}
+              >
+                <Popup className="bloodchain-custom-popup">
+                  <div className="p-2 space-y-2.5 max-w-xs font-sans">
+                    <div className="flex items-center justify-between border-b border-stone-200 pb-1.5">
+                      <span className="text-xs font-extrabold text-stone-900">{cluster.districtName} Medical Hub</span>
+                      <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-bold">
+                        {cluster.facilityCount} Nodes
+                      </span>
+                    </div>
+
+                    <div className="space-y-1 text-xs text-stone-600">
+                      <div className="flex items-center justify-between">
+                        <span>🏥 Hospitals:</span>
+                        <strong className="text-stone-900">{cluster.hospitalCount}</strong>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>🏢 Blood Banks:</span>
+                        <strong className="text-stone-900">{cluster.bloodBankCount}</strong>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span>⛺ Scheduled Camps:</span>
+                        <strong className="text-stone-900">
+                          {cluster.campsCount} {cluster.criticalCampsCount > 0 ? `(${cluster.criticalCampsCount} Critical Need)` : ''}
+                        </strong>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => handleDistrictChange(cluster.districtName)}
+                      className="w-full mt-2 py-2 px-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold text-xs transition flex items-center justify-center gap-1.5 shadow-md shadow-blue-900/20"
+                    >
+                      <ZoomIn className="w-3.5 h-3.5" />
+                      <span>Zoom Into {cluster.districtName}</span>
+                    </button>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+
+            {/* B. CAMPS LAYER:
+                - If State View: ONLY Critical Need camps are rendered!
+                - If District Zoomed: All available camps in that district are rendered! */}
+            {mapCampsToRender.map((camp) => {
               const isRegistered = isDonorRegisteredForCamp(camp.camp_id);
               return (
                 <Marker
@@ -754,8 +972,8 @@ export const DonorCampMap = ({ donor }) => {
               );
             })}
 
-            {/* 2. RENDER FACILITIES MARKERS (Hospitals & Blood Banks) */}
-            {filteredFacilities.map((fac) => {
+            {/* C. DISTRICT DETAIL MODE: RENDER INDIVIDUAL HOSPITALS & BLOOD BANKS WHEN ZOOMED IN */}
+            {isDistrictZoomed && filteredFacilities.map((fac) => {
               const isBloodBank = fac.facility_type === 'BLOOD_BANK';
               const lat = fac.latitude || (FACILITY_COORDINATES[fac.facility_id] || DISTRICT_COORDINATES[fac.district] || DEFAULT_MAP_CENTER)[0];
               const lng = fac.longitude || (FACILITY_COORDINATES[fac.facility_id] || DISTRICT_COORDINATES[fac.district] || DEFAULT_MAP_CENTER)[1];
@@ -978,8 +1196,10 @@ export const DonorCampMap = ({ donor }) => {
                     <button
                       onClick={() => {
                         setViewMode('map');
+                        setSelectedDistrict(camp.organizer_district || 'ALL');
                         setMapCenter([camp.latitude, camp.longitude]);
                         setMapZoom(13);
+                        setCurrentZoom(13);
                       }}
                       title="View on Map"
                       className="p-2 rounded-2xl bg-stone-100 hover:bg-stone-200 text-stone-700 transition"
