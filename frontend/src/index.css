@@ -218,3 +218,93 @@ table [class*="text-yellow"]:not(button):not(.btn) {
   color: #3c2415 !important;
 }
 
+/* ========================================================
+   AUTHENTIC MEDICAL HEARTBEAT & CARDIAC PULSE ANIMATIONS
+   ======================================================== */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 2px 6px rgba(225, 29, 72, 0.25));
+  }
+  14% {
+    transform: scale(1.22);
+    filter: drop-shadow(0 8px 18px rgba(225, 29, 72, 0.55));
+  }
+  28% {
+    transform: scale(1.08);
+    filter: drop-shadow(0 4px 10px rgba(225, 29, 72, 0.35));
+  }
+  42% {
+    transform: scale(1.28);
+    filter: drop-shadow(0 10px 24px rgba(225, 29, 72, 0.65));
+  }
+  70% {
+    transform: scale(1);
+    filter: drop-shadow(0 2px 6px rgba(225, 29, 72, 0.25));
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 2px 6px rgba(225, 29, 72, 0.25));
+  }
+}
+
+@keyframes heartbeat-ripple {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.75;
+  }
+  40% {
+    transform: scale(1.4);
+    opacity: 0.4;
+  }
+  80% {
+    transform: scale(2);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+@keyframes heartbeat-glow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.95);
+  }
+  42% {
+    opacity: 0.85;
+    transform: scale(1.25);
+  }
+}
+
+@keyframes ecg-draw {
+  0% {
+    stroke-dashoffset: 200;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.animate-heartbeat {
+  animation: heartbeat 1.3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  transform-origin: center center;
+}
+
+.animate-heartbeat-ripple {
+  animation: heartbeat-ripple 1.3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  transform-origin: center center;
+}
+
+.animate-heartbeat-glow {
+  animation: heartbeat-glow 1.3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  transform-origin: center center;
+}
+
+.animate-ecg-line {
+  stroke-dasharray: 200;
+  animation: ecg-draw 1.8s ease-in-out infinite;
+}
+
+

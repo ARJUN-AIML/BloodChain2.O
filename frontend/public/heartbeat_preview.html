@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heartbeat Loader Preview - BloodChain</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #dbcfb9;
+      background-image: 
+        radial-gradient(ellipse at 50% 25%, rgba(225, 29, 72, 0.08) 0%, rgba(219, 207, 185, 0) 70%),
+        linear-gradient(rgba(219, 207, 185, 0.25), rgba(219, 207, 185, 0.35));
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Sans', sans-serif;
+      color: #1c1917;
+    }
+
+    /* Authentic Cardiac Heartbeat Rhythm: lub-dub */
+    @keyframes heartbeat {
+      0% {
+        transform: scale(1);
+        filter: drop-shadow(0 2px 6px rgba(225, 29, 72, 0.25));
+      }
+      14% {
+        transform: scale(1.22);
+        filter: drop-shadow(0 8px 20px rgba(225, 29, 72, 0.6));
+      }
+      28% {
+        transform: scale(1.08);
+        filter: drop-shadow(0 4px 10px rgba(225, 29, 72, 0.35));
+      }
+      42% {
+        transform: scale(1.3);
+        filter: drop-shadow(0 12px 28px rgba(225, 29, 72, 0.7));
+      }
+      70% {
+        transform: scale(1);
+        filter: drop-shadow(0 2px 6px rgba(225, 29, 72, 0.25));
+      }
+      100% {
+        transform: scale(1);
+        filter: drop-shadow(0 2px 6px rgba(225, 29, 72, 0.25));
+      }
+    }
+
+    @keyframes heartbeat-ripple {
+      0% {
+        transform: scale(0.8);
+        opacity: 0.8;
+      }
+      40% {
+        transform: scale(1.4);
+        opacity: 0.45;
+      }
+      80% {
+        transform: scale(2.1);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(2.3);
+        opacity: 0;
+      }
+    }
+
+    @keyframes ecg-draw {
+      0% {
+        stroke-dashoffset: 200;
+      }
+      100% {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    .loader-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .heart-wrapper {
+      position: relative;
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ripple-1 {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(244, 63, 94, 0.25);
+      animation: heartbeat-ripple 1.3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+    }
+
+    .ripple-2 {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(190, 18, 60, 0.2);
+      animation: heartbeat-ripple 1.3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      animation-delay: 0.22s;
+    }
+
+    .heart-svg-box {
+      position: relative;
+      z-index: 10;
+      width: 72px;
+      height: 72px;
+      animation: heartbeat 1.3s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+      transform-origin: center center;
+    }
+
+    .ecg-line {
+      stroke-dasharray: 200;
+      animation: ecg-draw 1.8s ease-in-out infinite;
+    }
+
+    .loader-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 500;
+      color: #37322d;
+      letter-spacing: 0.04em;
+      margin: 0;
+    }
+
+    .loader-subtext {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: #796e62;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0;
+    }
+
+    .beacon-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: #10b981;
+      box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
+      animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+  </style>
+</head>
+<body>
+  <div class="loader-container">
+    <div class="heart-wrapper">
+      <div class="ripple-1"></div>
+      <div class="ripple-2"></div>
+      
+      <div class="heart-svg-box">
+        <svg viewBox="0 0 100 92" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%;">
+          <defs>
+            <linearGradient id="heartGrad" x1="15%" y1="10%" x2="85%" y2="90%">
+              <stop offset="0%" stop-color="#f43f5e" />
+              <stop offset="50%" stop-color="#e11d48" />
+              <stop offset="100%" stop-color="#be123c" />
+            </linearGradient>
+
+            <linearGradient id="heartGloss" x1="30%" y1="0%" x2="70%" y2="60%">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5" />
+              <stop offset="100%" stop-color="#ffffff" stop-opacity="0" />
+            </linearGradient>
+
+            <filter id="cardiacGlow" x="-20%" y="-20%" width="140%" height="140%">
+              <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="#be123c" flood-opacity="0.45" />
+            </filter>
+          </defs>
+
+          <!-- Heart Shape -->
+          <path
+            d="M50,84 C50,84 10,54 10,27 C10,13 22,5 34,5 C43,5 47.5,10.5 50,15 C52.5,10.5 57,5 66,5 C78,5 90,13 90,27 C90,54 50,84 50,84 Z"
+            fill="url(#heartGrad)"
+            filter="url(#cardiacGlow)"
+          />
+
+          <!-- Gloss Highlight -->
+          <path
+            d="M24,10 C15,16 13,28 17,40 C19,30 25,18 34,11 C37,9 34,7 24,10 Z"
+            fill="url(#heartGloss)"
+          />
+
+          <!-- ECG Wave Running Across Heart -->
+          <path
+            d="M14,44 L32,44 L37,30 L43,62 L49,24 L55,56 L60,40 L65,44 L86,44"
+            fill="none"
+            stroke="#ffffff"
+            stroke-width="4"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </div>
+    </div>
+
+    <!-- ECG Lifeline Below Heart -->
+    <svg width="130" height="16" viewBox="0 0 120 16" fill="none" style="opacity: 0.75;">
+      <line x1="0" y1="8" x2="120" y2="8" stroke="rgba(190, 18, 60, 0.25)" stroke-width="1.5" />
+      <path
+        d="M0,8 L35,8 L40,8 L44,2 L48,14 L52,1 L56,15 L60,6 L64,8 L120,8"
+        fill="none"
+        stroke="#e11d48"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="ecg-line"
+      />
+    </svg>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 4px;">
+      <p class="loader-title">Loading BloodChain Portal...</p>
+      <p class="loader-subtext">
+        <span class="beacon-dot"></span>
+        <span>Vital Node Active • 72 BPM</span>
+      </p>
+    </div>
+  </div>
+</body>
+</html>

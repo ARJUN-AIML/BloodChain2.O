@@ -30,6 +30,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { DonorIcon } from './DonorIcon';
+import { HeartbeatLoader } from '../../components/HeartbeatLoader';
 
 export const DonorDashboard = () => {
   const { profile, logout } = useAuth();
@@ -207,9 +208,12 @@ export const DonorDashboard = () => {
         {/* Dynamic Tab Content Display */}
         <div className="flex-1 min-w-0">
           {loading ? (
-            <div className="min-h-[400px] flex flex-col items-center justify-center space-y-3">
-              <Activity className="w-8 h-8 text-rose-500 animate-spin" />
-              <p className="text-xs text-stone-500 font-mono">Synchronizing Donor Ledger...</p>
+            <div className="min-h-[400px] flex flex-col items-center justify-center p-6">
+              <HeartbeatLoader 
+                text="Synchronizing Donor Ledger..." 
+                subtext="Verifying Regional Cryptographic Identity & Records" 
+                size="md" 
+              />
             </div>
           ) : (
             <>

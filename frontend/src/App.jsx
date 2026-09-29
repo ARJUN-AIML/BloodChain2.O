@@ -7,7 +7,7 @@ import { BloodBankDashboard } from './features/bloodbank/BloodBankDashboard';
 import { DonorDashboard } from './features/donor/DonorDashboard';
 import { PublicDonorPassVerification } from './features/donor/PublicDonorPassVerification';
 import { PublicCertificateVerify } from './features/donor/PublicCertificateVerify';
-import { Activity } from 'lucide-react';
+import { HeartbeatLoader } from './components/HeartbeatLoader';
 
 const AppShell = () => {
   const { profile, role, loading } = useAuth();
@@ -50,9 +50,8 @@ const AppShell = () => {
       {profile && <Navbar />}
       <main className="flex-1">
         {loading ? (
-          <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center space-y-4">
-            <Activity className="w-10 h-10 text-rose-500 animate-spin" />
-            <p className="text-xs text-slate-400 font-mono">Loading BloodChain Portal...</p>
+          <div className="min-h-[calc(100vh-4rem)] flex flex-col items-center justify-center p-6">
+            <HeartbeatLoader text="Loading BloodChain Portal..." />
           </div>
         ) : !profile ? (
           <Login />
