@@ -46,13 +46,61 @@ class DemandPredictionView(views.APIView):
             days
         )
 
-        data = DemandPredictionService.get_forecast_data(
-            facility=auth_facility,
-            blood_group=blood_group,
-            blood_component=component,
-            days=days,
-            forecast_days=forecast_days
-        )
+        try:
+            data = DemandPredictionService.get_forecast_data(
+                facility=auth_facility,
+                blood_group=blood_group,
+                blood_component=component,
+                days=days,
+                forecast_days=forecast_days
+            )
+        except Exception as e:
+            import logging
+            logger = logging.getLogger('bloodchain.ml')
+            logger.error(f'Demand forecast error for {auth_facility.facility_id}: {e}', exc_info=True)
+            data = {
+                'status': 'error',
+                'risk_label': 'Service Error',
+                'status_note': f'Forecast temporarily unavailable: {str(e)[:200]}',
+                'facility': {
+                    'facility_id': auth_facility.facility_id,
+                    'facility_name': auth_facility.name,
+                    'facility_type': auth_facility.facility_type,
+                    'forecast_target': 'units_requested',
+                    'label': 'Demand Forecast',
+                    'short_label': 'Demand',
+                },
+                'filter': {
+                    'blood_group': blood_group,
+                    'blood_component': component,
+                    'days': int(days) if days else 14,
+                    'forecast_days': int(forecast_days) if forecast_days else 7
+                },
+                'available_filters': {
+                    'blood_groups': ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+                    'components': ['RBC', 'WBC', 'Platelets', 'Plasma', 'Whole Blood', 'Cryoprecipitate']
+                },
+                'daily_forecast': [],
+                'history': [],
+                'summary': {
+                    'total_expected': 'N/A',
+                    'daily_average': 'N/A',
+                    'peak_day': 'N/A',
+                    'peak_units': 'N/A',
+                    'usable_inventory': 0,
+                    'reserved_inventory': 0,
+                    'in_transit_inventory': 0,
+                    'potential_stock_gap': 'N/A',
+                    'risk_label': 'Service Error',
+                    'forecast_days': int(forecast_days) if forecast_days else 7
+                },
+                'predictions': [],
+                'model_info': {
+                    'model_version': 'N/A',
+                    'algorithm': 'Predictive AI Regressor',
+                    'status': 'Forecast service temporarily unavailable'
+                }
+            }
         return response.Response(data)
 
 

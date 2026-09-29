@@ -40,4 +40,7 @@ else:
     print(f'[Render Seed] Database already contains {Facility.objects.count()} facilities. Skipping seed.')
 "
 
+echo "=== [Render Build] 5. Loading historical daily records for ML forecasting ==="
+python manage.py load_daily_records
+
 echo "=== [Render Build] Build completed successfully ==="

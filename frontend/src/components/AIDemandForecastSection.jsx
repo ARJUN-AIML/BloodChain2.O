@@ -147,6 +147,7 @@ export const AIDemandForecastSection = ({ facility, role }) => {
   }, [forecastData, dailyForecast]);
 
   const isInsufficient = forecastData?.status === 'insufficient_data';
+  const isServiceError = forecastData?.status === 'error';
 
   // -------------------------------------------------------------
   // Bulletproof Date Normalizer: Converts any date format to 'YYYY-MM-DD'
@@ -643,8 +644,31 @@ export const AIDemandForecastSection = ({ facility, role }) => {
         </div>
       )}
 
+      {/* Service Error State */}
+      {isServiceError && !loading && (
+        <div className="clinical-card p-8 bg-orange-50/90 border border-orange-300 text-orange-950 space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-lg bg-orange-200 text-orange-900">
+              <AlertTriangle className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold">Forecast Service Initializing</h3>
+              <p className="text-xs text-orange-800 mt-0.5">
+                {forecastData?.status_note || 'The ML forecast engine is currently loading historical data. This typically resolves within a few minutes after deployment.'}
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={() => fetchForecast(true)}
+            className="px-4 py-2 bg-orange-600 text-white text-xs font-bold rounded-lg hover:bg-orange-700 transition-colors"
+          >
+            <RefreshCw className="w-3.5 h-3.5 inline mr-1.5" /> Retry Forecast
+          </button>
+        </div>
+      )}
+
       {/* 3. Main Forecast Presentation (When Success) */}
-      {!loading && !isInsufficient && forecastData && (
+      {!loading && !isInsufficient && !isServiceError && forecastData && (
         <div className="space-y-6">
           {/* KPI Summary Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
