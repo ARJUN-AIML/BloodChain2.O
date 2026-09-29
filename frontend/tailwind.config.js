@@ -9,6 +9,10 @@ export default {
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
         mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Monaco', 'Consolas', 'monospace'],
+        serif: ['"Playfair Display"', 'Georgia', 'Cambria', 'serif'],
+        cinzel: ['"Cinzel"', 'Georgia', 'serif'],
+        cormorant: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+        signature: ['"Alex Brush"', 'cursive'],
       },
       colors: {
         blood: {
