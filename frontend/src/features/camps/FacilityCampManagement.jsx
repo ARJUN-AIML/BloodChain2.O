@@ -231,9 +231,9 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="bg-white/80 backdrop-blur-md rounded-2xl p-6 border border-stone-300/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white/80 backdrop-blur-md rounded-2xl p-4 sm:p-6 border border-stone-300/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1 w-max">
             <Building2 className="w-3.5 h-3.5" /> Facility Campaign Center
@@ -389,8 +389,8 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
                       No donors have registered for this camp yet. Donors can discover it on the public camp map.
                     </div>
                   ) : (
-                    <div className="overflow-x-auto">
-                      <table className="w-full text-left text-xs font-sans">
+                    <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+                      <table className="w-full text-left text-xs font-sans min-w-[580px]">
                         <thead className="bg-stone-100/80 text-stone-500 uppercase font-mono text-[10px] border-b border-stone-200">
                           <tr>
                             <th className="py-2.5 px-3">Donor Name</th>
@@ -479,8 +479,8 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
 
       {/* CREATE NEW CAMP MODAL */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
-          <div className="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-8 shadow-2xl border border-stone-200 relative my-8">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-900/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="bg-white rounded-2xl sm:rounded-3xl max-w-xl w-full p-4 sm:p-8 shadow-2xl border border-stone-200 relative max-h-[92vh] overflow-y-auto my-auto">
             <button
               onClick={() => setShowCreateModal(false)}
               className="absolute top-5 right-5 p-2 rounded-full text-stone-400 hover:text-stone-700"
@@ -681,8 +681,8 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
 
       {/* CHECK-IN RECEPTION MODAL */}
       {showCheckInModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-stone-200 relative text-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-900/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="bg-white rounded-2xl sm:rounded-3xl max-w-md w-full p-4 sm:p-6 shadow-2xl border border-stone-200 relative text-center max-h-[92vh] overflow-y-auto my-auto">
             <button
               onClick={() => {
                 setShowCheckInModal(false);
@@ -743,8 +743,8 @@ export const FacilityCampManagement = ({ facility: propFacility }) => {
 
       {/* VERIFY DONATION & ISSUE CERTIFICATE MODAL */}
       {showVerifyModal && selectedDonorForVerify && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-stone-900/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-stone-200 relative text-left">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-stone-900/60 backdrop-blur-sm animate-fade-in overflow-y-auto">
+          <div className="bg-white rounded-2xl sm:rounded-3xl max-w-md w-full p-4 sm:p-8 shadow-2xl border border-stone-200 relative text-left max-h-[92vh] overflow-y-auto my-auto">
             <button
               onClick={() => {
                 setShowVerifyModal(false);

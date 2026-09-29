@@ -65,9 +65,9 @@ export const DonorIdCard = ({ donor }) => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header Info */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/70 backdrop-blur-md p-6 rounded-2xl border border-stone-300/80 shadow-sm">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white/70 backdrop-blur-md p-4 sm:p-6 rounded-2xl border border-stone-300/80 shadow-sm">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1">
@@ -75,8 +75,8 @@ export const DonorIdCard = ({ donor }) => {
             </span>
             <span className="text-xs text-stone-500 font-mono">Blockchain Verified</span>
           </div>
-          <h2 className="text-2xl font-bold text-stone-800">Permanent BloodChain Donor ID</h2>
-          <p className="text-sm text-stone-600">
+          <h2 className="text-xl sm:text-2xl font-bold text-stone-800">Permanent BloodChain Donor ID</h2>
+          <p className="text-xs sm:text-sm text-stone-600">
             Valid across all participating hospitals, blood banks, and verified mobile donation camps in the network.
           </p>
         </div>
@@ -84,7 +84,7 @@ export const DonorIdCard = ({ donor }) => {
         <div className="flex items-center gap-2 flex-wrap">
           <button
             onClick={handleCopyId}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-xl transition border border-stone-300"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-stone-700 bg-stone-100 hover:bg-stone-200 rounded-xl transition border border-stone-300 cursor-pointer"
             title="Copy Permanent Donor ID"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
@@ -94,26 +94,26 @@ export const DonorIdCard = ({ donor }) => {
           <button
             onClick={handleDownloadCard}
             disabled={downloading}
-            className="flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 rounded-xl transition shadow-sm"
+            className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3.5 py-2 text-xs font-semibold text-white bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-700 hover:to-red-700 rounded-xl transition shadow-sm cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
-            {downloading ? 'Downloading...' : 'Download Card (PNG)'}
+            {downloading ? 'Downloading...' : 'Download Card'}
           </button>
 
           <button
             onClick={handlePrint}
-            className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-white bg-stone-800 hover:bg-stone-900 rounded-xl transition shadow-sm"
+            className="flex items-center justify-center gap-1.5 px-3 py-2 text-xs font-medium text-white bg-stone-800 hover:bg-stone-900 rounded-xl transition shadow-sm cursor-pointer"
           >
-            <Printer className="w-3.5 h-3.5" /> Print Card
+            <Printer className="w-3.5 h-3.5" /> Print
           </button>
         </div>
       </div>
 
       {/* The Physical Card Simulation */}
-      <div className="flex justify-center p-2 sm:p-6">
+      <div className="flex justify-center p-0 sm:p-6">
         <div 
           id="printable-donor-card"
-          className="w-full max-w-md bg-gradient-to-br from-stone-900 via-stone-850 to-neutral-900 text-white rounded-3xl p-6 sm:p-8 shadow-2xl border border-stone-700/60 relative overflow-hidden transition-all duration-300 hover:shadow-rose-950/20 hover:border-rose-900/40"
+          className="w-full max-w-md bg-gradient-to-br from-stone-900 via-stone-850 to-neutral-900 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 shadow-2xl border border-stone-700/60 relative overflow-hidden transition-all duration-300 hover:shadow-rose-950/20 hover:border-rose-900/40"
         >
           {/* Subtle Background Watermark Hologram */}
           <div className="absolute -right-16 -top-16 w-56 h-56 rounded-full bg-rose-600/10 blur-3xl pointer-events-none" />
@@ -181,7 +181,7 @@ export const DonorIdCard = ({ donor }) => {
             </div>
 
             {/* Right Col: QR Code */}
-            <div className="flex flex-col items-center justify-center bg-white p-3 rounded-2xl shadow-inner border border-stone-200">
+            <div className="flex flex-col items-center justify-center bg-white p-3 rounded-2xl shadow-inner border border-stone-200 w-full max-w-[150px] mx-auto sm:max-w-none">
               <QRCodeCanvas
                 value={verifyUrl}
                 size={110}

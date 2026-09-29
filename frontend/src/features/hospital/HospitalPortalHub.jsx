@@ -19,10 +19,10 @@ export const HospitalPortalHub = () => {
     <div className="space-y-6 pb-12">
       
       {/* Workspace Control Subheader */}
-      <div className="bg-[#dbcfb9]/95 backdrop-blur-md border-b border-[#cbbba1] px-4 sm:px-8 py-3 sticky top-14 z-30 shadow-2xs">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="bg-[#dbcfb9]/95 backdrop-blur-md border-b border-[#cbbba1] px-3 sm:px-6 lg:px-8 py-2.5 sm:py-3 sticky top-14 z-30 shadow-2xs">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 sm:gap-3">
           
-          <div className="flex items-center gap-2 text-xs text-stone-600">
+          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs text-stone-600">
             <Building2 className="w-4 h-4 text-rose-600 flex-shrink-0" />
             <span className="font-bold text-stone-900">{facility?.name}</span>
             <span className="font-mono text-stone-500 text-[11px]">({facility?.facility_id})</span>
@@ -34,13 +34,13 @@ export const HospitalPortalHub = () => {
             </span>
           </div>
 
-          <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto" role="tablist">
+          <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto scrollbar-none touch-scroll -mx-2 px-2 sm:mx-0 sm:px-0" role="tablist">
             <button
               type="button"
               role="tab"
               aria-selected={activeWorkspace === 'approval'}
               onClick={() => setActiveWorkspace('approval')}
-              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
                 activeWorkspace === 'approval'
                   ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -55,7 +55,7 @@ export const HospitalPortalHub = () => {
               role="tab"
               aria-selected={activeWorkspace === 'logistics'}
               onClick={() => setActiveWorkspace('logistics')}
-              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
                 activeWorkspace === 'logistics'
                   ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -70,7 +70,7 @@ export const HospitalPortalHub = () => {
               role="tab"
               aria-selected={activeWorkspace === 'camps'}
               onClick={() => setActiveWorkspace('camps')}
-              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
                 activeWorkspace === 'camps'
                   ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'
@@ -85,7 +85,7 @@ export const HospitalPortalHub = () => {
               role="tab"
               aria-selected={activeWorkspace === 'forecast'}
               onClick={() => setActiveWorkspace('forecast')}
-              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer ${
+              className={`px-3.5 py-1.5 text-xs font-semibold rounded-md flex items-center gap-2 whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
                 activeWorkspace === 'forecast'
                   ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                   : 'text-stone-600 hover:text-stone-900'

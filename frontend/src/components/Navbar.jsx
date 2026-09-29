@@ -134,24 +134,24 @@ export const Navbar = () => {
   return (
     <>
       <header className="sticky top-0 z-40 bg-[#dbcfb9]/95 backdrop-blur-md border-b border-[#cbbba1] shadow-2xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-14 flex items-center justify-between gap-2">
           
           {/* Logo & Identity */}
           <div 
-            className="flex items-center gap-3 select-none"
+            className="flex items-center gap-2 sm:gap-3 select-none shrink-0"
             title="BloodChain AI Regional Network"
           >
             <img 
               src="/assets/logo.png" 
               alt="BloodChain AI Logo" 
-              className="w-8 h-8 rounded-lg shadow-sm object-cover ring-1 ring-stone-900/10" 
+              className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg shadow-sm object-cover ring-1 ring-stone-900/10 shrink-0" 
             />
             <div>
-              <div className="flex items-center gap-2">
-                <span className="font-bold text-sm text-stone-900 tracking-tight">
+              <div className="flex items-center gap-1.5 sm:gap-2">
+                <span className="font-extrabold text-xs sm:text-sm text-stone-900 tracking-tight whitespace-nowrap">
                   BloodChain AI
                 </span>
-                <span className="px-1.5 py-0.5 text-[10px] font-mono font-semibold bg-white/80 text-stone-700 border border-stone-300 rounded">
+                <span className="hidden xs:inline-block px-1.5 py-0.5 text-[9px] sm:text-[10px] font-mono font-semibold bg-white/80 text-stone-700 border border-stone-300 rounded">
                   Dataset v2.0
                 </span>
                 <span className="hidden md:inline-flex items-center gap-1 text-[11px] font-medium text-[#2d1b14] bg-[#ede5d5] border border-[#c4b59f] px-2 py-0.5 rounded">
@@ -159,42 +159,55 @@ export const Navbar = () => {
                   50 State Nodes
                 </span>
               </div>
-              <p className="text-[11px] text-stone-600 hidden sm:block">Tamil Nadu Regional Blood Supply System</p>
+              <p className="text-[10px] sm:text-[11px] text-stone-600 hidden sm:block truncate max-w-[240px]">
+                Tamil Nadu Regional Blood Supply System
+              </p>
             </div>
           </div>
 
           {/* User / Facility Info & Role Switcher */}
           {profile && (
-            <div className="flex items-center gap-2.5">
+            <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
               
               {/* Role Indicator Pill */}
               <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold rounded-lg bg-white/80 border border-stone-300 text-stone-800 shadow-2xs">
                 {role === 'DONOR' ? (
-                  <DonorIcon className="w-3.5 h-3.5 text-rose-600" />
+                  <DonorIcon className="w-3.5 h-3.5 text-rose-600 shrink-0" />
                 ) : role === 'HOSPITAL_LOGISTICS' ? (
-                  <Truck className="w-3.5 h-3.5 text-teal-600" />
+                  <Truck className="w-3.5 h-3.5 text-teal-600 shrink-0" />
                 ) : role === 'BLOOD_BANK' ? (
-                  <Droplet className="w-3.5 h-3.5 text-rose-600" />
+                  <Droplet className="w-3.5 h-3.5 text-rose-600 shrink-0" />
                 ) : (
-                  <CheckSquare className="w-3.5 h-3.5 text-indigo-600" />
+                  <CheckSquare className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
                 )}
-                <span>{getRoleBadgeLabel(role)}</span>
+                <span className="whitespace-nowrap">{getRoleBadgeLabel(role)}</span>
+              </div>
+
+              {/* Mobile Role Chip */}
+              <div className="sm:hidden flex items-center px-1.5 py-0.5 rounded-md bg-white/80 border border-stone-300 text-[10px] font-mono font-bold text-stone-800">
+                {role === 'DONOR' ? (
+                  <span className="text-rose-700">DONOR</span>
+                ) : role === 'BLOOD_BANK' ? (
+                  <span className="text-rose-700">BBANK</span>
+                ) : (
+                  <span className="text-indigo-700">HOSP</span>
+                )}
               </div>
 
               {/* Facility Identity Pill / Donor Name */}
               <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-white/60 border border-stone-300 text-xs text-stone-700 shadow-2xs">
                 {role === 'DONOR' ? (
                   <>
-                    <DonorIcon className="w-3.5 h-3.5 text-rose-600" />
-                    <span className="font-semibold text-stone-900 max-w-[220px] truncate">{profile?.name}</span>
+                    <DonorIcon className="w-3.5 h-3.5 text-rose-600 shrink-0" />
+                    <span className="font-semibold text-stone-900 max-w-[180px] truncate">{profile?.name}</span>
                     <span className="text-[10px] font-mono text-rose-700 font-bold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">
                       DONOR
                     </span>
                   </>
                 ) : (
                   <>
-                    <Building2 className="w-3.5 h-3.5 text-stone-500" />
-                    <span className="font-semibold text-stone-900 max-w-[220px] truncate">{facility?.name}</span>
+                    <Building2 className="w-3.5 h-3.5 text-stone-500 shrink-0" />
+                    <span className="font-semibold text-stone-900 max-w-[180px] truncate">{facility?.name}</span>
                     <span className="text-[10px] font-mono text-stone-500">({facility?.facility_id})</span>
                   </>
                 )}
@@ -205,20 +218,23 @@ export const Navbar = () => {
                 type="button"
                 onClick={() => setShowSwitchModal(true)}
                 title="Switch Active Facility from Dataset"
-                className="px-2.5 py-1 rounded-lg bg-white/80 hover:bg-white border border-stone-300 text-stone-800 hover:text-stone-950 transition-colors flex items-center gap-1.5 text-xs font-semibold shadow-2xs cursor-pointer"
+                className="px-2 sm:px-2.5 py-1 rounded-lg bg-white/80 hover:bg-white border border-stone-300 text-stone-800 hover:text-stone-950 transition-colors flex items-center gap-1.5 text-xs font-semibold shadow-2xs cursor-pointer active:scale-95"
               >
-                <RefreshCw className="w-3 h-3 text-stone-500" />
-                <span className="hidden sm:inline">Switch Facility ({allFacilities.length || 50})</span>
+                <RefreshCw className="w-3.5 h-3.5 text-stone-600 shrink-0" />
+                <span className="hidden md:inline">Switch Facility</span>
+                <span className="px-1 py-0.2 rounded bg-stone-200/90 text-[10px] font-mono font-bold text-stone-700">
+                  {allFacilities.length || 50}
+                </span>
               </button>
 
               {/* Sign Out Button */}
               <button
                 type="button"
                 onClick={logout}
-                title="Sign out of facility session"
-                className="px-2.5 py-1 rounded-lg bg-white/60 hover:bg-rose-50 border border-stone-300 hover:border-rose-300 text-stone-700 hover:text-rose-700 transition-colors flex items-center gap-1.5 text-xs font-semibold shadow-2xs cursor-pointer"
+                title="Sign out of current session"
+                className="p-1.5 sm:px-2.5 sm:py-1 rounded-lg bg-white/60 hover:bg-rose-50 border border-stone-300 hover:border-rose-300 text-stone-700 hover:text-rose-700 transition-colors flex items-center gap-1 text-xs font-semibold shadow-2xs cursor-pointer active:scale-95"
               >
-                <LogOut className="w-3.5 h-3.5" />
+                <LogOut className="w-3.5 h-3.5 shrink-0" />
                 <span className="hidden sm:inline">Sign Out</span>
               </button>
             </div>
@@ -229,23 +245,23 @@ export const Navbar = () => {
 
       {/* Switch Facility Persona Modal (All 50 Facilities from Dataset) */}
       {showSwitchModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-stone-950/60 backdrop-blur-md animate-fade-in">
-          <div className="clinical-card-elevated max-w-4xl w-full p-6 bg-slate-900 border-slate-700 space-y-4">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-4 bg-stone-950/70 backdrop-blur-md animate-fade-in overflow-y-auto">
+          <div className="clinical-card-elevated max-w-4xl w-full p-4 sm:p-6 bg-slate-900 border-slate-700 space-y-4 max-h-[92vh] flex flex-col my-auto shadow-2xl">
             
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <div className="flex items-start justify-between border-b border-slate-800 pb-3 gap-2 shrink-0">
               <div>
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <RefreshCw className="w-4 h-4 text-slate-400" />
+                <h3 className="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+                  <RefreshCw className="w-4 h-4 text-slate-400 shrink-0" />
                   <span>Switch Operational Facility from Dataset</span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-[11px] sm:text-xs text-slate-400 mt-0.5">
                   Select any of the 50 accredited hospitals and blood banks across Tamil Nadu
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setShowSwitchModal(false)}
-                className="p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer shrink-0"
               >
                 <X className="w-4 h-4" />
               </button>

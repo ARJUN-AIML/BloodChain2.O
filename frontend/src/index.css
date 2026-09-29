@@ -18,6 +18,13 @@
     --clinical-amber: #b45309;
   }
 
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
     background-color: #dbcfb9;
     background-image: 
@@ -28,6 +35,13 @@
     font-family: 'DM Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-wrap: break-word;
+  }
+
+  /* Prevent text and element edge clipping on mobile */
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
   }
 
   /* Custom scrollbar matching warm parchment theme */
@@ -45,6 +59,46 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #b19e84;
   }
+}
+
+/* Touch scrolling utilities for mobile tables and swipeable tabs */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.touch-scroll {
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+}
+
+/* Leaflet mobile popups & canvas bounds - prevent cutting edges/text */
+.leaflet-container {
+  font-family: inherit !important;
+  touch-action: pan-x pan-y !important;
+}
+
+.bloodchain-custom-popup .leaflet-popup-content-wrapper {
+  border-radius: 1rem !important;
+  padding: 0 !important;
+  overflow: hidden;
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.25) !important;
+  border: 1px solid rgba(170, 150, 120, 0.5) !important;
+  max-width: min(320px, calc(100vw - 36px)) !important;
+}
+
+.bloodchain-custom-popup .leaflet-popup-content {
+  margin: 10px 12px !important;
+  max-width: min(300px, calc(100vw - 52px)) !important;
+  width: auto !important;
+  line-height: 1.4 !important;
+}
+
+.bloodchain-custom-popup .leaflet-popup-tip-container {
+  overflow: visible;
 }
 
 /* Warm Parchment Glass Cards matching Login Page */

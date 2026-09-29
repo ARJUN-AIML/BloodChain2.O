@@ -193,32 +193,32 @@ export const HospitalDashboard = () => {
   const totalAvailableStock = inventory.reduce((acc, curr) => acc + curr.available_units, 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 sm:space-y-8">
       
       {/* Top Banner */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 p-6 rounded-3xl border border-indigo-500/20 glass-panel">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-indigo-950/40 to-slate-900 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-indigo-500/20 glass-panel">
         <div>
           <div className="flex items-center space-x-2 text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-1">
             <Activity className="w-4 h-4" />
             <span>Hospital Operational Control Center</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
             {facility?.name}
           </h1>
           <p className="text-xs text-slate-400 mt-1 font-mono">Facility ID: {facility?.facility_id} | District: {facility?.district}</p>
         </div>
 
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
           <button
             onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-xs shadow-lg shadow-rose-900/30 flex items-center space-x-2 transition-all"
+            className="flex-1 sm:flex-initial px-4 py-2.5 rounded-xl bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 hover:to-red-500 text-white font-bold text-xs shadow-lg shadow-rose-900/30 flex items-center justify-center space-x-2 transition-all cursor-pointer active:scale-95"
           >
-            <Plus className="w-4 h-4" />
+            <Plus className="w-4 h-4 shrink-0" />
             <span>Create Blood Request</span>
           </button>
           <button
             onClick={fetchData}
-            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all"
+            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition-all cursor-pointer shrink-0"
             title="Refresh Data"
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -228,29 +228,29 @@ export const HospitalDashboard = () => {
 
       {/* Notifications / Feedback */}
       {actionError && (
-        <div className="p-4 rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-sm flex items-center justify-between">
+        <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs sm:text-sm flex items-center justify-between gap-2">
           <div className="flex items-center space-x-2">
-            <AlertCircle className="w-5 h-5 text-rose-400 flex-shrink-0" />
+            <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-400 flex-shrink-0" />
             <span>{actionError}</span>
           </div>
-          <button onClick={() => setActionError('')} className="text-xs text-rose-400 font-bold">Dismiss</button>
+          <button onClick={() => setActionError('')} className="text-xs text-rose-400 font-bold shrink-0">Dismiss</button>
         </div>
       )}
 
       {actionSuccess && (
-        <div className="p-4 rounded-2xl bg-[#ede5d5] border border-[#c4b59f] text-[#2d1b14] text-sm flex items-center justify-between">
+        <div className="p-3.5 sm:p-4 rounded-xl sm:rounded-2xl bg-[#ede5d5] border border-[#c4b59f] text-[#2d1b14] text-xs sm:text-sm flex items-center justify-between gap-2">
           <div className="flex items-center space-x-2">
-            <CheckCircle2 className="w-5 h-5 text-[#2d1b14] flex-shrink-0" />
+            <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#2d1b14] flex-shrink-0" />
             <span>{actionSuccess}</span>
           </div>
-          <button onClick={() => setActionSuccess('')} className="text-xs text-[#2d1b14] font-bold">Dismiss</button>
+          <button onClick={() => setActionSuccess('')} className="text-xs text-[#2d1b14] font-bold shrink-0">Dismiss</button>
         </div>
       )}
 
       {/* Metrics Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-4">
         <StatCard
-          title="Current Blood Stock"
+          title="Current Stock"
           value={`${totalAvailableStock} Units`}
           subtext="Usable available stock"
           icon={Droplet}
@@ -280,7 +280,7 @@ export const HospitalDashboard = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex items-center space-x-2 border-b border-slate-800 pb-2 overflow-x-auto">
+      <div className="flex items-center gap-2 border-b border-slate-800 pb-2 overflow-x-auto scrollbar-none touch-scroll -mx-2 px-2 sm:mx-0 sm:px-0">
         {[
           { id: 'overview', label: 'Inventory & Stock' },
           { id: 'requests', label: `Blood Requests (${sentRequests.length + receivedRequests.length})` },
@@ -291,7 +291,7 @@ export const HospitalDashboard = () => {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-4 py-2 text-xs font-semibold rounded-xl whitespace-nowrap transition-all ${
+            className={`px-3.5 sm:px-4 py-2 text-xs font-semibold rounded-xl whitespace-nowrap transition-all shrink-0 cursor-pointer ${
               activeTab === tab.id
                 ? 'bg-rose-600 text-white shadow-md'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900'
@@ -304,9 +304,9 @@ export const HospitalDashboard = () => {
 
       {/* TAB 1: INVENTORY & STOCK */}
       {activeTab === 'overview' && (
-        <div className="space-y-6">
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-            <h3 className="text-lg font-bold text-white flex items-center space-x-2">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 glass-panel space-y-4">
+            <h3 className="text-base sm:text-lg font-bold text-white flex items-center space-x-2">
               <Droplet className="w-5 h-5 text-rose-500" />
               <span>Real-Time Facility Inventory Breakdown</span>
             </h3>
@@ -337,8 +337,8 @@ export const HospitalDashboard = () => {
 
           {/* Expiry Alerts */}
           {expiryAlerts && (
-            <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-              <h3 className="text-base font-bold text-white flex items-center space-x-2">
+            <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 glass-panel space-y-4">
+              <h3 className="text-sm sm:text-base font-bold text-white flex items-center space-x-2">
                 <AlertTriangle className="w-5 h-5 text-[#3c2415]" />
                 <span>Expiry Management Alerts</span>
               </h3>
@@ -363,23 +363,23 @@ export const HospitalDashboard = () => {
         <div className="space-y-6">
           
           {/* Requests Sent */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-                <Send className="w-5 h-5 text-indigo-400" />
-                <span>Requests Sent by {facility?.name}</span>
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 glass-panel space-y-4">
+            <div className="flex items-center justify-between gap-2">
+              <h3 className="text-base sm:text-lg font-bold text-white flex items-center space-x-2 truncate">
+                <Send className="w-5 h-5 text-indigo-400 shrink-0" />
+                <span className="truncate">Requests Sent by {facility?.name}</span>
               </h3>
               <button
                 onClick={() => setShowCreateModal(true)}
-                className="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-600 hover:bg-rose-500 text-white flex items-center space-x-1"
+                className="px-3 py-1.5 text-xs font-bold rounded-lg bg-rose-600 hover:bg-rose-500 text-white flex items-center space-x-1 shrink-0 cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>New Request</span>
               </button>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
+            <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+              <table className="w-full text-left text-xs text-slate-300 min-w-[620px]">
                 <thead className="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
                   <tr>
                     <th className="p-3">Request ID</th>
@@ -426,14 +426,14 @@ export const HospitalDashboard = () => {
           </div>
 
           {/* Received Requests from Other Facilities */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-            <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-              <Inbox className="w-5 h-5 text-[#2d1b14]" />
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 glass-panel space-y-4">
+            <h3 className="text-base sm:text-lg font-bold text-white flex items-center space-x-2">
+              <Inbox className="w-5 h-5 text-[#2d1b14] shrink-0" />
               <span>Requests Received from Eligible Regional Facilities</span>
             </h3>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
+            <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+              <table className="w-full text-left text-xs text-slate-300 min-w-[600px]">
                 <thead className="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
                   <tr>
                     <th className="p-3">Request ID</th>
@@ -491,14 +491,14 @@ export const HospitalDashboard = () => {
         <div className="space-y-6">
           
           {/* Incoming Transfers (Hospital is Receiver) */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-            <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-              <ArrowDownLeft className="w-5 h-5 text-[#2d1b14]" />
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 glass-panel space-y-4">
+            <h3 className="text-base sm:text-lg font-bold text-white flex items-center space-x-2">
+              <ArrowDownLeft className="w-5 h-5 text-[#2d1b14] shrink-0" />
               <span>Incoming Blood Transfers (Receiving)</span>
             </h3>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
+            <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+              <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
                 <thead className="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
                   <tr>
                     <th className="p-3">Transfer ID</th>
@@ -553,14 +553,14 @@ export const HospitalDashboard = () => {
           </div>
 
           {/* Outgoing Transfers (Hospital is Sender) */}
-          <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-            <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-              <ArrowUpRight className="w-5 h-5 text-[#3c2415]" />
+          <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 glass-panel space-y-4">
+            <h3 className="text-base sm:text-lg font-bold text-white flex items-center space-x-2">
+              <ArrowUpRight className="w-5 h-5 text-[#3c2415] shrink-0" />
               <span>Outgoing Blood Transfers (Sending)</span>
             </h3>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
+            <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+              <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
                 <thead className="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
                   <tr>
                     <th className="p-3">Transfer ID</th>
@@ -641,14 +641,14 @@ export const HospitalDashboard = () => {
 
       {/* TAB 5: AUDIT LOG */}
       {activeTab === 'audit' && (
-        <div className="bg-slate-900 border border-slate-800 rounded-3xl p-6 glass-panel space-y-4">
-          <h3 className="text-lg font-bold text-white flex items-center space-x-2">
-            <History className="w-5 h-5 text-slate-400" />
+        <div className="bg-slate-900 border border-slate-800 rounded-2xl sm:rounded-3xl p-3.5 sm:p-6 glass-panel space-y-4">
+          <h3 className="text-base sm:text-lg font-bold text-white flex items-center space-x-2">
+            <History className="w-5 h-5 text-slate-400 shrink-0" />
             <span>Facility Immutable Audit History</span>
           </h3>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
               <thead className="bg-slate-950 text-slate-400 uppercase font-mono border-b border-slate-800">
                 <tr>
                   <th className="p-3">Timestamp</th>
@@ -680,14 +680,14 @@ export const HospitalDashboard = () => {
 
       {/* MODAL 1: CREATE BLOOD REQUEST */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-lg text-white">Create Blood Request</h3>
-              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-white">✕</button>
+              <h3 className="font-bold text-base sm:text-lg text-white">Create Blood Request</h3>
+              <button onClick={() => setShowCreateModal(false)} className="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
             </div>
             
-            <form onSubmit={handleCreateRequest} className="space-y-4 text-xs">
+            <form onSubmit={handleCreateRequest} className="space-y-3.5 text-xs">
               <div>
                 <label className="block text-slate-300 font-semibold mb-1">Blood Group Needed</label>
                 <select
@@ -760,17 +760,26 @@ export const HospitalDashboard = () => {
                 <textarea
                   value={reqReason}
                   onChange={(e) => setReqReason(e.target.value)}
-                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl p-2.5 h-20"
+                  className="w-full bg-slate-950 border border-slate-800 text-white rounded-xl p-2.5 h-16 sm:h-20"
                   placeholder="e.g. Urgent trauma surgery requirement"
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-rose-600 hover:bg-rose-500 font-bold text-white rounded-xl text-sm"
-              >
-                Submit Request
-              </button>
+              <div className="pt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowCreateModal(false)}
+                  className="w-1/3 py-2.5 bg-slate-800 hover:bg-slate-700 font-bold text-slate-300 rounded-xl text-xs cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="w-2/3 py-2.5 bg-rose-600 hover:bg-rose-500 font-bold text-white rounded-xl text-xs cursor-pointer shadow-md shadow-rose-900/30"
+                >
+                  Submit Request
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -778,11 +787,11 @@ export const HospitalDashboard = () => {
 
       {/* MODAL 2: RESPOND / ACCEPT REQUEST */}
       {showRespondModal && selectedRequest && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-lg text-white">Accept Request Quantity</h3>
-              <button onClick={() => setShowRespondModal(false)} className="text-slate-400 hover:text-white">✕</button>
+              <h3 className="font-bold text-base sm:text-lg text-white">Accept Request Quantity</h3>
+              <button onClick={() => setShowRespondModal(false)} className="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
             </div>
 
             <div className="p-3 bg-slate-950 rounded-xl space-y-1 text-xs text-slate-300">
@@ -805,12 +814,21 @@ export const HospitalDashboard = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 font-bold text-white rounded-xl text-sm"
-              >
-                Confirm Allocation & Create Transfer
-              </button>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowRespondModal(false)}
+                  className="w-1/3 py-2.5 bg-slate-800 hover:bg-slate-700 font-bold text-slate-300 rounded-xl text-xs cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="w-2/3 py-2.5 bg-emerald-600 hover:bg-emerald-500 font-bold text-white rounded-xl text-xs cursor-pointer shadow-md"
+                >
+                  Confirm Allocation
+                </button>
+              </div>
             </form>
           </div>
         </div>
@@ -818,17 +836,17 @@ export const HospitalDashboard = () => {
 
       {/* MODAL 3: GENERATE OTP DISPLAY */}
       {otpModalData && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 text-center">
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 text-center max-h-[92vh] overflow-y-auto my-auto">
             <div className="inline-flex p-3 rounded-2xl bg-indigo-500/10 text-indigo-400">
               <KeyRound className="w-8 h-8" />
             </div>
-            <h3 className="font-bold text-xl text-white">OTP Generated Successfully</h3>
+            <h3 className="font-bold text-lg sm:text-xl text-white">OTP Generated Successfully</h3>
             <p className="text-xs text-slate-400">
               Communicate this 6-digit OTP to the authorized sender representative to complete transfer:
             </p>
 
-            <div className="p-4 rounded-2xl bg-slate-950 border border-indigo-500/30 text-3xl font-extrabold font-mono tracking-widest text-indigo-400">
+            <div className="p-4 rounded-2xl bg-slate-950 border border-indigo-500/30 text-2xl sm:text-3xl font-extrabold font-mono tracking-widest text-indigo-400">
               {otpModalData.otp_code}
             </div>
 
@@ -836,7 +854,7 @@ export const HospitalDashboard = () => {
 
             <button
               onClick={() => setOtpModalData(null)}
-              className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs"
+              className="w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl text-xs cursor-pointer"
             >
               Done / Close
             </button>
@@ -846,11 +864,11 @@ export const HospitalDashboard = () => {
 
       {/* MODAL 4: ENTER OTP (SENDER) */}
       {showEnterOtpModal && selectedTransferForOtp && (
-        <div className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-4 sm:p-6 shadow-2xl space-y-4 max-h-[92vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-              <h3 className="font-bold text-lg text-white">Verify Handshake OTP Code</h3>
-              <button onClick={() => setShowEnterOtpModal(false)} className="text-slate-400 hover:text-white">✕</button>
+              <h3 className="font-bold text-base sm:text-lg text-white">Verify Handshake OTP Code</h3>
+              <button onClick={() => setShowEnterOtpModal(false)} className="text-slate-400 hover:text-white p-1 rounded-lg">✕</button>
             </div>
 
             <div className="p-3 bg-slate-950 rounded-xl space-y-1 text-xs text-slate-300">
@@ -873,12 +891,21 @@ export const HospitalDashboard = () => {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full py-3 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 font-bold text-white rounded-xl text-sm shadow-lg shadow-rose-900/30"
-              >
-                Verify OTP & Complete Transfer
-              </button>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowEnterOtpModal(false)}
+                  className="w-1/3 py-2.5 bg-slate-800 hover:bg-slate-700 font-bold text-slate-300 rounded-xl text-xs cursor-pointer"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="w-2/3 py-2.5 bg-gradient-to-r from-rose-600 to-red-600 hover:from-rose-500 font-bold text-white rounded-xl text-xs shadow-lg shadow-rose-900/30 cursor-pointer"
+                >
+                  Verify OTP
+                </button>
+              </div>
             </form>
           </div>
         </div>

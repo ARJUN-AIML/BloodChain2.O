@@ -895,8 +895,10 @@ export const AIDemandForecastSection = ({ facility, role }) => {
                 {demandViewMode === 'calendar' && (
                   <div className="space-y-3">
                     {/* Calendar Grid Container */}
-                    <div className="bg-[#faf6ee] border border-[#d5c7b2] rounded-2xl p-4 sm:p-5 shadow-2xs">
-                      {/* Weekday Column Headers (Monday to Sunday) */}
+                    <div className="bg-[#faf6ee] border border-[#d5c7b2] rounded-2xl p-3 sm:p-5 shadow-2xs">
+                      <div className="overflow-x-auto touch-scroll scrollbar-thin pb-2 -mx-1 px-1 sm:mx-0 sm:px-0">
+                        <div className="min-w-[620px]">
+                          {/* Weekday Column Headers (Monday to Sunday) */}
                       <div className="grid grid-cols-7 gap-2 sm:gap-2.5 mb-2.5 border-b border-[#e2d6c1] pb-2 text-center">
                         {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((dayName) => (
                           <div key={dayName} className="text-xs font-mono font-bold text-stone-600 uppercase tracking-wider">
@@ -1022,6 +1024,8 @@ export const AIDemandForecastSection = ({ facility, role }) => {
                             </div>
                           );
                         })}
+                          </div>
+                        </div>
                       </div>
                     </div>
 

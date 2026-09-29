@@ -97,7 +97,7 @@ export const PublicDonorPassVerification = ({ tokenOverride, onBackToApp }) => {
   };
 
   return (
-    <div className="min-h-screen bg-[#dbcfb9] py-8 px-4 flex flex-col items-center justify-center font-sans antialiased text-stone-900">
+    <div className="min-h-screen bg-[#dbcfb9] py-4 sm:py-8 px-3 sm:px-4 flex flex-col items-center justify-center font-sans antialiased text-stone-900">
       {/* Top Header Actions */}
       <div className="max-w-md w-full flex items-center justify-between mb-4">
         <button
@@ -116,14 +116,14 @@ export const PublicDonorPassVerification = ({ tokenOverride, onBackToApp }) => {
       </div>
 
       {loading ? (
-        <div className="bg-white rounded-3xl p-10 max-w-md w-full text-center shadow-xl border border-stone-200 space-y-4">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-10 max-w-md w-full text-center shadow-xl border border-stone-200 space-y-4">
           <div className="w-12 h-12 rounded-full border-4 border-rose-600 border-t-transparent animate-spin mx-auto" />
           <h3 className="text-base font-bold text-stone-800">Verifying BloodChain QR...</h3>
           <p className="text-xs text-stone-500 font-mono">Validating cryptographic token on network ledger</p>
         </div>
       ) : error ? (
         /* Invalid / Expired QR State (Section 12) */
-        <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-red-200 text-center space-y-4 animate-fade-in">
+        <div className="bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-red-200 text-center space-y-4 animate-fade-in">
           <div className="w-16 h-16 rounded-full bg-red-100 text-red-600 mx-auto flex items-center justify-center">
             <AlertCircle className="w-9 h-9" />
           </div>
@@ -149,13 +149,13 @@ export const PublicDonorPassVerification = ({ tokenOverride, onBackToApp }) => {
         /* Exact Formatted Verification Layout (Sections 1 & 2) */
         <div 
           id="qr-verification-document"
-          className="bg-white rounded-3xl max-w-md w-full shadow-2xl border border-stone-300/80 overflow-hidden animate-fade-in"
+          className="bg-white rounded-2xl sm:rounded-3xl max-w-md w-full shadow-2xl border border-stone-300/80 overflow-hidden animate-fade-in"
         >
           {/* Header Banner */}
-          <div className="bg-gradient-to-r from-stone-900 via-stone-850 to-neutral-900 text-white p-6 text-center border-b border-stone-800 relative">
+          <div className="bg-gradient-to-r from-stone-900 via-stone-850 to-neutral-900 text-white p-4 sm:p-6 text-center border-b border-stone-800 relative">
             <div className="flex items-center justify-center gap-2 mb-1">
               <span className="text-xl">🩸</span>
-              <h1 className="text-lg font-black tracking-wider uppercase text-white">
+              <h1 className="text-base sm:text-lg font-black tracking-wider uppercase text-white">
                 BLOODCHAIN VERIFICATION
               </h1>
             </div>
@@ -165,7 +165,7 @@ export const PublicDonorPassVerification = ({ tokenOverride, onBackToApp }) => {
           </div>
 
           {/* Verification Content Body */}
-          <div className="p-6 sm:p-7 space-y-6">
+          <div className="p-4 sm:p-7 space-y-4 sm:space-y-6">
             
             {/* SECTION 1: DONOR DETAILS */}
             <div className="space-y-3">
@@ -176,7 +176,7 @@ export const PublicDonorPassVerification = ({ tokenOverride, onBackToApp }) => {
                 <span className="text-[10px] font-mono text-stone-400">AUTHENTICATED</span>
               </div>
 
-              <div className="space-y-3 bg-stone-50/80 rounded-2xl p-4 border border-stone-200">
+              <div className="space-y-3 bg-stone-50/80 rounded-xl sm:rounded-2xl p-3.5 sm:p-4 border border-stone-200">
                 <div>
                   <span className="text-[10px] font-mono text-stone-400 uppercase block">Name</span>
                   <span className="text-base font-bold text-stone-900">{data.donor.name}</span>

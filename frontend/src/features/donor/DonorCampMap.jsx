@@ -473,63 +473,65 @@ export const DonorCampMap = ({ donor }) => {
   return (
     <div className="space-y-6">
       {/* Header & Controls */}
-      <div className="bg-white/85 backdrop-blur-md rounded-3xl p-6 border border-stone-300/80 shadow-sm space-y-5">
+      <div className="bg-white/85 backdrop-blur-md rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-stone-300/80 shadow-sm space-y-4 sm:space-y-5">
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
           <div>
-            <div className="flex flex-wrap items-center gap-2 mb-1.5">
-              <span className="px-3 py-1 rounded-full text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-rose-600" /> Unified Regional Map
+            <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 mb-1.5">
+              <span className="px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full text-[11px] sm:text-xs font-bold bg-rose-100 text-rose-800 border border-rose-200 flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-rose-600 shrink-0" /> Unified Regional Map
               </span>
-              <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono bg-stone-100 text-stone-600 border border-stone-200">
+              <span className="px-2 sm:px-2.5 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono bg-stone-100 text-stone-600 border border-stone-200">
                 Tamil Nadu Node & Camp Layer
               </span>
-              <span className="text-xs text-stone-500 font-mono">OpenStreetMap Powered</span>
+              <span className="text-[10px] sm:text-xs text-stone-500 font-mono hidden xs:inline">OpenStreetMap Powered</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 tracking-tight">
+            <h2 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-stone-900 tracking-tight">
               Donation Camps, Hospitals & Blood Banks
             </h2>
-            <p className="text-sm text-stone-600 max-w-3xl mt-1">
+            <p className="text-xs sm:text-sm text-stone-600 max-w-3xl mt-1 leading-relaxed">
               Explore voluntary blood donation drives, accredited hospitals, and regional blood banks. Zoom into any district to view all local facilities and available camps.
             </p>
           </div>
 
           {/* View Toggle */}
-          <div className="flex items-center bg-stone-100 p-1.5 rounded-2xl border border-stone-300 self-start lg:self-auto shrink-0 shadow-inner">
+          <div className="flex items-center bg-stone-100 p-1 sm:p-1.5 rounded-2xl border border-stone-300 w-full sm:w-auto shrink-0 shadow-inner">
             <button
               onClick={() => setViewMode('map')}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition ${
                 viewMode === 'map'
                   ? 'bg-white text-stone-900 shadow-sm border border-stone-200'
                   : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              <MapIcon className="w-4 h-4 text-rose-600" /> Map View
+              <MapIcon className="w-4 h-4 text-rose-600 shrink-0" /> 
+              <span>Map View</span>
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold transition ${
+              className={`flex-1 sm:flex-initial flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2 rounded-xl text-xs font-bold transition ${
                 viewMode === 'list'
                   ? 'bg-white text-stone-900 shadow-sm border border-stone-200'
                   : 'text-stone-600 hover:text-stone-900'
               }`}
             >
-              <List className="w-4 h-4 text-rose-600" /> Directory View ({campsCount + filteredFacilities.length})
+              <List className="w-4 h-4 text-rose-600 shrink-0" /> 
+              <span>Directory ({campsCount + filteredFacilities.length})</span>
             </button>
           </div>
         </div>
 
         {/* Multi-Level Filter Controls */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 pt-4 border-t border-stone-200">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-2.5 sm:gap-3 pt-3 sm:pt-4 border-t border-stone-200">
           
           {/* 1. DISTRICT FILTER */}
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
+            <label className="text-[10px] sm:text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
               1. District / Region
             </label>
             <select
               value={selectedDistrict}
               onChange={(e) => handleDistrictChange(e.target.value)}
-              className="w-full py-2.5 px-3 text-xs font-semibold rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800"
+              className="w-full py-2 sm:py-2.5 px-2.5 sm:px-3 text-xs font-semibold rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800"
             >
               {districts.map((d) => (
                 <option key={d} value={d}>
@@ -541,13 +543,13 @@ export const DonorCampMap = ({ donor }) => {
 
           {/* 2. ENTITY TYPE FILTER */}
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
+            <label className="text-[10px] sm:text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
               2. Map Layer / Entity
             </label>
             <select
               value={selectedEntityType}
               onChange={(e) => setSelectedEntityType(e.target.value)}
-              className="w-full py-2.5 px-3 text-xs font-semibold rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800"
+              className="w-full py-2 sm:py-2.5 px-2.5 sm:px-3 text-xs font-semibold rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800"
             >
               <option value="ALL">✨ All Locations (Camps + Facilities)</option>
               <option value="CAMP">⛺ Blood Donation Camps Only</option>
@@ -559,13 +561,13 @@ export const DonorCampMap = ({ donor }) => {
 
           {/* 3. BLOOD GROUP FILTER */}
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
+            <label className="text-[10px] sm:text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
               3. Blood Group Needed
             </label>
             <select
               value={selectedBloodGroup}
               onChange={(e) => setSelectedBloodGroup(e.target.value)}
-              className="w-full py-2.5 px-3 text-xs font-semibold rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800"
+              className="w-full py-2 sm:py-2.5 px-2.5 sm:px-3 text-xs font-semibold rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800"
             >
               <option value="ALL">🩸 All Blood Groups</option>
               <option value="O+">O+ Needed</option>
@@ -581,13 +583,13 @@ export const DonorCampMap = ({ donor }) => {
 
           {/* 4. URGENCY / STATUS FILTER */}
           <div className="space-y-1">
-            <label className="text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
+            <label className="text-[10px] sm:text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
               4. Drive Urgency & Status
             </label>
             <select
               value={selectedUrgency}
               onChange={(e) => setSelectedUrgency(e.target.value)}
-              className="w-full py-2.5 px-3 text-xs font-semibold rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800"
+              className="w-full py-2 sm:py-2.5 px-2.5 sm:px-3 text-xs font-semibold rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800"
             >
               <option value="ALL">All Urgencies & Drives</option>
               <option value="CRITICAL">🚨 Critical Need Drives</option>
@@ -598,30 +600,30 @@ export const DonorCampMap = ({ donor }) => {
 
           {/* 5. SEARCH INPUT */}
           <div className="space-y-1 sm:col-span-2 lg:col-span-1">
-            <label className="text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
+            <label className="text-[10px] sm:text-[11px] font-bold text-stone-500 font-mono uppercase tracking-wider block">
               5. Quick Search
             </label>
             <div className="relative">
-              <Search className="w-4 h-4 text-stone-400 absolute left-3 top-3" />
+              <Search className="w-3.5 h-3.5 text-stone-400 absolute left-3 top-3" />
               <input
                 type="text"
                 placeholder="Search camp, hospital, venue..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-3 py-2.5 text-xs rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800 placeholder-stone-400"
+                className="w-full pl-8 sm:pl-9 pr-3 py-2 sm:py-2.5 text-xs rounded-xl bg-stone-50 border border-stone-300 focus:outline-none focus:ring-2 focus:ring-rose-500/20 focus:border-rose-500 text-stone-800 placeholder-stone-400"
               />
             </div>
           </div>
         </div>
 
         {/* Dynamic Context Header & Results Stats */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-stone-100 text-xs">
-          <div className="flex flex-wrap items-center gap-2">
-            <span className="text-stone-500 font-medium">Quick Layer Filter:</span>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-stone-100 text-xs">
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none touch-scroll">
+            <span className="text-stone-500 font-medium whitespace-nowrap text-[11px] sm:text-xs">Filter:</span>
             
             <button
               onClick={() => setSelectedEntityType('ALL')}
-              className={`px-3 py-1 rounded-xl font-bold transition flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded-xl font-bold transition flex items-center gap-1 whitespace-nowrap shrink-0 text-xs ${
                 selectedEntityType === 'ALL'
                   ? 'bg-stone-900 text-white shadow'
                   : 'bg-stone-100 text-stone-700 hover:bg-stone-200'
@@ -635,7 +637,7 @@ export const DonorCampMap = ({ donor }) => {
 
             <button
               onClick={() => setSelectedEntityType('CAMP')}
-              className={`px-3 py-1 rounded-xl font-bold transition flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded-xl font-bold transition flex items-center gap-1 whitespace-nowrap shrink-0 text-xs ${
                 selectedEntityType === 'CAMP'
                   ? 'bg-rose-600 text-white shadow-md shadow-rose-900/20'
                   : 'bg-rose-50 text-rose-800 hover:bg-rose-100 border border-rose-200'
@@ -649,7 +651,7 @@ export const DonorCampMap = ({ donor }) => {
 
             <button
               onClick={() => setSelectedEntityType('HOSPITAL')}
-              className={`px-3 py-1 rounded-xl font-bold transition flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded-xl font-bold transition flex items-center gap-1 whitespace-nowrap shrink-0 text-xs ${
                 selectedEntityType === 'HOSPITAL'
                   ? 'bg-blue-600 text-white shadow-md shadow-blue-900/20'
                   : 'bg-blue-50 text-blue-800 hover:bg-blue-100 border border-blue-200'
@@ -663,7 +665,7 @@ export const DonorCampMap = ({ donor }) => {
 
             <button
               onClick={() => setSelectedEntityType('BLOOD_BANK')}
-              className={`px-3 py-1 rounded-xl font-bold transition flex items-center gap-1.5 ${
+              className={`px-2.5 py-1 rounded-xl font-bold transition flex items-center gap-1 whitespace-nowrap shrink-0 text-xs ${
                 selectedEntityType === 'BLOOD_BANK'
                   ? 'bg-indigo-600 text-white shadow-md shadow-indigo-900/20'
                   : 'bg-indigo-50 text-indigo-800 hover:bg-indigo-100 border border-indigo-200'
@@ -677,23 +679,23 @@ export const DonorCampMap = ({ donor }) => {
           </div>
 
           {/* Legend */}
-          <div className="flex flex-wrap items-center gap-4 text-[11px] text-stone-600 font-mono">
-            <span className="font-bold text-stone-700">Map Legend:</span>
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-4 text-[10px] sm:text-[11px] text-stone-600 font-mono">
+            <span className="font-bold text-stone-700">Legend:</span>
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping inline-block" />
-              <span>🚨 Critical Need Camp</span>
+              <span className="w-2 h-2 rounded-full bg-red-600 animate-ping inline-block" />
+              <span>Critical</span>
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-emerald-600" />
-              <span>🟢 Active Today</span>
+              <span className="w-2 h-2 rounded-full bg-emerald-600" />
+              <span>Active</span>
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-blue-600" />
-              <span>🏥 Hospital</span>
+              <span className="w-2 h-2 rounded-full bg-blue-600" />
+              <span>Hospital</span>
             </span>
             <span className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-full bg-indigo-600" />
-              <span>🏢 Blood Bank</span>
+              <span className="w-2 h-2 rounded-full bg-indigo-600" />
+              <span>Blood Bank</span>
             </span>
           </div>
         </div>
@@ -701,41 +703,41 @@ export const DonorCampMap = ({ donor }) => {
 
       {/* Main View: Leaflet Map or List Directory */}
       {viewMode === 'map' ? (
-        <div className="bg-white rounded-3xl overflow-hidden border border-stone-300 shadow-md relative h-[650px] z-10">
+        <div className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-stone-300 shadow-md relative h-[420px] sm:h-[520px] md:h-[650px] z-10">
           
-          {/* FLOATING ZOOM / DISTRICT CONTEXT BANNER */}
+          {/* FLOATING ZOOM / DISTRICT CONTEXT BANNER (Mobile-Safe Position & Text Wrapping) */}
           {!isDistrictZoomed ? (
-            <div className="absolute top-3 left-14 z-[400] bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-stone-300 shadow-lg text-xs flex items-center gap-2.5 max-w-xl">
-              <span className="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping shrink-0 inline-block" />
-              <div className="text-stone-800">
+            <div className="absolute top-2 left-12 right-2 sm:left-14 sm:right-auto z-[400] bg-white/95 backdrop-blur-md px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl sm:rounded-2xl border border-stone-300 shadow-lg text-[10px] sm:text-xs flex items-center gap-2 max-w-xl pointer-events-auto">
+              <span className="w-2 h-2 rounded-full bg-red-600 animate-ping shrink-0 inline-block" />
+              <div className="text-stone-800 leading-snug">
                 <strong className="text-red-700 font-extrabold uppercase tracking-wide">State Overview:</strong>{' '}
                 <span>
                   {mapCampsToRender.length > 0 
-                    ? `Showing ${mapCampsToRender.length} Critical Need emergency drive${mapCampsToRender.length > 1 ? 's' : ''}. ` 
+                    ? `Showing ${mapCampsToRender.length} Critical Need drive${mapCampsToRender.length > 1 ? 's' : ''}. ` 
                     : ''}
-                  Zoom in on the map or select a district to reveal local hospitals, blood banks & camps.
+                  Zoom in on map or select a district for local facilities.
                 </span>
               </div>
             </div>
           ) : (
-            <div className="absolute top-3 left-14 z-[400] bg-white/95 backdrop-blur-md px-4 py-2 rounded-2xl border border-stone-300 shadow-lg text-xs flex items-center justify-between gap-3 max-w-xl">
-              <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
-                <span className="text-stone-800">
+            <div className="absolute top-2 left-12 right-2 sm:left-14 sm:right-auto z-[400] bg-white/95 backdrop-blur-md px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl sm:rounded-2xl border border-stone-300 shadow-lg text-[10px] sm:text-xs flex items-center justify-between gap-2 max-w-xl pointer-events-auto">
+              <div className="flex items-center gap-1.5 truncate">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                <span className="text-stone-800 truncate">
                   <strong className="text-stone-900 font-bold">
-                    {selectedDistrict !== 'ALL' ? `District: ${selectedDistrict}` : 'District Detail View'}
+                    {selectedDistrict !== 'ALL' ? selectedDistrict : 'District View'}
                   </strong>{' '}
-                  <span className="text-stone-500 font-mono text-[11px]">
+                  <span className="text-stone-500 font-mono text-[10px] hidden xs:inline">
                     ({mapCampsToRender.length} Camps • {filteredFacilities.length} Facilities)
                   </span>
                 </span>
               </div>
               <button
                 onClick={() => handleDistrictChange('ALL')}
-                className="px-2.5 py-1 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-[11px] transition border border-stone-300 flex items-center gap-1 shrink-0"
+                className="px-2 sm:px-2.5 py-1 rounded-lg sm:rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold text-[10px] sm:text-[11px] transition border border-stone-300 flex items-center gap-1 shrink-0 active:scale-95"
               >
                 <RotateCcw className="w-3 h-3 text-stone-500" />
-                <span>State View</span>
+                <span>State</span>
               </button>
             </div>
           )}
@@ -955,11 +957,11 @@ export const DonorCampMap = ({ donor }) => {
         /* List / Directory View */
         <div className="space-y-6">
           {/* Sub-Tabs in List View */}
-          <div className="flex items-center gap-2 border-b border-stone-200 pb-3">
-            <span className="text-xs font-bold text-stone-500 font-mono uppercase tracking-wider mr-2">Directory:</span>
+          <div className="flex items-center gap-2 border-b border-stone-200 pb-3 overflow-x-auto scrollbar-none touch-scroll">
+            <span className="text-xs font-bold text-stone-500 font-mono uppercase tracking-wider mr-2 shrink-0">Directory:</span>
             <button
               onClick={() => setSelectedEntityType('ALL')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap shrink-0 ${
                 selectedEntityType === 'ALL'
                   ? 'bg-stone-900 text-white shadow-sm'
                   : 'text-stone-600 hover:bg-stone-100'
@@ -969,7 +971,7 @@ export const DonorCampMap = ({ donor }) => {
             </button>
             <button
               onClick={() => setSelectedEntityType('CAMP')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap shrink-0 ${
                 selectedEntityType === 'CAMP'
                   ? 'bg-rose-600 text-white shadow-sm'
                   : 'text-stone-600 hover:bg-rose-50 hover:text-rose-700'
@@ -979,7 +981,7 @@ export const DonorCampMap = ({ donor }) => {
             </button>
             <button
               onClick={() => setSelectedEntityType('HOSPITAL')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap shrink-0 ${
                 selectedEntityType === 'HOSPITAL'
                   ? 'bg-blue-600 text-white shadow-sm'
                   : 'text-stone-600 hover:bg-blue-50 hover:text-blue-700'
@@ -989,7 +991,7 @@ export const DonorCampMap = ({ donor }) => {
             </button>
             <button
               onClick={() => setSelectedEntityType('BLOOD_BANK')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition whitespace-nowrap shrink-0 ${
                 selectedEntityType === 'BLOOD_BANK'
                   ? 'bg-indigo-600 text-white shadow-sm'
                   : 'text-stone-600 hover:bg-indigo-50 hover:text-indigo-700'

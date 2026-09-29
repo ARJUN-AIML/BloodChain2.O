@@ -138,12 +138,12 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
 
   const modalContent = (
     <div 
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-stone-950/60 backdrop-blur-md animate-fade-in overflow-y-auto"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-stone-950/60 backdrop-blur-md animate-fade-in overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
     >
-      <div className={`bg-white rounded-3xl w-full p-6 sm:p-8 shadow-2xl border border-stone-200 relative max-h-[92vh] overflow-y-auto my-auto ${
+      <div className={`bg-white rounded-2xl sm:rounded-3xl w-full p-4 sm:p-8 shadow-2xl border border-stone-200 relative max-h-[92vh] overflow-y-auto my-auto ${
         successData ? 'max-w-2xl' : 'max-w-xl'
       }`}>
         <button
@@ -170,7 +170,7 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
             {/* The Physical Card Simulation */}
             <div 
               id="printable-camp-pass-card"
-              className="bg-gradient-to-br from-stone-900 via-stone-850 to-neutral-900 text-white rounded-3xl p-6 sm:p-7 shadow-2xl border border-rose-900/40 relative overflow-hidden"
+              className="bg-gradient-to-br from-stone-900 via-stone-850 to-neutral-900 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-2xl border border-rose-900/40 relative overflow-hidden"
             >
               {/* Subtle Holographic Radial Glows */}
               <div className="absolute -right-16 -top-16 w-52 h-52 rounded-full bg-rose-600/15 blur-3xl pointer-events-none" />
@@ -235,7 +235,7 @@ export const DonorCampModal = ({ camp, donor, onClose, onRegistered }) => {
                 </div>
 
                 {/* Right Column: Scannable QR Code */}
-                <div className="flex flex-col items-center justify-center bg-white p-3 rounded-2xl shadow-inner border border-stone-200">
+                <div className="flex flex-col items-center justify-center bg-white p-3 rounded-2xl shadow-inner border border-stone-200 w-full max-w-[160px] mx-auto sm:max-w-none">
                   <QRCodeCanvas
                     value={qrVerificationUrl}
                     size={120}

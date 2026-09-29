@@ -133,7 +133,7 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
     <div className="space-y-6">
       
       {/* Header Banner */}
-      <div className="clinical-card p-6 border-slate-800 bg-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="clinical-card p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-slate-800 bg-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-indigo-400 font-semibold text-xs uppercase tracking-wider mb-1">
             <CheckSquare className="w-4 h-4" />
@@ -147,26 +147,26 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
           <button
             type="button"
             onClick={() => {
               if (onNavigateToForecast) onNavigateToForecast();
               else setActiveTab('forecast');
             }}
-            className="px-3.5 py-2 rounded-lg bg-rose-700 hover:bg-rose-600 text-white font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
+            className="flex-1 sm:flex-initial px-3.5 py-2 rounded-lg bg-rose-700 hover:bg-rose-600 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
             title="View 7-day future ML demand predictions"
           >
-            <TrendingUp className="w-4 h-4" />
+            <TrendingUp className="w-4 h-4 shrink-0" />
             <span>AI Demand Forecast</span>
           </button>
 
           <button
             type="button"
             onClick={() => setShowCreateModal(true)}
-            className="px-3.5 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-white font-semibold text-xs flex items-center gap-2 transition-colors cursor-pointer shadow-sm"
+            className="flex-1 sm:flex-initial px-3.5 py-2 rounded-lg bg-red-700 hover:bg-red-600 text-white font-semibold text-xs flex items-center justify-center gap-2 transition-colors cursor-pointer shadow-sm"
           >
-            <PlusCircle className="w-4 h-4" />
+            <PlusCircle className="w-4 h-4 shrink-0" />
             <span>Create Blood Request</span>
           </button>
           
@@ -239,7 +239,7 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
       </div>
 
       {/* Segmented Tab Navigation */}
-      <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto" role="tablist">
+      <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto scrollbar-none touch-scroll -mx-2 px-2 sm:mx-0 sm:px-0" role="tablist">
         {[
           { id: 'queue', label: `Approval Queue (${awaitingReceived + pendingTransfers})` },
           { id: 'requests_sent', label: `Requests Issued (${sentRequests.length})` },
@@ -254,7 +254,7 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
             role="tab"
             aria-selected={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer ${
+            className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
               activeTab === tab.id
                 ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                 : 'text-stone-600 hover:text-stone-900'
@@ -276,8 +276,8 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
             <span className="text-xs text-slate-400 font-mono">Total Pending: {receivedRequests.length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[620px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Request ID</th>
@@ -351,8 +351,8 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
             <span className="text-xs text-slate-400 font-mono">Issued Total: {sentRequests.length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[620px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Request ID</th>
@@ -425,8 +425,8 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
             <span className="text-xs text-slate-400 font-mono">Pending Auth: {outgoingTransfers.filter(t => t.status === 'CREATED').length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[620px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Transfer ID</th>
@@ -531,8 +531,8 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
             <span className="text-xs text-slate-400 font-mono">Immutable Log Entries: {auditLogs.length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[620px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Timestamp</th>
@@ -573,8 +573,8 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
 
       {/* MODAL 1: CREATE REQUEST */}
       {showCreateModal && (
-        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="clinical-card-elevated max-w-md w-full p-6 bg-slate-900 border-slate-700 space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="clinical-card-elevated max-w-md w-full p-4 sm:p-6 rounded-2xl bg-slate-900 border-slate-700 space-y-4 max-h-[92vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <h3 className="font-bold text-base text-white">Create Blood Supply Requisition</h3>
               <button 
@@ -684,8 +684,8 @@ export const HospitalApprovalDesk = ({ onNavigateToForecast }) => {
 
       {/* MODAL 2: RESPOND TO REQUEST */}
       {showRespondModal && selectedRequest && (
-        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="clinical-card-elevated max-w-md w-full p-6 bg-slate-900 border-slate-700 space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="clinical-card-elevated max-w-md w-full p-4 sm:p-6 rounded-2xl bg-slate-900 border-slate-700 space-y-4 max-h-[92vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <h3 className="font-bold text-base text-white">Review & Allocate Blood Units</h3>
               <button 

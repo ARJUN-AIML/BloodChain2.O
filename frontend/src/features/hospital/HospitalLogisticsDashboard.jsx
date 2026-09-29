@@ -109,7 +109,7 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
     <div className="space-y-6">
       
       {/* Header Banner */}
-      <div className="clinical-card p-6 border-slate-800 bg-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="clinical-card p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-slate-800 bg-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-teal-400 font-semibold text-xs uppercase tracking-wider mb-1">
             <Truck className="w-4 h-4" />
@@ -123,7 +123,7 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
           <button
             type="button"
             onClick={() => {
@@ -211,7 +211,7 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
       </div>
 
       {/* Segmented Tab Navigation */}
-      <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto" role="tablist">
+      <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto scrollbar-none touch-scroll -mx-2 px-2 sm:mx-0 sm:px-0" role="tablist">
         {[
           { id: 'overview', label: `Active Dock Overview (${incomingInTransit + inTransitOutgoing})` },
           { id: 'dispatch_queue', label: `Awaiting Dispatch (${awaitingDispatch})` },
@@ -226,7 +226,7 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
             role="tab"
             aria-selected={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer ${
+            className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
               activeTab === tab.id
                 ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                 : 'text-stone-600 hover:text-stone-900'
@@ -249,8 +249,8 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
               <span className="text-xs text-slate-400 font-mono">In-Transit Batches: {incomingInTransit + inTransitOutgoing}</span>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
+            <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+              <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
                 <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                   <tr>
                     <th className="py-3 px-4">Transfer ID</th>
@@ -345,8 +345,8 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
             <span className="text-xs text-slate-400 font-mono">Queue Count: {outgoingTransfers.filter(t => t.status === 'APPROVED').length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Transfer ID</th>
@@ -404,8 +404,8 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
             <span className="text-xs text-slate-400 font-mono">Inbound Records: {incomingTransfers.length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Transfer ID</th>
@@ -497,8 +497,8 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
             <span className="text-xs text-slate-400 font-mono">Outbound Total: {outgoingTransfers.length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Transfer ID</th>
@@ -594,8 +594,8 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
             <span className="text-xs text-slate-400 font-mono">Immutable Log Entries: {auditLogs.length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Timestamp</th>
@@ -636,8 +636,8 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
 
       {/* MODAL 1: OTP DISPLAY */}
       {otpModalData && (
-        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="clinical-card-elevated max-w-md w-full p-6 bg-slate-900 border-slate-700 space-y-4 text-center">
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="clinical-card-elevated max-w-md w-full p-4 sm:p-6 rounded-2xl bg-slate-900 border-slate-700 space-y-4 text-center max-h-[92vh] overflow-y-auto my-auto">
             <div className="w-10 h-10 rounded-lg bg-teal-950 border border-teal-800 text-teal-400 flex items-center justify-center mx-auto">
               <KeyRound className="w-5 h-5" />
             </div>
@@ -674,8 +674,8 @@ export const HospitalLogisticsDashboard = ({ onNavigateToForecast }) => {
 
       {/* MODAL 2: ENTER OTP */}
       {showEnterOtpModal && selectedTransferForOtp && (
-        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="clinical-card-elevated max-w-md w-full p-6 bg-slate-900 border-slate-700 space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="clinical-card-elevated max-w-md w-full p-4 sm:p-6 rounded-2xl bg-slate-900 border-slate-700 space-y-4 max-h-[92vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <h3 className="font-bold text-base text-white">Verify Handshake PIN</h3>
               <button 

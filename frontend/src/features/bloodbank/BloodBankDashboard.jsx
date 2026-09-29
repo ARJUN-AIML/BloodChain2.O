@@ -148,13 +148,13 @@ export const BloodBankDashboard = () => {
   const totalAvailableStock = inventory.reduce((acc, curr) => acc + (curr.available_units || 0), 0);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6 space-y-4 sm:space-y-6">
       
       {/* 5-Phase Transfer Protocol Stepper */}
       <WorkflowGuide activeStep={2} />
 
       {/* Top Banner */}
-      <div className="clinical-card p-6 border-slate-800 bg-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="clinical-card p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-slate-800 bg-slate-900 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-red-500 font-semibold text-xs uppercase tracking-wider mb-1">
             <Building2 className="w-4 h-4" />
@@ -243,7 +243,7 @@ export const BloodBankDashboard = () => {
       </div>
 
       {/* Segmented Tab Navigation */}
-      <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto" role="tablist">
+      <div className="flex items-center p-1 rounded-lg bg-stone-200/70 border border-stone-300 overflow-x-auto scrollbar-none touch-scroll -mx-2 px-2 sm:mx-0 sm:px-0" role="tablist">
         {[
           { id: 'overview', label: 'Central Inventory & Testing' },
           { id: 'requests', label: `Hospital Requests Received (${receivedRequests.length})` },
@@ -258,7 +258,7 @@ export const BloodBankDashboard = () => {
             role="tab"
             aria-selected={activeTab === tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer ${
+            className={`px-3.5 py-1.5 text-xs font-semibold rounded-md whitespace-nowrap transition-colors cursor-pointer shrink-0 ${
               activeTab === tab.id
                 ? 'bg-white text-stone-900 border border-stone-300 shadow-xs'
                 : 'text-stone-600 hover:text-stone-900'
@@ -271,14 +271,14 @@ export const BloodBankDashboard = () => {
 
       {/* TAB 1: CENTRAL INVENTORY */}
       {activeTab === 'overview' && (
-        <div className="space-y-6">
-          <div className="clinical-card p-6 border-slate-800 bg-slate-900 space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h2 className="text-sm font-bold text-white flex items-center gap-2">
-                <Droplet className="w-4 h-4 text-[#2d1b14]" />
-                <span>Central Blood Component Inventory Breakdown</span>
+        <div className="space-y-4 sm:space-y-6">
+          <div className="clinical-card p-4 sm:p-6 rounded-2xl sm:rounded-3xl border-slate-800 bg-slate-900 space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3 gap-2">
+              <h2 className="text-xs sm:text-sm font-bold text-white flex items-center gap-2 truncate">
+                <Droplet className="w-4 h-4 text-[#2d1b14] shrink-0" />
+                <span className="truncate">Central Blood Component Inventory Breakdown</span>
               </h2>
-              <span className="text-xs text-slate-400 font-mono">ISBT-128 Compliance Standards</span>
+              <span className="text-[10px] sm:text-xs text-slate-400 font-mono shrink-0">ISBT-128 Compliance</span>
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -362,8 +362,8 @@ export const BloodBankDashboard = () => {
             <span className="text-xs text-slate-400 font-mono">Open Orders: {receivedRequests.length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Request ID</th>
@@ -436,8 +436,8 @@ export const BloodBankDashboard = () => {
               <span className="text-xs text-slate-400 font-mono">Active Outbound: {outgoingTransfers.length}</span>
             </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-xs text-slate-300">
+            <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+              <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
                 <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                   <tr>
                     <th className="py-3 px-4">Transfer ID</th>
@@ -561,8 +561,8 @@ export const BloodBankDashboard = () => {
             <span className="text-xs text-slate-400 font-mono">Immutable Audit Records: {auditLogs.length}</span>
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-slate-300">
+          <div className="overflow-x-auto touch-scroll scrollbar-thin -mx-2 px-2 sm:mx-0 sm:px-0">
+            <table className="w-full text-left text-xs text-slate-300 min-w-[640px]">
               <thead className="bg-slate-950/80 text-slate-400 uppercase font-mono text-[11px] border-b border-slate-800">
                 <tr>
                   <th className="py-3 px-4">Timestamp</th>
@@ -598,8 +598,8 @@ export const BloodBankDashboard = () => {
 
       {/* MODAL 1: RESPOND / FULFILL REQUEST */}
       {showRespondModal && selectedRequest && (
-        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="clinical-card-elevated max-w-md w-full p-6 bg-slate-900 border-slate-700 space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="clinical-card-elevated max-w-md w-full p-4 sm:p-6 rounded-2xl bg-slate-900 border-slate-700 space-y-4 max-h-[92vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <h3 className="font-bold text-base text-white">Fulfill Hospital Requisition</h3>
               <button 
@@ -669,8 +669,8 @@ export const BloodBankDashboard = () => {
 
       {/* MODAL 2: ENTER OTP */}
       {showEnterOtpModal && selectedTransferForOtp && (
-        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-4">
-          <div className="clinical-card-elevated max-w-md w-full p-6 bg-slate-900 border-slate-700 space-y-4">
+        <div className="fixed inset-0 z-50 bg-black/75 flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+          <div className="clinical-card-elevated max-w-md w-full p-4 sm:p-6 rounded-2xl bg-slate-900 border-slate-700 space-y-4 max-h-[92vh] overflow-y-auto my-auto">
             <div className="flex justify-between items-center border-b border-slate-800 pb-3">
               <h3 className="font-bold text-base text-white">Verify Handshake PIN</h3>
               <button 
